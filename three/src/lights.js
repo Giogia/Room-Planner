@@ -1,20 +1,21 @@
 'use strict';
 
 import * as THREE from 'three';
+import { scene } from './app';
 
 //Lights
 
-export function addLights(scene){
+export function addLights(){
 
-    var hemisphere = new THREE.HemisphereLight(0xffffff, 0x444444);
+    let hemisphere = new THREE.HemisphereLight(0xffffff, 0x444444);
     hemisphere.position.set(0, 20, 0);
 
-    var directional = new THREE.DirectionalLight(0xffffff);
+    let directional = new THREE.DirectionalLight(0xffffff);
     directional.position.set(0, 20, 10);
 
-    var ambient = new THREE.AmbientLight(0xFFFFFF, 0.25);
+    let ambient = new THREE.AmbientLight(0xFFFFFF, 0.25);
 
-    var spot = new THREE.SpotLight(0xFFFFFF, 1.5);
+    let spot = new THREE.SpotLight(0xFFFFFF, 1.5);
     spot.angle = 1;
     spot.penumbra = 1;
     spot.position.set(250, 250, 250);
@@ -30,5 +31,4 @@ export function addLights(scene){
     // helper template
     //CAMERA.shadowCameraHelper = new THREE.CameraHelper(CAMERA.shadow.camera);
     //scene.add(CAMERA.shadowCameraHelper);
-};
-
+}

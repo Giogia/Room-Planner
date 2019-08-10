@@ -9,5 +9,4 @@ module.exports = {
         sourceMapFilename: '[file].map',
         devtoolModuleFilenameTemplate: 'webpack:///[resource-path]?[loaders]',
     },
-    devtool: 'source-map',
-};
+}

@@ -23,17 +23,13 @@
   },
   "dependencies": {
     "@windfish-studio/three-map-controls": "^1.1.6",
+    "glob": "^7.1.4",
     "lodash": "^4.17.15",
     "three": "^0.107.0",
     "three-controls": "^1.0.1",
     "three-dragcontrols": "^0.88.2",
-    "three-fly-controls": "^1.1.0",
     "three-gltf-loader": "^1.107.0",
-    "three-map-controls": "^1.1.0",
     "three-orbitcontrols": "^2.102.2",
-    "three-orbitcontrols-ts": "^0.1.2",
-    "three-trackballcontrols": "0.0.8",
-    "three.map.control": "^1.6.0",
     "tween": "^0.9.0",
     "webpack-dev-server": "^3.7.2"
   }
