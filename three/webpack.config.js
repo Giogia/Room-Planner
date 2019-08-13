@@ -1,12 +1,20 @@
 var path = require('path');
 
 module.exports = {
-    entry: path.resolve(__dirname, 'src/app.js'),
+    entry: {
+        app: path.resolve(__dirname, 'src/app.js'),
+        list: path.resolve(__dirname, 'src/list.js'),
+    },
     output: {
         path: path.resolve(__dirname, 'build'),
-        publicPath: 'http://www.room_planner.com/build/',
-        filename: 'app.js',
+        publicPath: './build/',
+        filename: '[name].js',
         sourceMapFilename: '[file].map',
         devtoolModuleFilenameTemplate: 'webpack:///[resource-path]?[loaders]',
     },
-}
+    target: 'web',
+    node : {
+        fs : 'empty'
+    },
+    externals: ['fs'],
+};

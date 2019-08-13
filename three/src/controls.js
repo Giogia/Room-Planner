@@ -11,7 +11,7 @@ export var dragControls, mapControls, orbitControls;
 
 export function  enableOrbitControls(){
 
-    orbitControls = new OrbitControls(camera);
+    orbitControls = new OrbitControls(camera, renderer.domElement);
     orbitControls.target.set(0, 0, 0);
 
     // smooth control settings

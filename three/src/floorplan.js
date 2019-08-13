@@ -7,8 +7,8 @@ import { LineMaterial } from "three/examples/jsm/lines/LineMaterial";
 import { Line2 } from "three/examples/jsm/lines/Line2";
 import { ConvexGeometry} from "three/examples/jsm/geometries/ConvexGeometry";
 
-const DEPTH = 0.15;
-const HEIGHT = 2.5;
+const DEPTH = 0.1;
+const HEIGHT = 1.5;
 
 const MATERIAL = new THREE.MeshLambertMaterial({color: 0xffc6c3, transparent: true, opacity: 0.6});
 
@@ -29,7 +29,8 @@ export function createWallsModel ( floorplan) {
 
   let walls = getWallsModels(floorplan);
   let columns = getColumnsModels(floorplan.points);
-  let floor =drawFloor(floorplan.points);
+  let floor = drawFloor([floorplan.points[0], floorplan.points[1], floorplan.points[2], floorplan.points[3]]);
+  let floor2 = drawFloor([floorplan.points[2], floorplan.points[4], floorplan.points[9], floorplan.points[11]]);
 
   let group = new THREE.Group();
 
@@ -37,6 +38,7 @@ export function createWallsModel ( floorplan) {
   _.each(columns, (column) => group.add(column));
 
   group.add(floor);
+  group.add(floor2);
 
   return group;
 }
@@ -126,7 +128,7 @@ function drawFloor(points) {
 
   let material = new THREE.MeshPhongMaterial( {
     color: 'white',
-    shading: THREE.FlatShading
+    flatShading: true,
   } );
 
   return new THREE.Mesh( geometry, material );

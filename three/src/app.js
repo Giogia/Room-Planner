@@ -5,38 +5,63 @@ import * as TWEEN from 'tween';
 
 import { enableOrbitControls, enableMapControls, enableDragControls } from "./controls";
 import { addLights } from './lights';
-import { createGround, loadModel, randomCubes, randomObjects } from "./objects";
+import { createGround, addObject } from "./objects";
 
 import { orbitControls, mapControls, dragControls } from "./controls";
 import { createModel, createWallsModel } from "./floorplan";
 
-export var scene, camera, renderer;
+export var scene, camera, renderer, canvas;
 
 let floorPlanView = false;
 
-let cubes;
+export var objects = [];
 
 let floorModel, wallsModel;
 
 var floorPlan = {
 
     points: [
-        {x: 0, z: 0, id: 0},
-        {x: 0, z: 4, id: 1},
-        {x: 5, z: 0, id: 2},
-        {x: 5, z: 2, id: 3}
-    ],
+        {x: -5, z: -5, id: 0},
+        {x: 0, z: -5, id: 1},
+        {x: -5, z: 0, id: 2},
+        {x: 0, z: 0, id: 3},
+        {x: 5, z: 0, id: 4},
+        {x: -5, z: 3, id: 5},
+        {x: 0, z: 2, id: 6},
+        {x: 1, z: 2, id: 7},
+        {x: 5, z: 2, id: 8},
+        {x: -5, z: 5, id: 9},
+        {x: 1, z: 5, id: 10},
+        {x: 5, z: 5, id: 11},
+        {x: 0, z: 3, id: 12}
+        ],
 
     lines: [
         {from: 0, to: 1},
         {from: 0, to: 2},
+        {from: 1, to: 3},
         {from: 2, to: 3},
-        {from: 1, to: 3}
+        {from: 2, to: 5},
+        {from: 3, to: 4},
+        {from: 3, to: 6},
+        {from: 4, to: 8},
+        {from: 5, to: 12},
+        {from: 5, to: 9},
+        {from: 6, to: 7},
+        {from: 6, to: 12},
+        {from: 7, to: 8},
+        {from: 7, to: 10},
+        {from: 8, to: 11},
+        {from: 9, to: 10},
+        {from: 10, to: 11}
     ]
 };
 
 
 function init() {
+
+    canvas = document.getElementById( 'app');
+    document.body.appendChild(canvas);
 
     createRenderer();
     createScene();
@@ -57,53 +82,25 @@ function init() {
     wallsModel = createWallsModel(floorPlan);
     scene.add(wallsModel);
 
-    loadModel('./models/gltf/wall.glb');
-
-    //for debugging
-    cubes = randomCubes();
-
-    enableDragControls(cubes);
+    addObject('chair');
 
     document.addEventListener('keypress', toggleView);
 
     window.onresize = function () {
-        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.aspect = canvas.clientWidth / canvas.clientHeight;
         camera.updateProjectionMatrix();
-        renderer.setSize( window.innerWidth, window.innerHeight );
+        renderer.setSize( canvas.clientWidth, canvas.clientHeight );
     };
 
     animate();
 }
 
-
-function mouseDown(event){
-
-    mapControls.enabled = false;
-
-    var x = ( event.clientX / window.innerWidth ) * 2 - 1;
-    var y =  - ( event.clientY / window.innerHeight ) * 2 + 1;
-
-    document.addEventListener( 'mousemove', mouseMove);
-    document.addEventListener('mouseup', mouseUp);
-}
-
-function mouseMove(event){
-
-}
-
-function mouseUp(event){
-    mapControls.enabled = true;
-    document.removeEventListener("mousemove", mouseMove);
-
-}
-
-
 function createRenderer(){
     renderer = new THREE.WebGLRenderer();
     renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize( canvas.clientWidth, canvas.clientHeight );
     renderer.gammaOutput = true;
-    document.body.appendChild(renderer.domElement);
+    canvas.appendChild(renderer.domElement);
 }
 
 
@@ -116,7 +113,7 @@ function createScene(){
 
 function createCamera(){
     const fov = 40;
-    const aspect = window.innerWidth / window.innerHeight;  // the canvas default
+    const aspect = canvas.clientWidth / canvas.clientHeight;
     const near = 1;
     const far = 100;
     camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
@@ -129,7 +126,7 @@ function toggleView(event) {
     if (event.code === "Space" && !floorPlanView) {
 
         tweenCamera(new THREE.Vector3(0, 30, 0.5));
-        hide(cubes);
+        hide(objects);
         hide(wallsModel.children);
         show(floorModel.children);
 
@@ -141,7 +138,7 @@ function toggleView(event) {
         mapControls.reset();
 
         tweenCamera(new THREE.Vector3(20, 30, 30));
-        show(cubes);
+        show(objects);
         show(wallsModel.children);
         hide(floorModel.children);
 
@@ -205,6 +202,7 @@ function animate() {
 
     orbitControls.update();
     mapControls.update();
+    enableDragControls(objects);
 
     renderer.render( scene, camera );
 

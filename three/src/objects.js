@@ -1,26 +1,8 @@
 'use strict';
 
 import * as THREE from 'three';
-import GLTFLoader from 'three-gltf-loader';
-
-import { scene } from './app'
-
-/*
-var defaultFloorPlan = {
-    points: [
-        {x: 0, z: 0, id: 0},
-        {x: 0, z: 400, id: 1},
-        {x: 500, z: 0, id: 2},
-        {x: 500, z: 200, id: 3}
-    ],
-
-    lines: [
-        {from: 0, to: 1},
-        {from: 0, to: 2},
-        {from: 2, to: 3}
-    ]
-};
-*/
+import { GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
+import { scene, objects } from './app';
 
 export function createGround() {
 
@@ -41,22 +23,44 @@ export function createGround() {
     //scene.add( axesHelper );
 }
 
+async function loadModel(object){
 
-export function loadModel(path) {
-
-    let model;
+    let path  = './models/gltf/' + object + '.glb';
+    let model = null;
     let loader = new GLTFLoader();
 
-    loader.load(path, function (gltf) {
+    let promise = new Promise((resolve, reject) => {
+        loader.load(path, resolve, undefined, reject)
+    });
 
+    promise.then( gltf => {
         model = gltf.scene;
+        model.castShadow = true;
+        model.receiveShadow = true;
+
         scene.add(model);
 
-    }, undefined, function (error) {
-
+    }, error => {
         console.error(error);
+    });
+
+    return await promise;
+}
+
+
+export function addObject(name){
+
+    let loading = loadModel(name);
+
+    loading.then( gltf => {
+
+        let model = gltf.scene;
+        //let object = merge(model);
+
+        objects.push( model.children[0] );
 
     });
+    //console.log(objects);
 }
 
 
@@ -85,6 +89,28 @@ export function randomCubes(){
 
     return cubes;
 }
+
+function merge(model){
+
+    let meshes = [];
+
+    model.traverse( (child)=> {
+        if(child.type === "Mesh"){ meshes.push(child); }
+    });
+    console.log(meshes);
+
+    let finalMesh = new THREE.Object3D();
+
+    for (let mesh in meshes){
+       finalMesh.add(mesh)
+    }
+
+    return finalMesh;
+}
+
+
+
+
 
 
 

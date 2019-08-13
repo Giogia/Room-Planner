@@ -22,12 +22,14 @@
     "webpack-cli": "^3.3.6"
   },
   "dependencies": {
+    "@google/model-viewer": "^0.5.1",
     "@windfish-studio/three-map-controls": "^1.1.6",
+    "fs-web": "^1.0.1",
     "glob": "^7.1.4",
+    "jquery": "^3.4.1",
     "lodash": "^4.17.15",
     "three": "^0.107.0",
     "three-controls": "^1.0.1",
-    "three-dragcontrols": "^0.88.2",
     "three-gltf-loader": "^1.107.0",
     "three-orbitcontrols": "^2.102.2",
     "tween": "^0.9.0",
