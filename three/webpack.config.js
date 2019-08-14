@@ -11,10 +11,5 @@ module.exports = {
         filename: '[name].js',
         sourceMapFilename: '[file].map',
         devtoolModuleFilenameTemplate: 'webpack:///[resource-path]?[loaders]',
-    },
-    target: 'web',
-    node : {
-        fs : 'empty'
-    },
-    externals: ['fs'],
+    }
 };

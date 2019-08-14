@@ -5,7 +5,7 @@ import * as TWEEN from 'tween';
 
 import { enableOrbitControls, enableMapControls, enableDragControls } from "./controls";
 import { addLights } from './lights';
-import { createGround, addObject } from "./objects";
+import {addObject, createGround} from "./loader";
 
 import { orbitControls, mapControls, dragControls } from "./controls";
 import { createModel, createWallsModel } from "./floorplan";
@@ -14,11 +14,11 @@ export var scene, camera, renderer, canvas;
 
 let floorPlanView = false;
 
-export var objects = [];
+export var currentObjects = [];
 
 let floorModel, wallsModel;
 
-var floorPlan = {
+let floorPlan = {
 
     points: [
         {x: -5, z: -5, id: 0},
@@ -34,7 +34,7 @@ var floorPlan = {
         {x: 1, z: 5, id: 10},
         {x: 5, z: 5, id: 11},
         {x: 0, z: 3, id: 12}
-        ],
+    ],
 
     lines: [
         {from: 0, to: 1},
@@ -58,7 +58,7 @@ var floorPlan = {
 };
 
 
-function init() {
+export function init() {
 
     canvas = document.getElementById( 'app');
     document.body.appendChild(canvas);
@@ -82,8 +82,6 @@ function init() {
     wallsModel = createWallsModel(floorPlan);
     scene.add(wallsModel);
 
-    addObject('chair');
-
     document.addEventListener('keypress', toggleView);
 
     window.onresize = function () {
@@ -91,6 +89,13 @@ function init() {
         camera.updateProjectionMatrix();
         renderer.setSize( canvas.clientWidth, canvas.clientHeight );
     };
+
+    // Wait to be loaded completely
+    document.addEventListener('DOMContentLoaded', (event) => {
+        let list = document.getElementById('objects');
+        list.addEventListener('click', click, false);
+    });
+
 
     animate();
 }
@@ -126,7 +131,7 @@ function toggleView(event) {
     if (event.code === "Space" && !floorPlanView) {
 
         tweenCamera(new THREE.Vector3(0, 30, 0.5));
-        hide(objects);
+        hide(currentObjects);
         hide(wallsModel.children);
         show(floorModel.children);
 
@@ -138,7 +143,7 @@ function toggleView(event) {
         mapControls.reset();
 
         tweenCamera(new THREE.Vector3(20, 30, 30));
-        show(objects);
+        show(currentObjects);
         show(wallsModel.children);
         hide(floorModel.children);
 
@@ -195,14 +200,19 @@ function show(objects) {
     }
 }
 
+function click(event){
+    event.preventDefault();
+    addObject(event.target.alt);
+}
 
-function animate() {
+
+export function animate() {
 
     requestAnimationFrame( animate );
 
     orbitControls.update();
     mapControls.update();
-    enableDragControls(objects);
+    enableDragControls(currentObjects);
 
     renderer.render( scene, camera );
 

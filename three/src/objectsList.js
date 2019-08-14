@@ -1,4 +1,4 @@
-export let objectlist = [
+export var objectsList = [
     'bathroomCabinet',
     'bathroomCabinetDrawer',
     'bathroomMirror',

@@ -19,6 +19,8 @@ li{
 
 model-viewer{
     width: 100%;
+    auto-rotate: true;
+    camera-control: true;
 }
 
 #app{

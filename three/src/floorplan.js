@@ -10,7 +10,7 @@ import { ConvexGeometry} from "three/examples/jsm/geometries/ConvexGeometry";
 const DEPTH = 0.1;
 const HEIGHT = 1.5;
 
-const MATERIAL = new THREE.MeshLambertMaterial({color: 0xffc6c3, transparent: true, opacity: 0.6});
+const MATERIAL = new THREE.MeshLambertMaterial({color: 0xcccccc, transparent: true, opacity: 0.6});
 
 export function createModel (floorplan) {
 

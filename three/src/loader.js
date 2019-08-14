@@ -2,7 +2,7 @@
 
 import * as THREE from 'three';
 import { GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
-import { scene, objects } from './app';
+import { scene, currentObjects } from './app';
 
 export function createGround() {
 
@@ -57,10 +57,10 @@ export function addObject(name){
         let model = gltf.scene;
         //let object = merge(model);
 
-        objects.push( model.children[0] );
+        currentObjects.push( model.children[0] );
 
     });
-    //console.log(objects);
+    //console.log(currentObjects);
 }
 
 
@@ -107,8 +107,6 @@ function merge(model){
 
     return finalMesh;
 }
-
-
 
 
 
