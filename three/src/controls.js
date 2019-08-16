@@ -16,7 +16,7 @@ export function  enableOrbitControls(){
 
     // smooth control settings
     orbitControls.enablePan = false;
-    orbitControls.enableZoom = false;
+    orbitControls.enableZoom = true;
     orbitControls.enableDamping = true;
     orbitControls.screenSpacePanning = false;
     orbitControls.minPolarAngle = Math.PI/12;
@@ -58,7 +58,7 @@ export function enableDragControls(objects){
         orbitControls.enabled = true;
     } );
     dragControls.addEventListener('drag', (event) => {
-        event.object.position.y = 0;
+        //event.object.position.y = 0;
     });
 }
 

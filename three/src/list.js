@@ -20,8 +20,8 @@ function createList(){
         let model = document.createElement('model-viewer');
         model.src = './models/gltf/' + object + '.glb';
         model.alt = object;
-        model.autoRotate= true;
-        model.cameraControl= true;
+        model.autoRotate = true;
+        model.cameraControl = true;
         li.appendChild(model);
     }
     list.appendChild(ul);

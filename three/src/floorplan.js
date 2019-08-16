@@ -7,10 +7,31 @@ import { LineMaterial } from "three/examples/jsm/lines/LineMaterial";
 import { Line2 } from "three/examples/jsm/lines/Line2";
 import { ConvexGeometry} from "three/examples/jsm/geometries/ConvexGeometry";
 
+import { scene } from "./app";
+
 const DEPTH = 0.1;
 const HEIGHT = 1.5;
 
-const MATERIAL = new THREE.MeshLambertMaterial({color: 0xcccccc, transparent: true, opacity: 0.6});
+const MATERIAL = new THREE.MeshLambertMaterial({color: 0xffffff, transparent: true, opacity: 0.6});
+
+export function createGround() {
+
+  let ground = new THREE.Mesh(
+      new THREE.PlaneBufferGeometry(2000, 2000),
+      new THREE.MeshPhongMaterial({ color: 0xabb5ba, depthWrite: false}));
+  ground.rotation.x = -Math.PI / 2;
+  ground.receiveShadow = true;
+  scene.add(ground);
+
+  let grid = new THREE.GridHelper(500, 100, 0x000000, 0x000000);
+  grid.material.opacity = 0.1;
+  grid.material.transparent = true;
+  grid.receiveShadow = true;
+  scene.add(grid);
+
+  //let axesHelper = new THREE.AxesHelper( 5 );
+  //scene.add( axesHelper );
+}
 
 export function createModel (floorplan) {
 
@@ -29,14 +50,24 @@ export function createWallsModel ( floorplan) {
 
   let walls = getWallsModels(floorplan);
   let columns = getColumnsModels(floorplan.points);
-  let floor = drawFloor([floorplan.points[0], floorplan.points[1], floorplan.points[2], floorplan.points[3]]);
-  let floor2 = drawFloor([floorplan.points[2], floorplan.points[4], floorplan.points[9], floorplan.points[11]]);
 
   let group = new THREE.Group();
 
   _.each(walls, (wall) => group.add(wall));
   _.each(columns, (column) => group.add(column));
 
+  /*
+  let room = [];
+
+  for (let point of floorplan.points){
+
+    if(room.length === 4){ group.add(drawFloor(room)); }
+    room.push(point);
+  }
+  */
+
+  let floor = drawFloor([floorplan.points[0], floorplan.points[1], floorplan.points[2], floorplan.points[3]]);
+  let floor2 = drawFloor([floorplan.points[2], floorplan.points[4], floorplan.points[9], floorplan.points[11]]);
   group.add(floor);
   group.add(floor2);
 
@@ -126,8 +157,11 @@ function drawFloor(points) {
 
   let geometry = new ConvexGeometry( vertices );
 
+  //let texture = new THREE.TextureLoader().load( './assets/wooden2.jpg' );
+  //let material = new THREE.MeshPhongMaterial( { map: texture } );
+
   let material = new THREE.MeshPhongMaterial( {
-    color: 'white',
+    color: 0xd6b68b,
     flatShading: true,
   } );
 

@@ -4,24 +4,6 @@ import * as THREE from 'three';
 import { GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 import { scene, currentObjects } from './app';
 
-export function createGround() {
-
-    let ground = new THREE.Mesh(
-        new THREE.PlaneBufferGeometry(2000, 2000),
-        new THREE.MeshPhongMaterial({ color: 0x999999, depthWrite: false}));
-    ground.rotation.x = -Math.PI / 2;
-    ground.receiveShadow = true;
-    scene.add(ground);
-
-    let grid = new THREE.GridHelper(200, 40, 0x000000, 0x000000);
-    grid.material.opacity = 0.2;
-    grid.material.transparent = true;
-    grid.receiveShadow = true;
-    scene.add(grid);
-
-    //let axesHelper = new THREE.AxesHelper( 5 );
-    //scene.add( axesHelper );
-}
 
 async function loadModel(object){
 
@@ -57,7 +39,7 @@ export function addObject(name){
         let model = gltf.scene;
         //let object = merge(model);
 
-        currentObjects.push( model.children[0] );
+        currentObjects.push( model.traverse);
 
     });
     //console.log(currentObjects);
