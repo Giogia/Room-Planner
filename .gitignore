@@ -51,5 +51,4 @@ tmtagsHistory
 # 3D Objects
 ######################
 *.obj
-*.glb
 *.mtl
