@@ -48,8 +48,8 @@ export function createModel (floorplan) {
 
 export function createWallsModel ( floorplan) {
 
-  let walls = getWallsModels(floorplan);
   let columns = getColumnsModels(floorplan.points);
+  let walls = getWallsModels(floorplan);
 
   let group = new THREE.Group();
 
@@ -75,6 +75,22 @@ export function createWallsModel ( floorplan) {
 }
 
 
+function getPointModels (points) {
+  return _.map(points, ({id, x, z, selected}) => {
+    let geometry = new THREE.SphereBufferGeometry(0.08, 32, 32);
+
+    let material = selected ? new THREE.MeshBasicMaterial({color: 'blue'}): new THREE.MeshBasicMaterial({color: 'white'});
+
+    let mesh = new THREE.Mesh(geometry, material);
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+    mesh.position.x = x;
+    mesh.position.z = z;
+    mesh.data = {id};
+    return mesh;
+  });
+}
+
 function getLineModels ({lines, points}) {
   return _.map(lines, ({from, to}) => {
 
@@ -90,19 +106,19 @@ function getLineModels ({lines, points}) {
   });
 }
 
+function getColumnsModels (points){
+  return _.map(points, ({id, x, z})=> {
 
-function getPointModels (points) {
-  return _.map(points, ({x, z}, id) => {
-    let geometry = new THREE.SphereBufferGeometry(0.02, 32, 32);
-    let material = new THREE.MeshPhongMaterial({color: 'white'});
-    let mesh = new THREE.Mesh(geometry, material);
-    mesh.castShadow = true;
-    mesh.receiveShadow = true;
-    mesh.position.x = x;
-    mesh.position.z = z;
-    mesh.data = {id};
+    //let material = new THREE.MeshPhongMaterial({color: 'white'});
 
-    return mesh;
+    let columnGeometry = new THREE.CylinderGeometry(DEPTH/2, DEPTH/2, HEIGHT, 32);
+    let columnMesh = new THREE.Mesh(columnGeometry, MATERIAL);
+
+    columnMesh.position.set(x, HEIGHT/2, z);
+    columnMesh.castShadow = true;
+    columnMesh.receiveShadow = true;
+
+    return columnMesh;
   });
 }
 
@@ -133,21 +149,6 @@ function getWallsModels ({lines, points}) {
   });
 }
 
-function getColumnsModels (points){
-  return _.map(points, ({x, z})=> {
-
-    //let material = new THREE.MeshPhongMaterial({color: 'white'});
-
-    let columnGeometry = new THREE.CylinderGeometry(DEPTH/2, DEPTH/2, HEIGHT, 32);
-    let columnMesh = new THREE.Mesh(columnGeometry, MATERIAL);
-
-    columnMesh.position.set(x, HEIGHT/2, z);
-    columnMesh.castShadow = true;
-    columnMesh.receiveShadow = true;
-
-    return columnMesh;
-  });
-}
 
 function drawFloor(points) {
 

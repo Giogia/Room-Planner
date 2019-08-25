@@ -19,10 +19,10 @@ export function  enableOrbitControls(){
     orbitControls.enableZoom = true;
     orbitControls.enableDamping = true;
     orbitControls.screenSpacePanning = false;
-    orbitControls.minPolarAngle = Math.PI/12;
+    orbitControls.minPolarAngle = 0;
     orbitControls.maxPolarAngle = Math.PI/2;
-    orbitControls.dampingFactor = 0.07;
-    orbitControls.rotateSpeed = 0.07;
+    orbitControls.dampingFactor = 0.09;
+    orbitControls.rotateSpeed = 0.09;
 
     //orbitControls.enabled = false;
     orbitControls.update();
@@ -39,8 +39,8 @@ export function enableMapControls(){
     mapControls.enablePan = true;
     mapControls.screenSpacePanning = false;
     mapControls.panSpeed = 1;
-    mapControls.minDistance = 2;
-    mapControls.maxDistance = 20;
+    mapControls.minDistance = 0.1;
+    mapControls.maxDistance = 60;
 
     mapControls.enabled = false;
     mapControls.update();

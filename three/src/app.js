@@ -28,7 +28,7 @@ export function init() {
     enableOrbitControls();
     enableMapControls();
 
-    camera.position.set(20, 30, 30);
+    camera.position.set(8, 12, 12);
 
     addLights();
     createGround();
@@ -77,7 +77,7 @@ function createScene(){
 function createCamera(){
     const fov = 40;
     const aspect = canvas.clientWidth / canvas.clientHeight;
-    const near = 1;
+    const near = 0.1;
     const far = 100;
     camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 }
@@ -86,6 +86,8 @@ function createCamera(){
 function click(event){
     event.preventDefault();
     addObject(event.target.alt);
+    console.log('camera', camera.position);
+
 }
 
 

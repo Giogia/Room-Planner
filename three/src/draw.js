@@ -1,23 +1,27 @@
 import * as THREE from 'three';
-import {createModel, createWallsModel} from "./floorplan";
-import {camera, scene, canvas, floorModel,wallsModel} from "./app";
+import _ from 'lodash';
+
+import {createModel} from "./floorplan";
+import {camera, scene, canvas, floorModel} from "./app";
+
+export let selected = { points: [], lines:[] };
 
 export let floorPlan = {
 
     points: [
-        {x: -5, z: -5, id: 0},
-        {x: 0, z: -5, id: 1},
-        {x: -5, z: 0, id: 2},
-        {x: 0, z: 0, id: 3},
-        {x: 5, z: 0, id: 4},
-        {x: -5, z: 3, id: 5},
-        {x: 0, z: 2, id: 6},
-        {x: 1, z: 2, id: 7},
-        {x: 5, z: 2, id: 8},
-        {x: -5, z: 5, id: 9},
-        {x: 1, z: 5, id: 10},
-        {x: 5, z: 5, id: 11},
-        {x: 0, z: 3, id: 12}
+        {id: 0, x: -5, z: -5, selected:false },
+        {id: 1, x: 0, z: -5, selected:false },
+        {id: 2, x: -5, z: 0, selected:false },
+        {id: 3, x: 0, z: 0, selected:false },
+        {id: 4, x: 5, z: 0, selected:false },
+        {id: 5, x: -5, z: 3, selected:false },
+        {id: 6, x: 0, z: 2, selected:false },
+        {id: 7, x: 1, z: 2, selected:false },
+        {id: 8, x: 5, z: 2, selected:false },
+        {id: 9, x: -5, z: 5, selected:false },
+        {id: 10, x: 1, z: 5, selected:false },
+        {id: 11, x: 5, z: 5, selected:false },
+        {id: 12, x: 0, z: 3, selected:false }
     ],
 
     lines: [
@@ -38,20 +42,41 @@ export let floorPlan = {
         {from: 8, to: 11},
         {from: 9, to: 10},
         {from: 10, to: 11}
-    ]
+    ],
 };
 
 
 export function drawPoint(event){
+
+    let position = worldCoordinates(event);
+
+    floorPlan.points.push(position);
+
+    updateScene();
+}
+
+export function selectPoint(event){
+
+    let position = worldCoordinates(event);
+
+    let index = _.findIndex(floorPlan.points, position);
+
+    console.log(index);
+
+    updateScene();
+}
+
+
+function worldCoordinates(event){
 
     let vector = new THREE.Vector3(); // create once and reuse
     let position = new THREE.Vector3(); // create once and reuse
 
     vector.set(
         ( event.clientX / canvas.clientWidth ) * 2 - 1,
-        0.5,
-        ( event.clientY / canvas.clientHeight ) * 2 - 1,
-        );
+        - ( event.clientY / canvas.clientHeight ) * 2 + 1,
+        -1,
+    );
 
     vector.unproject( camera );
     vector.sub( camera.position ).normalize();
@@ -60,10 +85,15 @@ export function drawPoint(event){
 
     position.copy( camera.position ).add( vector.multiplyScalar( distance ) );
 
-    floorPlan.points.push({x: position.x, z: position.z, id: floorPlan.points.length});
+    position.x = Math.round(position.x * 10) / 10;
+    position.z = Math.round( position.z * 10) / 10;
+
+    return {id: floorPlan.points.length, x: position.x, z: position.z, selected: false}
+}
+
+function updateScene(){
+
     scene.remove(floorModel);
     let newFloorModel = createModel(floorPlan);
     scene.add(newFloorModel);
-    console.log(position);
-
 }

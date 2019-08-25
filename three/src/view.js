@@ -5,7 +5,7 @@ import {dragControls, mapControls, orbitControls} from "./controls";
 import * as TWEEN from "tween";
 
 import { camera, canvas, currentObjects, wallsModel, floorModel } from "./app";
-import { drawPoint } from "./draw";
+import {drawPoint} from "./draw";
 
 let floorPlanView = false;
 
@@ -14,7 +14,7 @@ export function toggleView(event) {
     event.preventDefault();
     if (event.code === "Space" && !floorPlanView) {
 
-        tweenCamera(new THREE.Vector3(0, 30, 0.5));
+        tweenCamera(new THREE.Vector3(0, 20, 0.1));
         hide(currentObjects);
         hide(wallsModel.children);
         show(floorModel.children);
@@ -26,7 +26,7 @@ export function toggleView(event) {
 
         mapControls.reset();
 
-        tweenCamera(new THREE.Vector3(20, 30, 30));
+        tweenCamera(new THREE.Vector3(8, 12, 12));
         show(currentObjects);
         show(wallsModel.children);
         hide(floorModel.children);
@@ -52,11 +52,9 @@ function tweenCamera(targetPosition){
         .easing( TWEEN.Easing.Cubic.Out )
         .onUpdate( function () {
             camera.position.copy(position);
-            camera.lookAt(targetPosition);
         } )
         .onComplete( function () {
             camera.position.copy(targetPosition);
-            camera.lookAt(targetPosition);
 
             if (floorPlanView) {
                 mapControls.saveState();
