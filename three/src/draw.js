@@ -1,8 +1,7 @@
 import * as THREE from 'three';
 import _ from 'lodash';
 
-import {createModel} from "./floorplan";
-import {camera, scene, canvas, floorModel} from "./app";
+import {camera, canvas, updateScene} from "./app";
 
 export let selected = { points: [], lines:[] };
 
@@ -89,11 +88,4 @@ function worldCoordinates(event){
     position.z = Math.round( position.z * 10) / 10;
 
     return {id: floorPlan.points.length, x: position.x, z: position.z, selected: false}
-}
-
-function updateScene(){
-
-    scene.remove(floorModel);
-    let newFloorModel = createModel(floorPlan);
-    scene.add(newFloorModel);
 }

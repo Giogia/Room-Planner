@@ -6,20 +6,23 @@ import * as TWEEN from 'tween';
 import { enableOrbitControls, enableMapControls, enableDragControls } from "./controls";
 import { addLights } from './lights';
 import { addObject } from "./loader";
-
 import { orbitControls, mapControls } from "./controls";
 import { createModel, createWallsModel, createGround} from "./floorplan";
 import { hide, toggleView} from "./view";
 import { floorPlan } from "./draw";
+import {createButtons} from "../gui";
 
-export var scene, camera, renderer, canvas;
+export var scene, camera, renderer, canvas, app;
 export var currentObjects = [];
 export let floorModel, wallsModel;
 
 export function init() {
 
-    canvas = document.getElementById( 'app');
+    canvas = document.getElementById( 'canvas');
     document.body.appendChild(canvas);
+
+    app = document.getElementById('app');
+    canvas.appendChild(app);
 
     createRenderer();
     createScene();
@@ -40,8 +43,6 @@ export function init() {
     wallsModel = createWallsModel(floorPlan);
     scene.add(wallsModel);
 
-    document.addEventListener('keypress', toggleView);
-
     window.onresize = function () {
         camera.aspect = canvas.clientWidth / canvas.clientHeight;
         camera.updateProjectionMatrix();
@@ -50,10 +51,11 @@ export function init() {
 
     // Wait to be loaded completely
     document.addEventListener('DOMContentLoaded', (event) => {
-        let list = document.getElementById('objects');
-        list.addEventListener('click', click, false);
-    });
 
+        document.getElementById('objects').addEventListener('click', click, false);
+
+        createButtons()
+    });
 
     animate();
 }
@@ -63,7 +65,7 @@ function createRenderer(){
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize( canvas.clientWidth, canvas.clientHeight );
     renderer.gammaOutput = true;
-    canvas.appendChild(renderer.domElement);
+    app.appendChild(renderer.domElement);
 }
 
 
@@ -86,10 +88,21 @@ function createCamera(){
 function click(event){
     event.preventDefault();
     addObject(event.target.alt);
-    console.log('camera', camera.position);
 
 }
 
+export function updateScene(){
+
+    scene.remove(floorModel);
+    floorModel = createModel(floorPlan);
+    scene.add(floorModel);
+}
+
+export function updateModel(){
+    scene.remove(wallsModel);
+    wallsModel = createWallsModel(floorPlan);
+    scene.add(wallsModel);
+}
 
 export function animate() {
 

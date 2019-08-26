@@ -4,37 +4,48 @@ import * as THREE from "three";
 import {dragControls, mapControls, orbitControls} from "./controls";
 import * as TWEEN from "tween";
 
-import { camera, canvas, currentObjects, wallsModel, floorModel } from "./app";
+import {camera, app, currentObjects, wallsModel, floorModel, updateModel} from "./app";
 import {drawPoint} from "./draw";
+import {modelButtons, viewButtons} from "../gui";
 
 let floorPlanView = false;
 
 export function toggleView(event) {
 
     event.preventDefault();
-    if (event.code === "Space" && !floorPlanView) {
 
-        tweenCamera(new THREE.Vector3(0, 20, 0.1));
-        hide(currentObjects);
-        hide(wallsModel.children);
-        show(floorModel.children);
-
-        canvas.addEventListener( 'click', drawPoint, false);
-
-    }
-    if (event.code === "Space" && floorPlanView) {
-
-        mapControls.reset();
-
-        tweenCamera(new THREE.Vector3(8, 12, 12));
-        show(currentObjects);
-        show(wallsModel.children);
-        hide(floorModel.children);
-
-        canvas.removeEventListener( 'click', drawPoint, false);
-    }
+    (floorPlanView) ? modelView(): drawView();
 
     floorPlanView = !floorPlanView;
+}
+
+
+function drawView(){
+
+    tweenCamera(new THREE.Vector3(0, 20, 0.1));
+    hide(currentObjects);
+    hide(wallsModel.children);
+    show(floorModel.children);
+
+    viewButtons();
+
+    app.addEventListener( 'click', drawPoint, false);
+}
+
+
+function modelView(){
+
+    // remove click before transition
+    app.removeEventListener( 'click', drawPoint, false);
+    mapControls.reset();
+    updateModel();
+
+    tweenCamera(new THREE.Vector3(8, 12, 12));
+    show(currentObjects);
+    show(wallsModel.children);
+    hide(floorModel.children);
+
+    modelButtons();
 }
 
 

@@ -16,18 +16,23 @@ li{
     margin-top: 5%;
 }
 
-
 model-viewer{
     width: 100%;
     auto-rotate: true;
     camera-control: true;
 }
 
-#app{
+#canvas{
     display: inline-block;
     position: relative;
     float: left;
     width: 75%;
+    height: 100%;
+}
+
+#app {
+    position: relative;
+    width: 100%;
     height: 100%;
 }
 
@@ -41,6 +46,15 @@ model-viewer{
 
     font-family: Arial;
     color: #57626f;
+}
+
+#buttons {
+    position: absolute;
+    bottom: 7.5%;
+    width: 100%;
+    text-align: center;
+    z-index: 100;
+    display:block;
 }
 
 #objects {
@@ -65,3 +79,4 @@ model-viewer{
     font-size: xx-large;
     color: #57626f;
 }
+
