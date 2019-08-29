@@ -20,7 +20,7 @@ export function  enableOrbitControls(){
     orbitControls.enableDamping = true;
     orbitControls.screenSpacePanning = false;
     orbitControls.minPolarAngle = 0;
-    orbitControls.maxPolarAngle = Math.PI/2;
+    orbitControls.maxPolarAngle = Math.PI/2-Math.PI/64;
     orbitControls.dampingFactor = 0.09;
     orbitControls.rotateSpeed = 0.09;
 

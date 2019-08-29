@@ -1,4 +1,7 @@
-html, body{
+@import '../node_modules/material-components-web/dist/material-components-web.css';
+@import '../node_modules/material-design-icons/iconfont/material-icons.css';
+
+html, body {
     height : 100%;
     width: 100%;
     margin: 0;
@@ -6,77 +9,92 @@ html, body{
     padding: 0;
 }
 
-ul{
+ul {
     margin: 0;
-    border: 0;
     padding: 0;
+    list-style: none;
 }
 
 li{
-    margin-top: 5%;
+    padding: 5px;
 }
 
 model-viewer{
-    width: 100%;
-    auto-rotate: true;
-    camera-control: true;
+    display:block;
+    width:100%;
+    height: 150px;
+    position:relative;
+    border-radius: 3%;
 }
+
+:root {
+    --mdc-theme-primary: #4a6275;
+    --mdc-theme-secondary: #feeae6;
+}
+
+canvas{
+    position: relative;
+    width: 100%;
+}
+
 
 #canvas{
-    display: inline-block;
-    position: relative;
-    float: left;
-    width: 75%;
-    height: 100%;
-}
-
-#app {
     position: relative;
     width: 100%;
     height: 100%;
-}
-
-#info {
-    position: relative;
-    bottom: 50px;
-    width: 100%;
-    text-align: center;
-    z-index: 100;
-    display:block;
-
-    font-family: Arial;
-    color: #57626f;
-}
-
-#buttons {
-    position: absolute;
-    bottom: 7.5%;
-    width: 100%;
-    text-align: center;
-    z-index: 100;
-    display:block;
-}
-
-#objects {
-    float: right;
-    width: 25%;
-    height: 100%;
-    max-height: 100%;
-    overflow: scroll;
-    color: ghostwhite;
 }
 
 #logo {
     position: relative;
-    top: 10px;
-    width: 100%;
+    float: right;
+    top: 95%;
+    width: 90%;
     text-align: center;
+    display: block;
     z-index: 100;
-    display:block;
-
     font-family: Arial;
     font-weight: bold;
-    font-size: xx-large;
     color: #57626f;
+}
+
+#app {
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    z-index: 50;
+}
+
+
+#buttons {
+    position: relative;
+    margin-right: 2%;
+    float: right;
+    top: 2%;
+    width: 100%;
+    text-align: right;
+    z-index: 100;
+    display:block;
+}
+#drawer {
+    position: absolute;
+    display: block;
+    background-color: transparent;
+    border-color: transparent;
+    float: left;
+    width: 20%;
+    height: 100%;
+    max-height: 100%;
+    z-index: 99;
+    overflow: scroll;
+}
+
+#objects{
+    padding-right: 30%;
+    padding-left: 2px;
+}
+
+::-webkit-scrollbar {
+    display: none;
 }
 

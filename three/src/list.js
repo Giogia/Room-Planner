@@ -21,7 +21,7 @@ function createList(){
         model.src = './models/gltf/' + object + '.glb';
         model.alt = object;
         model.autoRotate = true;
-        model.cameraControl = true;
+        model.className = "mdc-elevation--z24";
         li.appendChild(model);
     }
     list.appendChild(ul);

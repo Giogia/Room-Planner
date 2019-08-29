@@ -1,9 +1,13 @@
 import * as THREE from 'three';
 import _ from 'lodash';
 
-import {camera, canvas, updateScene} from "./app";
+import {app, camera, scene, canvas, updateScene} from "./app";
+import {LineMaterial} from "three/examples/jsm/lines/LineMaterial";
+import {LineGeometry} from "three/examples/jsm/lines/LineGeometry";
+import {Line2} from "three/examples/jsm/lines/Line2";
 
 export let selected = { points: [], lines:[] };
+export let currentLine;
 
 export let floorPlan = {
 
@@ -44,25 +48,100 @@ export let floorPlan = {
     ],
 };
 
-
-export function drawPoint(event){
+export function editDrawing(event){
 
     let position = worldCoordinates(event);
+    let point = _.find(floorPlan.points,{ x: position.x, z: position.z });
+
+    if(point){
+        selectPoint(point);
+    }
+    else{
+        drawPoint(position);
+    }
+}
+
+function selectPoint(point){
+
+    let selected = _.find(floorPlan.points,{ selected: true });
+
+    floorPlan.points[point.id].selected = !floorPlan.points[point.id].selected;
+    updateScene();
+
+    if(selected === undefined){
+
+        app.addEventListener('mousemove', showLine, false);
+        app.addEventListener('click', drawLine, false);
+    }
+
+    if(selected === point){
+
+        app.removeEventListener( 'mousemove', showLine, false);
+        app.removeEventListener('click', drawLine, false);
+    }
+}
+
+function drawPoint(position){
 
     floorPlan.points.push(position);
-
     updateScene();
 }
 
-export function selectPoint(event){
+function showLine(event){
 
     let position = worldCoordinates(event);
+    let point = _.find(floorPlan.points,{ selected: true });
 
-    let index = _.findIndex(floorPlan.points, position);
+    let material = new LineMaterial({
+        color: 'blue',
+        opacity: 0.5,
+        linewidth: 0.001,
+    });
 
-    console.log(index);
+    let geometry = new LineGeometry();
+    geometry.setPositions([point.x, 0, point.z, position.x, 0, position.z]);
 
+    scene.remove(currentLine);
+    currentLine = new Line2(geometry, material);
+    scene.add(currentLine);
+}
+
+function drawLine(event){
+
+    let position = worldCoordinates(event);
+    let start = _.find(floorPlan.points, {selected: true});
+    let end = _.find(floorPlan.points, {x:position.x, z:position.z});
+
+    // fix to avoid drawing line from to same point.
+    if(start === end){
+        start = _.findLast(floorPlan.points, {selected: true});
+    }
+
+    scene.remove(currentLine);
+    floorPlan.lines.push({from: start.id, to: end.id});
+    for( let point of floorPlan.points){ point.selected = false}
     updateScene();
+
+    app.removeEventListener( 'mousemove', showLine, false);
+    app.removeEventListener('click', drawLine, false);
+}
+
+export function deleteDrawing(event){
+
+    let position = worldCoordinates(event);
+    let point = _.find(floorPlan.points,{ x: position.x, z: position.z });
+
+    if(point){
+
+        console.log(floorPlan.points, floorPlan.lines);
+        _.filter(floorPlan.points, { id : point.id});
+        _.filter(floorPlan.lines, { from: point.id});
+        _.filter(floorPlan.lines, { to: point.id});
+
+        console.log(floorPlan.points, floorPlan.lines);
+
+        updateScene();
+    }
 }
 
 
@@ -84,8 +163,8 @@ function worldCoordinates(event){
 
     position.copy( camera.position ).add( vector.multiplyScalar( distance ) );
 
-    position.x = Math.round(position.x * 10) / 10;
-    position.z = Math.round( position.z * 10) / 10;
+    position.x = Math.round(position.x );
+    position.z = Math.round( position.z );
 
     return {id: floorPlan.points.length, x: position.x, z: position.z, selected: false}
 }

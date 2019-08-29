@@ -1,9 +1,15 @@
 import {toggleView} from "./src/view";
+import {MDCDrawer} from "@material/drawer/component";
+import {deleteDrawing, editDrawing} from "./src/draw";
+import {app} from "./src/app";
 
-let buttons, viewButton, deleteButton;
+export let drawer, buttons, viewButton, editButton, deleteButton;
 
 
 export function createButtons(){
+
+    let drawerEl = document.getElementById('drawer');
+    drawer = new MDCDrawer.attachTo(drawerEl);
 
     buttons = document.getElementById('buttons');
 
@@ -13,7 +19,17 @@ export function createButtons(){
     buttons.appendChild(viewButton);
     viewButton.addEventListener('click', toggleView);
 
+    editButton = createIconButton( 'edit');
+    editButton.addEventListener('click', function (){
+        app.addEventListener( 'click', editDrawing, false);
+        app.removeEventListener( 'click', deleteDrawing, false);
+    });
+
     deleteButton = createIconButton('delete');
+    deleteButton.addEventListener('click', function (){
+        app.addEventListener( 'click', deleteDrawing, false);
+        app.removeEventListener( 'click', editDrawing, false);
+    });
 }
 
 export function viewButtons(){
@@ -31,6 +47,9 @@ function createIconButton(name){
     let icon = document.createElement('i');
     icon.className = 'material-icons mdc-icon-button__icon';
     icon.innerText = name;
+    icon.title = name;
+    icon.width = "24px";
+    icon.height = "24px";
     button.appendChild(icon);
     buttons.appendChild(button);
 

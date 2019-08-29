@@ -5,14 +5,15 @@ import {dragControls, mapControls, orbitControls} from "./controls";
 import * as TWEEN from "tween";
 
 import {camera, app, currentObjects, wallsModel, floorModel, updateModel} from "./app";
-import {drawPoint} from "./draw";
-import {modelButtons, viewButtons} from "../gui";
+import {editDrawing} from "./draw";
+import {modelButtons, viewButtons } from "../gui";
 
 let floorPlanView = false;
 
 export function toggleView(event) {
 
     event.preventDefault();
+    //drawer.open = !drawer.open;
 
     (floorPlanView) ? modelView(): drawView();
 
@@ -29,14 +30,14 @@ function drawView(){
 
     viewButtons();
 
-    app.addEventListener( 'click', drawPoint, false);
+    app.addEventListener( 'click', editDrawing, false);
 }
 
 
 function modelView(){
 
     // remove click before transition
-    app.removeEventListener( 'click', drawPoint, false);
+    app.removeEventListener( 'click', editDrawing, false);
     mapControls.reset();
     updateModel();
 

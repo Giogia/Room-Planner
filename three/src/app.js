@@ -7,8 +7,8 @@ import { enableOrbitControls, enableMapControls, enableDragControls } from "./co
 import { addLights } from './lights';
 import { addObject } from "./loader";
 import { orbitControls, mapControls } from "./controls";
-import { createModel, createWallsModel, createGround} from "./floorplan";
-import { hide, toggleView} from "./view";
+import { createModel, createWallsModel } from "./floorplan";
+import { hide } from "./view";
 import { floorPlan } from "./draw";
 import {createButtons} from "../gui";
 
@@ -53,7 +53,6 @@ export function init() {
     document.addEventListener('DOMContentLoaded', (event) => {
 
         document.getElementById('objects').addEventListener('click', click, false);
-
         createButtons()
     });
 
@@ -71,8 +70,9 @@ function createRenderer(){
 
 function createScene(){
     scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xffffff);
-    scene.fog = new THREE.FogExp2(0xffffff, 0.015);
+    scene.background = new THREE.Color(0xa9cce3);
+    //scene.fog = new THREE.Fog(0xffffff, 10, 2000);
+    scene.fog = new THREE.FogExp2(0xa9cce3, 0.02);
 }
 
 
@@ -85,9 +85,29 @@ function createCamera(){
 }
 
 
+function createGround() {
+
+    let ground = new THREE.Mesh(
+        new THREE.PlaneBufferGeometry(2000, 2000),
+        new THREE.MeshPhongMaterial({ color: 0xabb5ba, depthWrite: false}));
+    ground.rotation.x = -Math.PI / 2;
+    ground.receiveShadow = true;
+    scene.add(ground);
+
+    let grid = new THREE.GridHelper(100, 50, 0x000000, 0x000000);
+    grid.material.opacity = 0.25;
+    grid.material.transparent = true;
+    grid.receiveShadow = true;
+    scene.add(grid);
+
+    //let axesHelper = new THREE.AxesHelper( 5 );
+    //scene.add( axesHelper );
+}
+
+
 function click(event){
     event.preventDefault();
-    addObject(event.target.alt);
+    //addObject(event.target.alt);
 
 }
 

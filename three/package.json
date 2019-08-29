@@ -24,6 +24,7 @@
   "dependencies": {
     "@google/model-viewer": "^0.5.1",
     "@material/button": "^3.1.0",
+    "@material/drawer": "^3.1.1",
     "@material/ripple": "^3.1.0",
     "@windfish-studio/three-map-controls": "^1.1.6",
     "fs-web": "^1.0.1",
@@ -31,6 +32,8 @@
     "jquery": "^3.4.1",
     "lodash": "^4.17.15",
     "material-components-web": "^3.1.1",
+    "material-design-icons": "^3.0.1",
+    "material-design-icons-iconfont": "^5.0.1",
     "three": "^0.107.0",
     "three-controls": "^1.0.1",
     "three-gltf-loader": "^1.107.0",

@@ -7,31 +7,11 @@ import { LineMaterial } from "three/examples/jsm/lines/LineMaterial";
 import { Line2 } from "three/examples/jsm/lines/Line2";
 import { ConvexGeometry} from "three/examples/jsm/geometries/ConvexGeometry";
 
-import { scene } from "./app";
-
 const DEPTH = 0.1;
 const HEIGHT = 1.5;
 
-const MATERIAL = new THREE.MeshLambertMaterial({color: 0xffffff, transparent: true, opacity: 0.6});
+const MATERIAL = new THREE.MeshPhongMaterial({color: 0xffffff, transparent: true, opacity: 0.5});
 
-export function createGround() {
-
-  let ground = new THREE.Mesh(
-      new THREE.PlaneBufferGeometry(2000, 2000),
-      new THREE.MeshPhongMaterial({ color: 0xabb5ba, depthWrite: false}));
-  ground.rotation.x = -Math.PI / 2;
-  ground.receiveShadow = true;
-  scene.add(ground);
-
-  let grid = new THREE.GridHelper(500, 100, 0x000000, 0x000000);
-  grid.material.opacity = 0.1;
-  grid.material.transparent = true;
-  grid.receiveShadow = true;
-  scene.add(grid);
-
-  //let axesHelper = new THREE.AxesHelper( 5 );
-  //scene.add( axesHelper );
-}
 
 export function createModel (floorplan) {
 
@@ -161,9 +141,9 @@ function drawFloor(points) {
   //let texture = new THREE.TextureLoader().load( './assets/wooden2.jpg' );
   //let material = new THREE.MeshPhongMaterial( { map: texture } );
 
-  let material = new THREE.MeshPhongMaterial( {
+  let material = new THREE.MeshLambertMaterial( {
     color: 0xd6b68b,
-    flatShading: true,
+    //flatShading: true,
   } );
 
   return new THREE.Mesh( geometry, material );
