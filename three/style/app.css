@@ -72,6 +72,7 @@ canvas{
     float: right;
     top: 2%;
     width: 100%;
+    height: max-content;
     text-align: right;
     z-index: 100;
     display:block;

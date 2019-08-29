@@ -1,5 +1,7 @@
-import {toggleView} from "./src/view";
 import {MDCDrawer} from "@material/drawer/component";
+import {MDCIconButtonToggle} from "@material/icon-button/component";
+
+import {toggleView} from "./src/view";
 import {deleteDrawing, editDrawing} from "./src/draw";
 import {app} from "./src/app";
 
@@ -13,11 +15,14 @@ export function createButtons(){
 
     buttons = document.getElementById('buttons');
 
-    viewButton = document.createElement('button');
-    viewButton.className = 'mdc-button mdc-button--raised';
-    viewButton.innerText = "Modify Walls";
+    viewButton = createIconButton('dashboard');
+    addOnIcon(viewButton, 'layers');
+
     buttons.appendChild(viewButton);
     viewButton.addEventListener('click', toggleView);
+
+    const iconToggle = new MDCIconButtonToggle(document.getElementById('dashboard'));
+    iconToggle.unbounded = true;
 
     editButton = createIconButton( 'edit');
     editButton.addEventListener('click', function (){
@@ -33,25 +38,38 @@ export function createButtons(){
 }
 
 export function viewButtons(){
-    viewButton.innerText = "View Model";
+
 }
 
 export function modelButtons(){
-    viewButton.innerText = "Modify Walls";
+
 }
 
 function createIconButton(name){
 
     let button = document.createElement('button');
     button.className = 'mdc-button mdc-icon-button';
+    button.id = name;
     let icon = document.createElement('i');
     icon.className = 'material-icons mdc-icon-button__icon';
     icon.innerText = name;
     icon.title = name;
-    icon.width = "24px";
-    icon.height = "24px";
+    icon.ariaHidden = true;
+    icon.ariaLabel = name;
     button.appendChild(icon);
     buttons.appendChild(button);
 
     return button
 }
+
+function addOnIcon(button, name){
+
+    let icon = document.createElement('i');
+    icon.className = 'material-icons mdc-icon-button__icon mdc-icon-button__icon--on';
+    icon.innerText = name;
+    icon.title = name;
+    icon.ariaHidden = true;
+    icon.ariaLabel = name;
+    button.appendChild(icon);
+}
+
