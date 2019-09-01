@@ -39,12 +39,20 @@ function filterList(word){
             li.appendChild(model);
         }
     }
+
+    if(ul.children.length %2 !== 0 ){
+        let li = document.createElement('li');
+        let model = document.createElement('model-viewer');
+        model.className = "mdc-elevation--z24";
+        model.backgroundColor = 'ghostwhite';
+        li.appendChild(model);
+        ul.appendChild(li);
+    }
 }
 
 function updateList(){
 
     let search = document.getElementById('search-input').value;
-    console.log(name);
 
     list.removeChild(ul);
 
