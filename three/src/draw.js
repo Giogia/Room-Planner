@@ -129,18 +129,16 @@ function drawLine(event){
 export function deleteDrawing(event){
 
     let position = worldCoordinates(event);
-    let point = _.find(floorPlan.points,{ x: position.x, z: position.z });
+    let selected = _.find(floorPlan.points,{ x: position.x, z: position.z });
 
-    if(point){
+    if(selected){
 
-        console.log(floorPlan.points, floorPlan.lines);
-        _.filter(floorPlan.points, { id : point.id});
-        _.filter(floorPlan.lines, { from: point.id});
-        _.filter(floorPlan.lines, { to: point.id});
-
-        console.log(floorPlan.points, floorPlan.lines);
+        _.remove(floorPlan.points, function(point) { return point.id === selected.id});
+        _.remove(floorPlan.lines, function(line) { return line.from === selected.id});
+        _.remove(floorPlan.lines, function(line) { return line.to === selected.id});
 
         updateScene();
+        console.log("made it");
     }
 }
 

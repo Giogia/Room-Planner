@@ -3,6 +3,7 @@
 import * as THREE from 'three';
 import { GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 import { scene, currentObjects } from './app';
+import {dragControls} from "./controls";
 
 
 async function loadModel(object){
@@ -30,19 +31,21 @@ async function loadModel(object){
 }
 
 
-export function addObject(name){
+export function addObject(event){
+
+    event.preventDefault();
+    let name = event.target.alt;
 
     let loading = loadModel(name);
 
     loading.then( gltf => {
 
         let model = gltf.scene;
-        //let object = merge(model);
+        model.name = name;
 
-        currentObjects.push( model.traverse);
+        currentObjects.push(model);
 
     });
-    //console.log(currentObjects);
 }
 
 
@@ -70,24 +73,6 @@ export function randomCubes(){
     }
 
     return cubes;
-}
-
-function merge(model){
-
-    let meshes = [];
-
-    model.traverse( (child)=> {
-        if(child.type === "Mesh"){ meshes.push(child); }
-    });
-    console.log(meshes);
-
-    let finalMesh = new THREE.Object3D();
-
-    for (let mesh in meshes){
-       finalMesh.add(mesh)
-    }
-
-    return finalMesh;
 }
 
 

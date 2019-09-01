@@ -28,6 +28,7 @@
     "@material/icon-button": "^3.1.0",
     "@material/ripple": "^3.1.0",
     "@windfish-studio/three-map-controls": "^1.1.6",
+    "alpha-shape": "^1.0.0",
     "fs-web": "^1.0.1",
     "glob": "^7.1.4",
     "jquery": "^3.4.1",
@@ -39,6 +40,7 @@
     "three-controls": "^1.0.1",
     "three-gltf-loader": "^1.107.0",
     "three-orbitcontrols": "^2.102.2",
+    "three-transform-controls": "^1.0.4",
     "tween": "^0.9.0",
     "webpack-dev-server": "^3.7.2"
   }

@@ -13,6 +13,7 @@ let floorPlanView = false;
 export function toggleView(event) {
 
     event.preventDefault();
+
     //drawer.open = !drawer.open;
 
     (floorPlanView) ? modelView(): drawView();

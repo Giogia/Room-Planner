@@ -2,10 +2,9 @@
 
 import * as THREE from 'three';
 import OrbitControls from 'three-orbitcontrols';
-import { DragControls } from 'three-controls';
-import { MapControls } from 'three-controls';
+import {DragControls, MapControls} from 'three-controls';
 
-import {camera, renderer} from "./app";
+import {camera, currentObjects, scene, renderer} from "./app";
 
 export var dragControls, mapControls, orbitControls;
 
@@ -51,14 +50,25 @@ export function enableDragControls(objects){
 
     dragControls = new DragControls(objects, camera, renderer.domElement);
 
+    //dragControls.attach( currentObjects );
+
+    dragControls.addEventListener( 'dragging-changed', function ( event ) {
+        orbitControls.enabled = ! event.value;
+    } );
+
+
+/*
     dragControls.addEventListener( 'dragstart', function () {
         orbitControls.enabled = false;
     } );
     dragControls.addEventListener( 'dragend', function () {
         orbitControls.enabled = true;
     } );
-    dragControls.addEventListener('drag', (event) => {
-        //event.object.position.y = 0;
+
+    dragControls.addEventListener('dragging-changed', (event) => {
+        event.object.position.y = 0;
     });
+
+ */
 }
 

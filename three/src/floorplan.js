@@ -36,16 +36,6 @@ export function createWallsModel ( floorplan) {
   _.each(walls, (wall) => group.add(wall));
   _.each(columns, (column) => group.add(column));
 
-  /*
-  let room = [];
-
-  for (let point of floorplan.points){
-
-    if(room.length === 4){ group.add(drawFloor(room)); }
-    room.push(point);
-  }
-  */
-
   let floor = drawFloor([floorplan.points[0], floorplan.points[1], floorplan.points[2], floorplan.points[3]]);
   let floor2 = drawFloor([floorplan.points[2], floorplan.points[4], floorplan.points[9], floorplan.points[11]]);
   group.add(floor);

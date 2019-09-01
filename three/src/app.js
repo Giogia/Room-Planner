@@ -3,7 +3,7 @@
 import * as THREE from 'three';
 import * as TWEEN from 'tween';
 
-import { enableOrbitControls, enableMapControls, enableDragControls } from "./controls";
+import {enableOrbitControls, enableMapControls, enableDragControls, dragControls} from "./controls";
 import { addLights } from './lights';
 import { addObject } from "./loader";
 import { orbitControls, mapControls } from "./controls";
@@ -30,6 +30,7 @@ export function init() {
 
     enableOrbitControls();
     enableMapControls();
+    //enableDragControls();
 
     camera.position.set(8, 12, 12);
 
@@ -52,7 +53,8 @@ export function init() {
     // Wait to be loaded completely
     document.addEventListener('DOMContentLoaded', (event) => {
 
-        document.getElementById('objects').addEventListener('click', click, false);
+        document.getElementById('objects').addEventListener('click', addObject, false);
+        //document.getElementById( 'app').addEventListener('click', selectObject, false);
         createButtons()
     });
 
@@ -105,10 +107,11 @@ function createGround() {
 }
 
 
-function click(event){
-    event.preventDefault();
-    //addObject(event.target.alt);
+function selectObject(event){
 
+    event.preventDefault();
+    dragControls.showX = ! dragControls.showX;
+    dragControls.showZ = ! dragControls.showZ;
 }
 
 export function updateScene(){

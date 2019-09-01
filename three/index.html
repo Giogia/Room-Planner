@@ -8,8 +8,12 @@
 </head>
 <body>
     <div id="canvas">
-        <aside class="mdc-drawer mdc-drawer--dismissible" id="drawer">
-            <div class="mdc-drawer__content mdc-drawer-app-content" id="objects">
+        <aside class="mdc drawer mdc-drawer--dismissible" id="drawer">
+            <form class="mdc-button mdc-button--raised" id="search-form">
+                <input id="search-input" placeholder="Search an object">
+                <i class="material-icons" id="search-icon">search</i>
+            </form>
+            <div id="objects">
                 <script src="build/list.js"></script>
             </div>
         </aside>
