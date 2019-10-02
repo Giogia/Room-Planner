@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Room Planner</title>
     <link rel="stylesheet" href="style/app.css">
     <link rel="icon" href="assets/icon.png">
+    <link rel="shortcut icon" href="assets/icon.png">
 </head>
 <body>
-    <div id="canvas">
-        <aside class="mdc drawer mdc-drawer--dismissible" id="drawer">
-            <form class="mdc-button mdc-button--raised" id="search-form">
-                <input id="search-input" placeholder="Search an object">
-                <i class="material-icons" id="search-icon">search</i>
-            </form>
-            <div id="objects">
-                <script src="build/list.js"></script>
-            </div>
-        </aside>
-        <div id="logo"> Room Planner </div>
-        <div id="app">
-            <script src="build/app.js"></script>
+    <div id="logo"> Room Planner </div>
+    <aside class="mdc-drawer mdc-drawer--dismissible mdc-elevation--z5" id="drawer">
+        <form class="mdc-button mdc-button--raised" id="search-form">
+            <input type="text" id="search-input" placeholder="Search an object">
+            <i class="material-icons" id="search-icon">search</i>
+        </form>
+        <div id="list">
+            <script src="build/list.js"></script>
         </div>
-        <div id="buttons"></div>
+    </aside>
+    <div id="buttons"></div>
+    <div id="canvas">
+        <script src="build/app.js"></script>
     </div>
 </body>
 </html>

@@ -5,18 +5,22 @@ import * as THREE from 'three';
 import { LineGeometry } from "three/examples/jsm/lines/LineGeometry";
 import { LineMaterial } from "three/examples/jsm/lines/LineMaterial";
 import { Line2 } from "three/examples/jsm/lines/Line2";
-import { ConvexGeometry} from "three/examples/jsm/geometries/ConvexGeometry";
+
+import earcut from 'earcut';
+
+import {floorPlan} from "./draw";
+
 
 const DEPTH = 0.1;
 const HEIGHT = 1.5;
 
-const MATERIAL = new THREE.MeshPhongMaterial({color: 0xffffff, transparent: true, opacity: 0.5});
+const MATERIAL = new THREE.MeshLambertMaterial({color: 0xffffff, transparent: true, opacity: 0.75});
 
 
-export function createModel (floorplan) {
+export function createModel () {
 
-  let points = getPointModels(floorplan.points);
-  let lines = getLineModels(floorplan);
+  let points = getPointModels(floorPlan.points);
+  let lines = getLineModels(floorPlan);
 
   let group = new THREE.Group();
 
@@ -26,20 +30,24 @@ export function createModel (floorplan) {
   return group;
 }
 
-export function createWallsModel ( floorplan) {
+export function createWallsModel () {
 
-  let columns = getColumnsModels(floorplan.points);
-  let walls = getWallsModels(floorplan);
+  let columns = getColumnsModels(floorPlan.points);
+  let walls = getWallsModels(floorPlan);
 
   let group = new THREE.Group();
 
   _.each(walls, (wall) => group.add(wall));
   _.each(columns, (column) => group.add(column));
 
-  let floor = drawFloor([floorplan.points[0], floorplan.points[1], floorplan.points[2], floorplan.points[3]]);
-  let floor2 = drawFloor([floorplan.points[2], floorplan.points[4], floorplan.points[9], floorplan.points[11]]);
-  group.add(floor);
-  group.add(floor2);
+  drawFloor();
+  //group.add(floor);
+
+
+  //let floor = drawFloor([floorplan.points[0], floorplan.points[1], floorplan.points[2], floorplan.points[3]]);
+  //let floor2 = drawFloor([floorplan.points[2], floorplan.points[4], floorplan.points[9], floorplan.points[11]]);
+  //group.add(floor);
+  //group.add(floor2);
 
   return group;
 }
@@ -79,8 +87,6 @@ function getLineModels ({lines, points}) {
 function getColumnsModels (points){
   return _.map(points, ({id, x, z})=> {
 
-    //let material = new THREE.MeshPhongMaterial({color: 'white'});
-
     let columnGeometry = new THREE.CylinderGeometry(DEPTH/2, DEPTH/2, HEIGHT, 32);
     let columnMesh = new THREE.Mesh(columnGeometry, MATERIAL);
 
@@ -100,8 +106,6 @@ function getWallsModels ({lines, points}) {
 
     let width = Math.hypot(startPoint.x - endPoint.x, startPoint.z - endPoint.z);
 
-    //let material = new THREE.MeshPhongMaterial({color: 'white'});
-
     let wallGeometry = new THREE.BoxGeometry(width, HEIGHT, DEPTH);
     let wallMesh = new THREE.Mesh(wallGeometry, MATERIAL);
 
@@ -120,21 +124,60 @@ function getWallsModels ({lines, points}) {
 }
 
 
-function drawFloor(points) {
+function drawFloor() {
 
+  for(let point of floorPlan.points){
+
+    let lines = _.filter(floorPlan.lines, { from: point.id });
+
+    //let face = [firstLine.from, firstLine.to];
+
+    console.log(lines);
+
+
+
+    //let seconLine = _.find(floorPlan.lines, {from: firstLine.to});
+
+    //face.push(seconLine.to);
+    //console.log(seconLine);
+
+  }
+  /*
   let vertices = [];
 
-  _.each(points, (point) => vertices.push(new THREE.Vector3(point.x,0,point.z)));
+  _.each(floorPlan.points, (point) => vertices.push([point.x,point.z]));
+  console.log("vertices", vertices);
 
-  let geometry = new ConvexGeometry( vertices );
+  let data = [];
+
+   _.each(vertices, (point) => data.push(point[0], point[1]));
+
+  console.log("data", data);
+
+  let triangles = earcut(data);
+
+  console.log('hull', triangles);
+
+  let geometry = new THREE.Geometry();
+
+  _.each(vertices, (point) => geometry.vertices.push(new THREE.Vector3(point[0],0, point[1])));
+
+  for( let i=0; i<triangles.length; i+=3){
+
+      let sorted = [triangles[i], triangles[i+1], triangles[i+2]].sort();
+      console.log('sorted', sorted);
+      geometry.faces.push(new THREE.Face3(sorted[i], sorted[i+1], sorted[i+2]));
+  }
+
+  console.log('faces', geometry.faces);
+
+  //_.each(triangles, (triangle) => geometry.faces.push(new THREE.Face3(triangle[0],triangle[1],triangle[2])));
 
   //let texture = new THREE.TextureLoader().load( './assets/wooden2.jpg' );
-  //let material = new THREE.MeshPhongMaterial( { map: texture } );
 
-  let material = new THREE.MeshLambertMaterial( {
-    color: 0xd6b68b,
-    //flatShading: true,
-  } );
+  let material = new THREE.MeshLambertMaterial( { color: 0xd6b68b } );
 
   return new THREE.Mesh( geometry, material );
+
+   */
 }

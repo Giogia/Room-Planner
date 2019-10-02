@@ -2,9 +2,11 @@
 
 import * as THREE from 'three';
 import OrbitControls from 'three-orbitcontrols';
-import {DragControls, MapControls} from 'three-controls';
+import {MapControls} from 'three-controls';
 
-import {camera, currentObjects, scene, renderer} from "./app";
+import {camera, currentObjects, renderer, canvas, raycaster} from "./app";
+import ThreeDragger from 'three-dragger';
+import {editDrawing} from "./draw";
 
 export var dragControls, mapControls, orbitControls;
 
@@ -22,6 +24,7 @@ export function  enableOrbitControls(){
     orbitControls.maxPolarAngle = Math.PI/2-Math.PI/64;
     orbitControls.dampingFactor = 0.09;
     orbitControls.rotateSpeed = 0.09;
+    orbitControls.maxDistance = 50;
 
     //orbitControls.enabled = false;
     orbitControls.update();
@@ -38,7 +41,7 @@ export function enableMapControls(){
     mapControls.enablePan = true;
     mapControls.screenSpacePanning = false;
     mapControls.panSpeed = 1;
-    mapControls.minDistance = 0.1;
+    mapControls.minDistance = 10;
     mapControls.maxDistance = 60;
 
     mapControls.enabled = false;
@@ -46,29 +49,46 @@ export function enableMapControls(){
 }
 
 
-export function enableDragControls(objects){
+export function enableDragControls(){
 
-    dragControls = new DragControls(objects, camera, renderer.domElement);
+    dragControls = new ThreeDragger(currentObjects, camera, renderer.domElement);
 
-    //dragControls.attach( currentObjects );
-
-    dragControls.addEventListener( 'dragging-changed', function ( event ) {
-        orbitControls.enabled = ! event.value;
-    } );
-
-
-/*
-    dragControls.addEventListener( 'dragstart', function () {
+    dragControls.on( 'dragstart', function () {
         orbitControls.enabled = false;
     } );
-    dragControls.addEventListener( 'dragend', function () {
-        orbitControls.enabled = true;
-    } );
 
-    dragControls.addEventListener('dragging-changed', (event) => {
-        event.object.position.y = 0;
+    dragControls.on('drag', function (event) {
+
+        let vector = new THREE.Vector3();
+        let position = new THREE.Vector3();
+
+        vector.set(
+            ( event.event.clientX / canvas.clientWidth ) * 2 - 1,
+            - ( event.event.clientY / canvas.clientHeight ) * 2 + 1,
+            -1,
+        );
+
+        vector.unproject( camera );
+        vector.sub( camera.position ).normalize();
+
+        let distance = - camera.position.y / vector.y;
+
+        position.copy( camera.position ).add( vector.multiplyScalar( distance ) );
+
+        let group = event.target;
+
+        while(group.parent.type != 'Scene'){
+            group = group.parent
+        }
+
+        for( let child of group.parent.children ){
+            child.position.set(position.x, position.y, position.z);
+        }
+
     });
 
- */
+    dragControls.on( 'dragend', function () {
+        orbitControls.enabled = true;
+    } );
 }
 

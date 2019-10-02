@@ -1,70 +1,30 @@
 'use strict';
-
 import '@google/model-viewer';
 import { objectsList } from "./objectsList";
 
 let ul;
 
-let list = document.getElementById('objects');
+let list = document.getElementById('list');
 let search = document.getElementById('search-icon');
-
-let found;
 
 function createList(){
 
-    ul = document.createElement('ul');
-
-    filterList('');
-
+    getList();
     list.appendChild(ul);
-}
-
-function filterList(word){
-
-    for (let object of objectsList){
-
-        if(object.includes(word)){
-
-            found = true;
-
-            let li = document.createElement('li');
-            ul.appendChild(li);
-
-            let model = document.createElement('model-viewer');
-            model.src = './models/gltf/' + object + '.glb';
-            model.alt = object;
-            model.id = object;
-            model.autoRotate = true;
-            model.className = "mdc-elevation--z24";
-            li.appendChild(model);
-        }
-    }
-
-    if(ul.children.length %2 !== 0 ){
-        let li = document.createElement('li');
-        let model = document.createElement('model-viewer');
-        model.className = "mdc-elevation--z24";
-        model.backgroundColor = 'ghostwhite';
-        li.appendChild(model);
-        ul.appendChild(li);
-    }
 }
 
 function updateList(){
 
     let search = document.getElementById('search-input').value;
+    let found = false;
 
     list.removeChild(ul);
 
-    ul = document.createElement('ul');
-
-    found = false;
-
-    filterList(search);
+    getList(search.toLowerCase());
 
     list.appendChild(ul);
 
-    if(!found){
+    if(found === false){
         let message = document.createElement('div');
         message.className = "mdc-typography";
         message.innerText = "No results found";
@@ -72,6 +32,28 @@ function updateList(){
         ul.appendChild(message);
     }
 
+}
+
+function getList(word){
+
+    ul = document.createElement('ul');
+
+    console.log(word);
+
+    for (let object of objectsList){
+
+        if(word === undefined || object.includes(word)){
+
+            let li = document.createElement('li');
+            ul.appendChild(li);
+
+            let model = document.createElement('model-viewer');
+            model.className = "mdc-elevation__z24";
+            model.src = './models/gltf/' + object + '.glb';
+            model.id = object;
+            li.appendChild(model);
+        }
+    }
 }
 
 createList();

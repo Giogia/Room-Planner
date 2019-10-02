@@ -4,9 +4,11 @@ import * as THREE from "three";
 import {dragControls, mapControls, orbitControls} from "./controls";
 import * as TWEEN from "tween";
 
-import {camera, app, currentObjects, wallsModel, floorModel, updateModel} from "./app";
+import {camera, scene, canvas, currentObjects, wallsModel, floorModel, list, updateModel} from "./app";
 import {editDrawing} from "./draw";
-import {modelButtons, viewButtons } from "../gui";
+import {drawer} from "./app";
+import {addObject} from "./loader";
+import {editButton, deleteButton, viewButton} from "./gui";
 
 let floorPlanView = false;
 
@@ -14,7 +16,7 @@ export function toggleView(event) {
 
     event.preventDefault();
 
-    //drawer.open = !drawer.open;
+    drawer.open = !drawer.open;
 
     (floorPlanView) ? modelView(): drawView();
 
@@ -29,16 +31,18 @@ function drawView(){
     hide(wallsModel.children);
     show(floorModel.children);
 
-    viewButtons();
+    deleteButton.style.display = "inline-flex";
+    editButton.style.display = "inline-flex";
 
-    app.addEventListener( 'click', editDrawing, false);
+    canvas.addEventListener( 'click', editDrawing, false);
+    list.removeEventListener('click', addObject, false);
 }
 
 
 function modelView(){
 
     // remove click before transition
-    app.removeEventListener( 'click', editDrawing, false);
+    canvas.removeEventListener( 'click', editDrawing, false);
     mapControls.reset();
     updateModel();
 
@@ -47,7 +51,10 @@ function modelView(){
     show(wallsModel.children);
     hide(floorModel.children);
 
-    modelButtons();
+    deleteButton.style.display = "none";
+    editButton.style.display = "none";
+
+    list.addEventListener('click', addObject, false);
 }
 
 

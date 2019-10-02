@@ -3,34 +3,34 @@
 import * as THREE from 'three';
 import * as TWEEN from 'tween';
 
-import {enableOrbitControls, enableMapControls, enableDragControls, dragControls} from "./controls";
+import {enableOrbitControls, enableMapControls, enableDragControls, orbitControls, mapControls, dragControls} from "./controls";
 import { addLights } from './lights';
-import { addObject } from "./loader";
-import { orbitControls, mapControls } from "./controls";
+import {addObject} from "./loader";
 import { createModel, createWallsModel } from "./floorplan";
 import { hide } from "./view";
-import { floorPlan } from "./draw";
-import {createButtons} from "../gui";
+import {editDrawing, floorPlan} from "./draw";
+import {createButtons} from "./gui";
+import {MDCDrawer} from "@material/drawer/component";
 
-export var scene, camera, renderer, canvas, app;
+export var scene, camera, renderer, canvas;
+export var ground;
 export var currentObjects = [];
 export let floorModel, wallsModel;
+export let list, drawer;
 
 export function init() {
 
     canvas = document.getElementById( 'canvas');
     document.body.appendChild(canvas);
 
-    app = document.getElementById('app');
-    canvas.appendChild(app);
-
     createRenderer();
     createScene();
     createCamera();
+    createDrawer();
 
     enableOrbitControls();
     enableMapControls();
-    //enableDragControls();
+    enableDragControls();
 
     camera.position.set(8, 12, 12);
 
@@ -53,28 +53,30 @@ export function init() {
     // Wait to be loaded completely
     document.addEventListener('DOMContentLoaded', (event) => {
 
-        document.getElementById('objects').addEventListener('click', addObject, false);
-        //document.getElementById( 'app').addEventListener('click', selectObject, false);
-        createButtons()
+        list = document.getElementById('list');
+        list.addEventListener('click', addObject, false);
+        //document.getElementById( 'canvas').addEventListener('click', selectObject, false);
+        createButtons();
     });
 
     animate();
 }
+
 
 function createRenderer(){
     renderer = new THREE.WebGLRenderer();
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize( canvas.clientWidth, canvas.clientHeight );
     renderer.gammaOutput = true;
-    app.appendChild(renderer.domElement);
+    canvas.appendChild(renderer.domElement);
 }
 
 
 function createScene(){
     scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xa9cce3);
+    scene.background = new THREE.Color(0xdff3ff);
     //scene.fog = new THREE.Fog(0xffffff, 10, 2000);
-    scene.fog = new THREE.FogExp2(0xa9cce3, 0.02);
+    scene.fog = new THREE.FogExp2(0xdff3ff, 0.02);
 }
 
 
@@ -89,7 +91,7 @@ function createCamera(){
 
 function createGround() {
 
-    let ground = new THREE.Mesh(
+    ground = new THREE.Mesh(
         new THREE.PlaneBufferGeometry(2000, 2000),
         new THREE.MeshPhongMaterial({ color: 0xabb5ba, depthWrite: false}));
     ground.rotation.x = -Math.PI / 2;
@@ -106,13 +108,11 @@ function createGround() {
     //scene.add( axesHelper );
 }
 
-
-function selectObject(event){
-
-    event.preventDefault();
-    dragControls.showX = ! dragControls.showX;
-    dragControls.showZ = ! dragControls.showZ;
+function createDrawer() {
+    drawer = new MDCDrawer.attachTo(document.getElementsByClassName("mdc-drawer")[0]);
+    drawer.open = true;
 }
+
 
 export function updateScene(){
 
@@ -127,13 +127,14 @@ export function updateModel(){
     scene.add(wallsModel);
 }
 
+
 export function animate() {
 
     requestAnimationFrame( animate );
 
     orbitControls.update();
     mapControls.update();
-    enableDragControls(currentObjects);
+    dragControls.update(currentObjects);
 
     renderer.render( scene, camera );
 

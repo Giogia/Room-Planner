@@ -52,3 +52,6 @@ tmtagsHistory
 ######################
 *.obj
 *.mtl
+
+# Node Packet Manager
+three/node_modules/*

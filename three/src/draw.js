@@ -1,13 +1,16 @@
 import * as THREE from 'three';
 import _ from 'lodash';
 
-import {app, camera, scene, canvas, updateScene} from "./app";
+import {canvas, camera, scene, updateScene} from "./app";
 import {LineMaterial} from "three/examples/jsm/lines/LineMaterial";
 import {LineGeometry} from "three/examples/jsm/lines/LineGeometry";
 import {Line2} from "three/examples/jsm/lines/Line2";
 
 export let selected = { points: [], lines:[] };
 export let currentLine;
+
+//export let floorPlan = { points:[], lines:[] };
+
 
 export let floorPlan = {
 
@@ -48,6 +51,8 @@ export let floorPlan = {
     ],
 };
 
+
+
 export function editDrawing(event){
 
     let position = worldCoordinates(event);
@@ -70,14 +75,14 @@ function selectPoint(point){
 
     if(selected === undefined){
 
-        app.addEventListener('mousemove', showLine, false);
-        app.addEventListener('click', drawLine, false);
+        canvas.addEventListener('mousemove', showLine, false);
+        canvas.addEventListener('click', drawLine, false);
     }
 
     if(selected === point){
 
-        app.removeEventListener( 'mousemove', showLine, false);
-        app.removeEventListener('click', drawLine, false);
+        canvas.removeEventListener( 'mousemove', showLine, false);
+        canvas.removeEventListener('click', drawLine, false);
     }
 }
 
@@ -122,8 +127,8 @@ function drawLine(event){
     for( let point of floorPlan.points){ point.selected = false}
     updateScene();
 
-    app.removeEventListener( 'mousemove', showLine, false);
-    app.removeEventListener('click', drawLine, false);
+    canvas.removeEventListener( 'mousemove', showLine, false);
+    canvas.removeEventListener('click', drawLine, false);
 }
 
 export function deleteDrawing(event){
@@ -138,15 +143,14 @@ export function deleteDrawing(event){
         _.remove(floorPlan.lines, function(line) { return line.to === selected.id});
 
         updateScene();
-        console.log("made it");
     }
 }
 
 
-function worldCoordinates(event){
+export function worldCoordinates(event){
 
-    let vector = new THREE.Vector3(); // create once and reuse
-    let position = new THREE.Vector3(); // create once and reuse
+    let vector = new THREE.Vector3();
+    let position = new THREE.Vector3();
 
     vector.set(
         ( event.clientX / canvas.clientWidth ) * 2 - 1,
@@ -161,8 +165,14 @@ function worldCoordinates(event){
 
     position.copy( camera.position ).add( vector.multiplyScalar( distance ) );
 
-    position.x = Math.round(position.x );
+    position.x = Math.round( position.x );
     position.z = Math.round( position.z );
 
-    return {id: floorPlan.points.length, x: position.x, z: position.z, selected: false}
+    if(floorPlan.points.length === 0){
+        return {id: 0, x: position.x, z: position.z, selected: false}
+    }
+
+    let lastElementId = floorPlan.points.slice(-1)[0].id;
+
+    return {id: lastElementId+1, x: position.x, z: position.z, selected: false}
 }
