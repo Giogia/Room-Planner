@@ -12,7 +12,7 @@ import {floorPlan} from "./draw";
 
 
 const DEPTH = 0.1;
-const HEIGHT = 1.5;
+const HEIGHT = 1.3;
 
 const MATERIAL = new THREE.MeshLambertMaterial({color: 0xffffff, transparent: true, opacity: 0.75});
 
@@ -40,7 +40,7 @@ export function createWallsModel () {
   _.each(walls, (wall) => group.add(wall));
   _.each(columns, (column) => group.add(column));
 
-  drawFloor();
+  //drawFloor();
   //group.add(floor);
 
 

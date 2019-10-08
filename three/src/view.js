@@ -8,7 +8,7 @@ import {camera, scene, canvas, currentObjects, wallsModel, floorModel, list, upd
 import {editDrawing} from "./draw";
 import {drawer} from "./app";
 import {addObject} from "./loader";
-import {editButton, deleteButton, viewButton} from "./gui";
+import {editButton, deleteButton} from "./gui";
 
 let floorPlanView = false;
 
@@ -34,7 +34,7 @@ function drawView(){
     deleteButton.style.display = "inline-flex";
     editButton.style.display = "inline-flex";
 
-    canvas.addEventListener( 'click', editDrawing, false);
+    editButton.addEventListener( 'click', editDrawing, false);
     list.removeEventListener('click', addObject, false);
 }
 
@@ -42,11 +42,11 @@ function drawView(){
 function modelView(){
 
     // remove click before transition
-    canvas.removeEventListener( 'click', editDrawing, false);
+    editButton.removeEventListener( 'click', editDrawing, false);
     mapControls.reset();
     updateModel();
 
-    tweenCamera(new THREE.Vector3(8, 12, 12));
+    tweenCamera(new THREE.Vector3(6, 8, 8));
     show(currentObjects);
     show(wallsModel.children);
     hide(floorModel.children);
@@ -58,13 +58,11 @@ function modelView(){
 }
 
 
-function tweenCamera(targetPosition){
+export function tweenCamera(targetPosition, duration=2000){
 
     orbitControls.enabled = false;
     mapControls.enabled = false;
     dragControls.enabled = false;
-
-    const duration = 2000;
 
     let position = new THREE.Vector3().copy(camera.position);
 

@@ -5,16 +5,17 @@ import * as TWEEN from 'tween';
 
 import {enableOrbitControls, enableMapControls, enableDragControls, orbitControls, mapControls, dragControls} from "./controls";
 import { addLights } from './lights';
-import {addObject} from "./loader";
+import {addObject, randomTrees} from "./loader";
 import { createModel, createWallsModel } from "./floorplan";
-import { hide } from "./view";
-import {editDrawing, floorPlan} from "./draw";
+import {hide, tweenCamera} from "./view";
+import {floorPlan} from "./draw";
 import {createButtons} from "./gui";
 import {MDCDrawer} from "@material/drawer/component";
 
-export var scene, camera, renderer, canvas;
+export var scene, camera, renderer, canvas, raycaster;
 export var ground;
 export var currentObjects = [];
+export var trees = [];
 export let floorModel, wallsModel;
 export let list, drawer;
 
@@ -27,12 +28,13 @@ export function init() {
     createScene();
     createCamera();
     createDrawer();
+    createRayCaster();
+
+    camera.position.set(8, 12, 12);
 
     enableOrbitControls();
     enableMapControls();
-    enableDragControls();
-
-    camera.position.set(8, 12, 12);
+    //enableDragControls();
 
     addLights();
     createGround();
@@ -55,11 +57,14 @@ export function init() {
 
         list = document.getElementById('list');
         list.addEventListener('click', addObject, false);
-        //document.getElementById( 'canvas').addEventListener('click', selectObject, false);
+        canvas.addEventListener('dblclick', selectObject, false);
         createButtons();
+        randomTrees();
+
     });
 
     animate();
+    tweenCamera(new THREE.Vector3(6, 8, 8), 3000);
 }
 
 
@@ -74,9 +79,9 @@ function createRenderer(){
 
 function createScene(){
     scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xdff3ff);
+    scene.background = new THREE.Color(0xd7edff);
     //scene.fog = new THREE.Fog(0xffffff, 10, 2000);
-    scene.fog = new THREE.FogExp2(0xdff3ff, 0.02);
+    scene.fog = new THREE.FogExp2(0xd7edff, 0.02);
 }
 
 
@@ -93,7 +98,7 @@ function createGround() {
 
     ground = new THREE.Mesh(
         new THREE.PlaneBufferGeometry(2000, 2000),
-        new THREE.MeshPhongMaterial({ color: 0xabb5ba, depthWrite: false}));
+        new THREE.MeshPhongMaterial({ color: 0x999999, depthWrite: false}));
     ground.rotation.x = -Math.PI / 2;
     ground.receiveShadow = true;
     scene.add(ground);
@@ -114,6 +119,11 @@ function createDrawer() {
 }
 
 
+function createRayCaster(){
+    raycaster = new THREE.Raycaster();
+}
+
+
 export function updateScene(){
 
     scene.remove(floorModel);
@@ -128,13 +138,37 @@ export function updateModel(){
 }
 
 
+function selectObject(event){
+
+    let mouse = new THREE.Vector2();
+
+    mouse.x = ( event.clientX / canvas.clientWidth ) * 2 - 1;
+	mouse.y = - ( event.clientY / canvas.clientHeight ) * 2 + 1;
+
+    raycaster.setFromCamera( mouse, camera );
+
+    console.log(currentObjects);
+
+    let intersects = raycaster.intersectObjects( currentObjects );
+
+    for (let intersect of intersects) {
+
+        if(intersect.object.type == "Scene"){
+             intersect.object.material.color.setHex(0xe8405e);
+        }
+
+		console.log(intersect);
+	}
+}
+
+
 export function animate() {
 
     requestAnimationFrame( animate );
 
     orbitControls.update();
     mapControls.update();
-    dragControls.update(currentObjects);
+    //dragControls.update(currentObjects);
 
     renderer.render( scene, camera );
 

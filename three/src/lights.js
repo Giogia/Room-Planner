@@ -7,14 +7,15 @@ export let hemisphere, ambient, directional, spot
 
 export function addLights(){
 
-    hemisphere = new THREE.HemisphereLight(0xcccccc, 0x333333);
+    hemisphere = new THREE.HemisphereLight(0xffffff, 0x444444);
     hemisphere.intensity = 0.6;
-    hemisphere.position.set(0, 500, 0);
+    hemisphere.position.set(0, 20, 0);
 
     ambient = new THREE.AmbientLight(0xffffff, 0.1);
 
     directional = new THREE.DirectionalLight(0xffffff);
-    directional.position.set(250, 200, -250);
+    directional.position.set(0, 20, 10);
+
 
     spot = new THREE.SpotLight(0xffffff, 1.0);
     spot.angle = 1;

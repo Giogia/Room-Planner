@@ -15,9 +15,9 @@ canvas{
 }
 
 :root{
-    --mdc-theme-primary: rgba(248, 248, 255, 0.62);
+    --mdc-theme-primary: rgba(248, 248, 255, 0.43);
     --mdc-theme-on-primary: rgb(0, 109, 155);
-    --mdc-theme-secondary: rgba(248, 248, 255, 0.62);
+    --mdc-theme-secondary: rgba(248, 248, 255, 0.53);
     --mdc-theme-on-secondary: #1062ac;
  }
 
@@ -39,11 +39,12 @@ canvas{
     width: 25%;
     padding: 0.5%;
     background: rgba(255,255,255,0.35);
+    z-index: 100;
 }
 
 #search-form{
+    position: relative;
     width: 100%;
-    padding: 5%;
 }
 
 #search-icon{
@@ -52,11 +53,9 @@ canvas{
 }
 
 #search-input{
-    position: relative;
     float: left;
     width: 100%;
     background-color: transparent;
-    color: black;
     border: none;
     outline: none;
     font-size: 16px;
@@ -64,9 +63,10 @@ canvas{
 
 #search-message{
     text-align: center;
-    width: 200%;
+    width: 100%;
     color: #4a6275;
     font-size: 14px;
+    padding-top: 100%;
 }
 
 #list{
@@ -108,7 +108,7 @@ model-viewer{
     overflow: auto;
     height: max-content;
     width: max-content;
-    z-index: 100;
+    z-index: 99;
     padding: 1%;
     margin-right: 3%;
     margin-bottom: 1%;
@@ -124,10 +124,10 @@ model-viewer{
 }
 
 #canvas{
-    display: flex;
-    flex-direction: column;
     min-height: 100%;
     margin: 0;
+    padding: 0;
+    z-index: 1;
 }
 
 ::-webkit-scrollbar {

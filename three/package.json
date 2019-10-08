@@ -42,6 +42,8 @@
     "material-components-web": "^3.1.1",
     "material-design-icons": "^3.0.1",
     "material-design-icons-iconfont": "^5.0.1",
+    "math": "0.0.3",
+    "random-int": "^2.0.1",
     "three": "^0.107.0",
     "three-controls": "^1.0.1",
     "three-dragger": "^1.0.1",

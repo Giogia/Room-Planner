@@ -46,7 +46,7 @@ function createIconButton(name){
     button.appendChild(icon);
 
     let toggle = new MDCRipple(button);
-    toggle.unbounded = true;
+    //toggle.unbounded = true;
 
     return button
 }

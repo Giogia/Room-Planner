@@ -5,6 +5,7 @@ import { objectsList } from "./objectsList";
 let ul;
 
 let list = document.getElementById('list');
+let form = document.getElementById('search-form');
 let search = document.getElementById('search-icon');
 
 function createList(){
@@ -13,14 +14,15 @@ function createList(){
     list.appendChild(ul);
 }
 
-function updateList(){
+function updateList(event){
+
+    event.preventDefault();
 
     let search = document.getElementById('search-input').value;
-    let found = false;
 
     list.removeChild(ul);
 
-    getList(search.toLowerCase());
+    let found = getList(search.toLowerCase());
 
     list.appendChild(ul);
 
@@ -38,11 +40,13 @@ function getList(word){
 
     ul = document.createElement('ul');
 
-    console.log(word);
+    let found = false;
 
     for (let object of objectsList){
 
         if(word === undefined || object.includes(word)){
+
+            found = true;
 
             let li = document.createElement('li');
             ul.appendChild(li);
@@ -54,7 +58,11 @@ function getList(word){
             li.appendChild(model);
         }
     }
+
+    return found
 }
 
 createList();
+
+form.onsubmit = updateList;
 search.addEventListener('click', updateList, false);
