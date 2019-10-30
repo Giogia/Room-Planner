@@ -67,7 +67,7 @@ export function tweenCamera(targetPosition, duration=2000){
     let position = new THREE.Vector3().copy(camera.position);
 
     new TWEEN.Tween(position).to( targetPosition, duration )
-        .easing( TWEEN.Easing.Cubic.Out )
+        .easing( TWEEN.Easing.Quintic.Out )
         .onUpdate( function () {
             camera.position.copy(position);
         } )
@@ -84,6 +84,10 @@ export function tweenCamera(targetPosition, duration=2000){
             }
         } )
         .start();
+}
+
+export function wait(){
+    TWEEN.wai
 }
 
 

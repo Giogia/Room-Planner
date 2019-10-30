@@ -52,7 +52,6 @@ export let floorPlan = {
 };
 
 
-
 export function editDrawing(event){
 
     let position = worldCoordinates(event);
@@ -65,6 +64,7 @@ export function editDrawing(event){
         drawPoint(position);
     }
 }
+
 
 function selectPoint(point){
 
@@ -86,11 +86,13 @@ function selectPoint(point){
     }
 }
 
+
 function drawPoint(position){
 
     floorPlan.points.push(position);
     updateScene();
 }
+
 
 function showLine(event){
 
@@ -111,6 +113,7 @@ function showLine(event){
     scene.add(currentLine);
 }
 
+
 function drawLine(event){
 
     let position = worldCoordinates(event);
@@ -130,6 +133,7 @@ function drawLine(event){
     canvas.removeEventListener( 'mousemove', showLine, false);
     canvas.removeEventListener('click', drawLine, false);
 }
+
 
 export function deleteDrawing(event){
 

@@ -26,7 +26,6 @@ export function  enableOrbitControls(){
     orbitControls.rotateSpeed = 0.09;
     orbitControls.maxDistance = 50;
 
-    //orbitControls.enabled = false;
     orbitControls.update();
 }
 
@@ -80,9 +79,15 @@ export function enableDragControls(){
         while(group.parent.type != 'Scene'){
             group = group.parent
         }
+        
+        // reset group position otherwise children are over-translated
+        group.parent.position.set(0,0,0);
 
         for( let child of group.parent.children ){
-            child.position.set(position.x, position.y, position.z);
+            console.log(child.position);
+            child.position.set(position.x,
+                               position.y,
+                               position.z);
         }
 
     });

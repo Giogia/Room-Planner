@@ -21,39 +21,39 @@ export let list, drawer;
 
 export function init() {
 
-    canvas = document.getElementById( 'canvas');
-    document.body.appendChild(canvas);
-
-    createRenderer();
-    createScene();
-    createCamera();
-    createDrawer();
-    createRayCaster();
-
-    camera.position.set(8, 12, 12);
-
-    enableOrbitControls();
-    enableMapControls();
-    //enableDragControls();
-
-    addLights();
-    createGround();
-
-    floorModel = createModel(floorPlan);
-    scene.add(floorModel);
-    hide(floorModel.children);
-
-    wallsModel = createWallsModel(floorPlan);
-    scene.add(wallsModel);
-
-    window.onresize = function () {
-        camera.aspect = canvas.clientWidth / canvas.clientHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize( canvas.clientWidth, canvas.clientHeight );
-    };
-
     // Wait to be loaded completely
     document.addEventListener('DOMContentLoaded', (event) => {
+
+        canvas = document.getElementById( 'canvas');
+        document.body.appendChild(canvas);
+
+        createRenderer();
+        createScene();
+        createCamera();
+        createDrawer();
+        createRayCaster();
+
+        camera.position.set(8, 12, 12);
+
+        enableOrbitControls();
+        enableMapControls();
+        enableDragControls();
+
+        addLights();
+        createGround();
+
+        floorModel = createModel(floorPlan);
+        scene.add(floorModel);
+        hide(floorModel.children);
+
+        wallsModel = createWallsModel(floorPlan);
+        scene.add(wallsModel);
+
+        window.onresize = function () {
+            camera.aspect = canvas.clientWidth / canvas.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize( canvas.clientWidth, canvas.clientHeight );
+        };
 
         list = document.getElementById('list');
         list.addEventListener('click', addObject, false);
@@ -61,10 +61,19 @@ export function init() {
         createButtons();
         randomTrees();
 
-    });
+        let loading = document.getElementById('loading');
+        loading.style.opacity = '0';
+        setTimeout(function(){
+            loading.style.display = 'none';
+        }, 2000);
 
-    animate();
-    tweenCamera(new THREE.Vector3(6, 8, 8), 3000);
+        TWEEN.update();
+        setTimeout(function(){
+            tweenCamera(new THREE.Vector3(6, 8, 8), 3000);
+        }, 0);
+
+        animate();
+    });
 }
 
 
@@ -168,7 +177,7 @@ export function animate() {
 
     orbitControls.update();
     mapControls.update();
-    //dragControls.update(currentObjects);
+    dragControls.update(currentObjects);
 
     renderer.render( scene, camera );
 
