@@ -44,7 +44,6 @@ export function addObject(event){
         let high = 5;
 
         model.position.set(randomInt(low,high), 0, randomInt(low,high));
-        //model.position.set(0, 0, 0);
 
         currentObjects.push(model);
     });

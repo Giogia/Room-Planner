@@ -7,7 +7,7 @@ import {enableOrbitControls, enableMapControls, enableDragControls, orbitControl
 import { addLights } from './lights';
 import {addObject, randomTrees} from "./loader";
 import { createModel, createWallsModel } from "./floorplan";
-import {hide, tweenCamera} from "./view";
+import {hide, hideCloseWalls, tweenCamera} from "./view";
 import {floorPlan} from "./draw";
 import {createButtons} from "./gui";
 import {MDCDrawer} from "@material/drawer/component";
@@ -95,7 +95,7 @@ function createScene(){
 
 
 function createCamera(){
-    const fov = 40;
+    const fov = 25;
     const aspect = canvas.clientWidth / canvas.clientHeight;
     const near = 0.1;
     const far = 100;
@@ -178,6 +178,7 @@ export function animate() {
     orbitControls.update();
     mapControls.update();
     dragControls.update(currentObjects);
+    hideCloseWalls();
 
     renderer.render( scene, camera );
 

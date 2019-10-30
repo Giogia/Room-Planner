@@ -24,6 +24,7 @@ export function  enableOrbitControls(){
     orbitControls.maxPolarAngle = Math.PI/2-Math.PI/64;
     orbitControls.dampingFactor = 0.09;
     orbitControls.rotateSpeed = 0.09;
+    orbitControls.minDistance = 0;
     orbitControls.maxDistance = 50;
 
     orbitControls.update();
@@ -79,15 +80,12 @@ export function enableDragControls(){
         while(group.parent.type != 'Scene'){
             group = group.parent
         }
-        
+
         // reset group position otherwise children are over-translated
         group.parent.position.set(0,0,0);
 
         for( let child of group.parent.children ){
-            console.log(child.position);
-            child.position.set(position.x,
-                               position.y,
-                               position.z);
+            child.position.set(position.x, position.y, position.z);
         }
 
     });

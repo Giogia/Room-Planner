@@ -10,7 +10,6 @@ import earcut from 'earcut';
 
 import {floorPlan} from "./draw";
 
-
 const DEPTH = 0.1;
 const HEIGHT = 1.3;
 
@@ -113,6 +112,7 @@ function getWallsModels ({lines, points}) {
     let offsetZ = startPoint.z - endPoint.z;
 
     let angle = -Math.atan(offsetZ / offsetX);
+
 
     wallMesh.position.set(endPoint.x + offsetX / 2, HEIGHT / 2, endPoint.z + offsetZ / 2);
     wallMesh.castShadow = true;

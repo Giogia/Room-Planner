@@ -86,9 +86,14 @@ export function tweenCamera(targetPosition, duration=2000){
         .start();
 }
 
-export function wait(){
-    TWEEN.wai
+
+export function hideCloseWalls(){
+    for( let mesh of wallsModel.children){
+
+        mesh.visible = camera.position.distanceTo(mesh.position) >= 8;
+    }
 }
+
 
 
 export function hide(objects) {

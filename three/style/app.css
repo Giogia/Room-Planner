@@ -16,9 +16,9 @@ canvas{
 
 :root{
     --mdc-theme-primary: rgba(248, 248, 255, 0.43);
-    --mdc-theme-on-primary: rgb(0, 109, 155);
+    --mdc-theme-on-primary: rgb(87, 98, 111);
     --mdc-theme-secondary: rgba(248, 248, 255, 0.53);
-    --mdc-theme-on-secondary: #1062ac;
+    --mdc-theme-on-secondary: #57626f;
  }
 
 #loading {
@@ -35,6 +35,7 @@ canvas{
     position: relative;
     top: 50%;
     left: 50%;
+    zoom: 70%;
     transform: translate(-50%, -50%);
     background-color: transparent;
 }
