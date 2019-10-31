@@ -5,7 +5,7 @@ import * as TWEEN from 'tween';
 
 import {enableOrbitControls, enableMapControls, enableDragControls, orbitControls, mapControls, dragControls} from "./controls";
 import { addLights } from './lights';
-import {addObject, randomTrees} from "./loader";
+import {addObject, randomBackgroundObjects} from "./loader";
 import { createModel, createWallsModel } from "./floorplan";
 import {hide, hideCloseWalls, tweenCamera} from "./view";
 import {floorPlan} from "./draw";
@@ -59,7 +59,7 @@ export function init() {
         list.addEventListener('click', addObject, false);
         canvas.addEventListener('dblclick', selectObject, false);
         createButtons();
-        randomTrees();
+        randomBackgroundObjects();
 
         let loading = document.getElementById('loading');
         loading.style.opacity = '0';

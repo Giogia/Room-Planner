@@ -3,10 +3,10 @@
 import { GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 import { scene, currentObjects, trees } from './app';
 import randomInt from 'random-int'
+import {natureObjects} from "./objects";
 
-async function loadModel(object){
+async function loadModel(path){
 
-    let path  = './models/gltf/' + object + '.glb';
     let model = null;
     let loader = new GLTFLoader();
 
@@ -32,8 +32,9 @@ async function loadModel(object){
 export function addObject(event){
 
     let name = event.target.id;
+    let path  = './models/furniture/' + name + '.glb';
 
-    let loading = loadModel(name);
+    let loading = loadModel(path);
 
     loading.then( gltf => {
 
@@ -50,13 +51,14 @@ export function addObject(event){
 }
 
 
-export function randomTrees(number=500){
+export function randomBackgroundObjects(number=500){
 
     for(let i = 0; i < number; i++) {
 
-        let name = 'washer';
+        let name = natureObjects[Math.floor(Math.random() * natureObjects.length)];
+        let path  = './models/nature/' + name + '.glb';
 
-        let loading = loadModel(name);
+        let loading = loadModel(path);
 
         loading.then( gltf => {
 
@@ -66,15 +68,18 @@ export function randomTrees(number=500){
         let low = 10;
         let high = 50;
 
-        let X = randomInt(low, high);
+        let radius = randomInt(low, high);
+        let angle = randomInt(0, 2 * Math.PI);
 
-        let Z = Math.sqrt(randomInt(low, high) - Math.pow( X,2));
+        let x = Math.sin(angle) * radius;
+        let z = Math.cos(angle) * radius;
 
-        model.position.set(X, 0, Z);
+        model.position.set(x, 0, z);
 
         trees.push(model);
         });
     }
+    console.log(trees);
 }
 
 
