@@ -1,6 +1,6 @@
 'use strict';
 import '@google/model-viewer';
-import { objectsList } from "./objectsList";
+import { furnitureObjects, natureObjects } from "./objects";
 
 let ul;
 
@@ -42,7 +42,7 @@ function getList(word){
 
     let found = false;
 
-    for (let object of objectsList){
+    for (let object of furnitureObjects){
 
         if(word === undefined || object.includes(word)){
 
@@ -53,7 +53,7 @@ function getList(word){
 
             let model = document.createElement('model-viewer');
             model.className = "mdc-elevation__z24";
-            model.src = './models/gltf/' + object + '.glb';
+            model.src = './models/furniture/' + object + '.glb';
             model.id = object;
             li.appendChild(model);
         }
