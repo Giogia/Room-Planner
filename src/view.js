@@ -8,7 +8,7 @@ import {camera, scene, canvas, currentObjects, wallsModel, floorModel, list, upd
 import {editDrawing} from "./draw";
 import {drawer} from "./app";
 import {addObject} from "./loader";
-import {editButton, deleteButton} from "./gui";
+import {editButton, deleteButton} from "./buttons";
 
 let floorPlanView = false;
 
@@ -26,13 +26,13 @@ export function toggleView(event) {
 
 function drawView(){
 
-    tweenCamera(new THREE.Vector3(0, 40, 0.1));
+    tweenCamera(new THREE.Vector3(0, 30, 1));
     hide(currentObjects);
     hide(wallsModel.children);
     show(floorModel.children);
 
-    deleteButton.style.display = "inline-flex";
-    editButton.style.display = "inline-flex";
+    showElement(deleteButton, 0);
+    showElement(editButton, 0);
 
     editButton.addEventListener( 'click', editDrawing, false);
     list.removeEventListener('click', addObject, false);
@@ -51,8 +51,8 @@ function modelView(){
     show(wallsModel.children);
     hide(floorModel.children);
 
-    deleteButton.style.display = "none";
-    editButton.style.display = "none";
+    hideElement(deleteButton, 300);
+    hideElement(editButton, 150);
 
     list.addEventListener('click', addObject, false);
 }
@@ -62,7 +62,7 @@ export function tweenCamera(targetPosition, duration=2000){
 
     orbitControls.enabled = false;
     mapControls.enabled = false;
-    dragControls.enabled = false;
+    //dragControls.enabled = false;
 
     let position = new THREE.Vector3().copy(camera.position);
 
@@ -80,7 +80,7 @@ export function tweenCamera(targetPosition, duration=2000){
             }
             else {
                 orbitControls.enabled = true;
-                dragControls.enabled = true;
+                //dragControls.enabled = true;
             }
         } )
         .start();
@@ -88,13 +88,12 @@ export function tweenCamera(targetPosition, duration=2000){
 
 
 export function hideCloseWalls(){
-    for( let mesh of wallsModel.children){
-
-        mesh.visible = camera.position.distanceTo(mesh.position) >= 8;
+    if(!floorPlanView){
+        for( let mesh of wallsModel.children){
+            mesh.visible = camera.position.distanceTo(mesh.position) >= 8;
+        }
     }
 }
-
-
 
 export function hide(objects) {
 
@@ -108,4 +107,17 @@ export function show(objects) {
     for (let mesh of objects) {
         mesh.visible = true;
     }
+}
+
+export function hideElement(element, translation=100, timeout=250){
+    element.style.transform = 'translateY('+ translation.toString() +'%)';
+
+    setTimeout(function(){
+        element.style.opacity = '0';
+    }, timeout);
+}
+
+export function showElement(element, translation=100){
+    element.style.opacity = '100';
+    element.style.transform = 'translateY(-'+ translation.toString() +'%)';
 }

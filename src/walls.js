@@ -10,10 +10,11 @@ import earcut from 'earcut';
 
 import {floorPlan} from "./draw";
 
+
 const DEPTH = 0.1;
 const HEIGHT = 1.3;
 
-const MATERIAL = new THREE.MeshLambertMaterial({color: 0xffffff, transparent: true, opacity: 0.75});
+const MATERIAL = new THREE.MeshLambertMaterial({color: 0xffffff, transparent: true, opacity: 0.95});
 
 
 export function createModel () {
@@ -72,8 +73,10 @@ function getLineModels ({lines, points}) {
   return _.map(lines, ({from, to}) => {
 
     let material = new LineMaterial({
-      color: 'white',
+      color: 0xffffff,
       linewidth: 0.008,
+      transparent: true,
+      opacity: 0.9
     });
 
     let geometry = new LineGeometry();

@@ -5,11 +5,11 @@ import * as TWEEN from 'tween';
 
 import {enableOrbitControls, enableMapControls, enableDragControls, orbitControls, mapControls, dragControls} from "./controls";
 import { addLights } from './lights';
-import {addObject, randomBackgroundObjects} from "./loader";
-import { createModel, createWallsModel } from "./floorplan";
+import {addObject, loadScene, randomBackgroundObjects} from "./loader";
+import { createModel, createWallsModel } from "./walls";
 import {hide, hideCloseWalls, tweenCamera} from "./view";
 import {floorPlan} from "./draw";
-import {createButtons} from "./gui";
+import {createButtons} from "./buttons";
 import {MDCDrawer} from "@material/drawer/component";
 
 export var scene, camera, renderer, canvas, raycaster;
@@ -18,7 +18,8 @@ export var currentObjects = [];
 export let floorModel, wallsModel;
 export let list, drawer;
 
-export function init() {
+
+export function init(){
 
     // Wait to be loaded completely
     document.addEventListener('DOMContentLoaded', (event) => {
@@ -36,7 +37,7 @@ export function init() {
 
         enableOrbitControls();
         enableMapControls();
-        enableDragControls();
+        //enableDragControls();
 
         addLights();
         createGround();
@@ -64,12 +65,14 @@ export function init() {
         loading.style.opacity = '0';
         setTimeout(function(){
             loading.style.display = 'none';
-        }, 2000);
+        }, 4000);
 
         TWEEN.update();
         setTimeout(function(){
             tweenCamera(new THREE.Vector3(6, 8, 8), 3000);
-        }, 0);
+        }, 500);
+
+        loadScene('scene.glb');
 
         animate();
     });
@@ -88,16 +91,15 @@ function createRenderer(){
 function createScene(){
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0xd7edff);
-    //scene.fog = new THREE.Fog(0xffffff, 10, 2000);
-    scene.fog = new THREE.FogExp2(0xd7edff, 0.0135);
+    scene.fog = new THREE.Fog(0xd7edff, 100, 250);
 }
 
 
 function createCamera(){
-    const fov = 25;
+    const fov = 35;
     const aspect = canvas.clientWidth / canvas.clientHeight;
     const near = 0.1;
-    const far = 100;
+    const far = 250;
     camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 }
 
@@ -106,19 +108,13 @@ function createGround() {
 
     ground = new THREE.Mesh(
         new THREE.PlaneBufferGeometry(2000, 2000),
-        new THREE.MeshPhongMaterial({ color: 0x999999, depthWrite: false}));
+        new THREE.MeshLambertMaterial({ color: 0x202020 }));
     ground.rotation.x = -Math.PI / 2;
     ground.receiveShadow = true;
     scene.add(ground);
 
-    let grid = new THREE.GridHelper(100, 50, 0x000000, 0x000000);
-    grid.material.opacity = 0.05;
-    grid.material.transparent = true;
-    grid.receiveShadow = true;
-    scene.add(grid);
-
-    //let axesHelper = new THREE.AxesHelper( 5 );
-    //scene.add( axesHelper );
+    let axesHelper = new THREE.AxesHelper( 50 );
+    scene.add( axesHelper );
 }
 
 function createDrawer() {
@@ -176,7 +172,7 @@ export function animate() {
 
     orbitControls.update();
     mapControls.update();
-    dragControls.update(currentObjects);
+    //dragControls.update(currentObjects);
     hideCloseWalls();
 
     renderer.render( scene, camera );

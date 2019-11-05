@@ -55,6 +55,7 @@ function getList(word){
             model.className = "mdc-elevation__z24";
             model.src = './models/furniture/' + object + '.glb';
             model.id = object;
+            model.autoRotate = 'true';
             li.appendChild(model);
         }
     }

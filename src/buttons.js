@@ -1,11 +1,12 @@
 import {MDCRipple} from "@material/ripple/component";
 
-import {toggleView} from "./view";
+import {hideElement, toggleView} from "./view";
 import {deleteDrawing, editDrawing} from "./draw";
 import {canvas} from "./app";
+import {saveScene} from "./loader";
 
 
-export let buttons, viewButton, editButton, deleteButton;
+export let buttons, viewButton, downloadButton, editButton, deleteButton;
 
 
 export function createButtons(){
@@ -17,19 +18,25 @@ export function createButtons(){
         canvas.addEventListener( 'click', deleteDrawing, false);
         canvas.removeEventListener( 'click', editDrawing, false);
     });
-    deleteButton.style.display = "none";
+    hideElement(deleteButton, 300, 0);
 
     editButton = createIconButton( 'edit');
     editButton.addEventListener('click', function (){
         canvas.addEventListener( 'click', editDrawing, false);
         canvas.removeEventListener( 'click', deleteDrawing, false);
     });
-    editButton.style.display = "none";
+    hideElement(editButton, 150, 0);
 
+    downloadButton = createIconButton( 'save');
+    downloadButton.addEventListener('click', function (){
+        canvas.removeEventListener( 'click', editDrawing, false);
+        canvas.removeEventListener( 'click', deleteDrawing, false);
+    });
+    downloadButton.addEventListener('click', saveScene, false);
 
     viewButton = createIconButton('layers');
     buttons.appendChild(viewButton);
-    viewButton.addEventListener('click', toggleView);
+    viewButton.addEventListener('click', toggleView, false);
 }
 
 
@@ -46,7 +53,6 @@ function createIconButton(name){
     button.appendChild(icon);
 
     let toggle = new MDCRipple(button);
-    //toggle.unbounded = true;
 
     return button
 }

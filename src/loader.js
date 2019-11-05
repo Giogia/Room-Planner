@@ -1,10 +1,11 @@
 'use strict';
 
 import { GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
-import { scene, currentObjects } from './app';
+import { GLTFExporter} from "three/examples/jsm/exporters/GLTFExporter";
+
+import {scene, currentObjects, renderer, camera, wallsModel} from './app';
 import randomInt from 'random-int'
 import {plants, trees, rocks} from "./objects";
-import {floorPlan} from "./draw";
 
 async function loadModel(path){
 
@@ -15,7 +16,7 @@ async function loadModel(path){
         loader.load(path, resolve, undefined, reject)
     });
 
-    promise.then( gltf => {
+    await promise.then(gltf => {
         model = gltf.scene;
         model.castShadow = true;
         model.receiveShadow = true;
@@ -26,7 +27,7 @@ async function loadModel(path){
         console.error(error);
     });
 
-    return await promise;
+    return promise;
 }
 
 
@@ -72,8 +73,6 @@ function loadFromList(list, listName, number, near, far){
             let x = Math.sin(angle) * radius;
             let z = Math.cos(angle) * radius;
 
-            console.log(x,z);
-
             model.position.set(x, 0, z);
         });
     }
@@ -82,13 +81,47 @@ function loadFromList(list, listName, number, near, far){
 
 export function randomBackgroundObjects(treesNumber=1000, plantsNumber=100, rocksNumber=50){
 
-    loadFromList(trees, 'trees', treesNumber, 20, 30);
-    loadFromList(trees, 'trees', 2*treesNumber, 35, 70);
-    loadFromList(plants, 'plants', 2*plantsNumber, 15, 20);
+    loadFromList(trees, 'trees', treesNumber, 20, 60);
+    loadFromList(trees, 'trees', treesNumber, 65, 250);
     loadFromList(plants, 'plants', plantsNumber, 20, 30);
-    loadFromList(rocks, 'rocks', rocksNumber, 12, 30);
+    loadFromList(plants, 'plants', plantsNumber, 35, 50);
+    loadFromList(rocks, 'rocks', rocksNumber, 15, 30);
 
 }
+
+
+export function loadScene(name){
+    let loader = new GLTFLoader();
+
+    loader.load(name, gltf => {
+
+        scene.add(gltf.scene);
+        renderer.render(scene, camera);
+    }, undefined,
+
+    error => {
+      console.log(error);
+    });
+}
+
+
+export function saveScene(){
+    let exporter = new GLTFExporter();
+
+    exporter.parse( currentObjects[1], function ( glb ) {
+
+	    let blob = new Blob( [glb], { type: 'application/octet-stream' } );
+
+        let link = document.createElement( 'a' );
+        link.style.display = 'none';
+
+        link.href = URL.createObjectURL( blob );
+        link.download = 'scene.glb';
+        link.click();
+
+    },{ binary:true });
+}
+
 
 
 

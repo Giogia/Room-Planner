@@ -102,7 +102,7 @@ function showLine(event){
     let material = new LineMaterial({
         color: 'blue',
         opacity: 0.5,
-        linewidth: 0.001,
+        linewidth: 0.08,
     });
 
     let geometry = new LineGeometry();

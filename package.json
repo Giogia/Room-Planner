@@ -50,6 +50,7 @@
     "three-gltf-loader": "^1.107.0",
     "three-orbitcontrols": "^2.102.2",
     "three-transform-controls": "^1.0.4",
+    "three.meshline": "^1.2.0",
     "tween": "^0.9.0",
     "webpack-dev-server": "^3.7.2"
   }
