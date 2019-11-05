@@ -246,5 +246,7 @@ export var rocks = [
 ];
 
 export var mountains = [
-    'mountain'
+    'mountain_small',
+    'mountain_medium',
+    'mountain_large'
 ];

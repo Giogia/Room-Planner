@@ -22,7 +22,7 @@ export function  enableOrbitControls(){
     orbitControls.minPolarAngle = 0;
     orbitControls.maxPolarAngle = Math.PI/2-Math.PI/64;
     orbitControls.dampingFactor = 0.09;
-    orbitControls.rotateSpeed = 0.09;
+    orbitControls.rotateSpeed = 1;
     orbitControls.minDistance = 0;
     orbitControls.maxDistance = 50;
 

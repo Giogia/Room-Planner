@@ -89,7 +89,7 @@ function createRenderer(){
 function createScene(){
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0xd7edff);
-    scene.fog = new THREE.Fog(0xd7edff, 100, 250);
+    scene.fog = new THREE.Fog(0xd7edff, 50, 200);
 }
 
 
@@ -97,7 +97,7 @@ function createCamera(){
     const fov = 35;
     const aspect = canvas.clientWidth / canvas.clientHeight;
     const near = 0.1;
-    const far = 250;
+    const far = 200;
     camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 }
 
