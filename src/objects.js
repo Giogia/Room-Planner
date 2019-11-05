@@ -244,3 +244,7 @@ export var rocks = [
     'stone_smallTop1',
     'stone_smallTop2'
 ];
+
+export var mountains = [
+    'mountain'
+];

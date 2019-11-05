@@ -4,8 +4,7 @@
   "description": "room planner using webgl",
   "main": "src/app.js",
   "scripts": {
-    "build": "webpack",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack"
   },
   "repository": {
     "type": "git",
@@ -18,40 +17,27 @@
   },
   "homepage": "https://github.com/Giogia/Room-Planner#readme",
   "devDependencies": {
-    "webpack": "^4.39.1",
-    "webpack-cli": "^3.3.6"
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
   },
   "dependencies": {
-    "@google/model-viewer": "^0.5.1",
-    "@material/button": "^3.1.0",
-    "@material/drawer": "^3.1.1",
-    "@material/icon-button": "^3.1.0",
-    "@material/image-list": "^3.1.0",
-    "@material/list": "^3.1.0",
-    "@material/ripple": "^3.1.0",
-    "@material/top-app-bar": "^3.1.0",
-    "@windfish-studio/three-map-controls": "^1.1.6",
-    "alpha-shape": "^1.0.0",
-    "concaveman": "^1.1.1",
-    "earcut": "^2.1.5",
+    "@google/model-viewer": "^0.7.2",
+    "@material/drawer": "^4.0.0",
+    "@material/ripple": "^4.0.0",
     "fs-web": "^1.0.1",
-    "glob": "^7.1.4",
-    "hull.js": "^1.0.0",
-    "jquery": "^3.4.1",
     "lodash": "^4.17.15",
-    "material-components-web": "^3.1.1",
+    "material-components-web": "^4.0.0",
     "material-design-icons": "^3.0.1",
     "material-design-icons-iconfont": "^5.0.1",
+    "material-icons": "^0.3.1",
+    "material-icons-font": "^2.0.0",
     "math": "0.0.3",
     "random-int": "^2.0.1",
-    "three": "^0.107.0",
+    "three": "^0.110.0",
     "three-controls": "^1.0.1",
     "three-dragger": "^1.0.1",
-    "three-gltf-loader": "^1.107.0",
-    "three-orbitcontrols": "^2.102.2",
-    "three-transform-controls": "^1.0.4",
-    "three.meshline": "^1.2.0",
-    "tween": "^0.9.0",
-    "webpack-dev-server": "^3.7.2"
+    "three-orbitcontrols": "^2.110.1",
+    "tween.js": "^16.6.0",
+    "webpack-dev-server": "^3.9.0"
   }
 }

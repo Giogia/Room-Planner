@@ -165,7 +165,6 @@ The menu can use absolutely positioned when being displayed.
 
 ```js
 // ...
-menu.hoistMenuToBody(); // Not required if the menu is already positioned on the body.
 menu.setAbsolutePosition(100, 100);
 ```
 
@@ -227,12 +226,12 @@ Method Signature | Description
 `setAbsolutePosition(x: number, y: number) => void` | Proxies to the menu surface's `setAbsolutePosition(x: number, y: number)` method.
 `setFixedPosition(isFixed: boolean) => void` | Proxies to the menu surface's `setFixedPosition(isFixed: boolean)` method.
 `setSelectedIndex(index: number) => void | Sets the list item to the selected state at the specified index.
-`hoistMenuToBody() => void` | Proxies to the menu surface's `hoistMenuToBody()` method.
 `setIsHoisted(isHoisted: boolean) => void` | Proxies to the menu surface's `setIsHoisted(isHoisted: boolean)` method.
 `setAnchorElement(element: Element) => void` | Proxies to the menu surface's `setAnchorElement(element)` method.
 `getOptionByIndex(index: number) => Element \| null` | Returns the list item at the `index` specified.
 `getDefaultFoundation() => MDCMenuFoundation` | Returns the foundation.
 `setDefaultFocusState(focusState: DefaultFocusState) => void` | Sets default focus state where the menu should focus every time when menu is opened. Focuses the list root (`DefaultFocusState.LIST_ROOT`) element by default.
+`setEnabled(index: number, isEnabled: boolean) => void` | Sets the enabled state to `isEnabled` for the menu item at given `index`.
 
 > See [Menu Surface](../mdc-menu-surface/README.md) and [List](../mdc-list/README.md) documentation for more information on proxied methods and properties.
 
@@ -267,6 +266,7 @@ Method Signature | Description
 `handleMenuSurfaceOpened() => void` | Event handler for menu surface's opened event.
 `setDefaultFocusState(focusState: DefaultFocusState) => void` | Sets default focus state where the menu should focus every time when menu is opened. Focuses the list root (`DefaultFocusState.LIST_ROOT`) element by default.
 `setSelectedIndex(index: number) => void` | Selects the list item at given `index`.
+`setEnabled(index: number, isEnabled: boolean) => void` | Sets the enabled state of the menu item at given `index`.
 
 ### Events
 

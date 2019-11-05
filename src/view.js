@@ -2,9 +2,9 @@
 
 import * as THREE from "three";
 import {dragControls, mapControls, orbitControls} from "./controls";
-import * as TWEEN from "tween";
+import * as TWEEN from "tween.js";
 
-import {camera, scene, canvas, currentObjects, wallsModel, floorModel, list, updateModel} from "./app";
+import {camera, currentObjects, wallsModel, floorModel, list, updateModel} from "./app";
 import {editDrawing} from "./draw";
 import {drawer} from "./app";
 import {addObject} from "./loader";

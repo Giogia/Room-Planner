@@ -1,4 +1,4 @@
-var path = require('path');
+let path = require('path');
 
 module.exports = {
     entry: {
@@ -12,5 +12,6 @@ module.exports = {
         sourceMapFilename: '[file].map',
         devtoolModuleFilenameTemplate: 'webpack:///[resource-path]?[loaders]',
     },
-    mode: 'development'
+    mode: 'development',
+    watch: true
 };

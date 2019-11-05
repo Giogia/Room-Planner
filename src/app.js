@@ -1,7 +1,7 @@
 'use strict';
 
 import * as THREE from 'three';
-import * as TWEEN from 'tween';
+import * as TWEEN from 'tween.js';
 
 import {enableOrbitControls, enableMapControls, enableDragControls, orbitControls, mapControls, dragControls} from "./controls";
 import { addLights } from './lights';
@@ -12,14 +12,14 @@ import {floorPlan} from "./draw";
 import {createButtons} from "./buttons";
 import {MDCDrawer} from "@material/drawer/component";
 
-export var scene, camera, renderer, canvas, raycaster;
+export var scene, camera, renderer, canvas;
 export var ground;
 export var currentObjects = [];
 export let floorModel, wallsModel;
 export let list, drawer;
 
 
-export function init(){
+function init(){
 
     // Wait to be loaded completely
     document.addEventListener('DOMContentLoaded', (event) => {
@@ -29,9 +29,9 @@ export function init(){
 
         createRenderer();
         createScene();
+
         createCamera();
         createDrawer();
-        createRayCaster();
 
         camera.position.set(8, 12, 12);
 
@@ -71,8 +71,6 @@ export function init(){
         setTimeout(function(){
             tweenCamera(new THREE.Vector3(6, 8, 8), 3000);
         }, 500);
-
-        loadScene('scene.glb');
 
         animate();
     });
@@ -117,14 +115,10 @@ function createGround() {
     scene.add( axesHelper );
 }
 
+
 function createDrawer() {
     drawer = new MDCDrawer.attachTo(document.getElementsByClassName("mdc-drawer")[0]);
     drawer.open = true;
-}
-
-
-function createRayCaster(){
-    raycaster = new THREE.Raycaster();
 }
 
 
@@ -166,7 +160,7 @@ function selectObject(event){
 }
 
 
-export function animate() {
+function animate() {
 
     requestAnimationFrame( animate );
 

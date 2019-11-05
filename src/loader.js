@@ -5,7 +5,7 @@ import { GLTFExporter} from "three/examples/jsm/exporters/GLTFExporter";
 
 import {scene, currentObjects, renderer, camera, wallsModel} from './app';
 import randomInt from 'random-int'
-import {plants, trees, rocks} from "./objects";
+import {plants, trees, rocks, mountains} from "./objects";
 
 async function loadModel(path){
 
@@ -86,6 +86,7 @@ export function randomBackgroundObjects(treesNumber=1000, plantsNumber=100, rock
     loadFromList(plants, 'plants', plantsNumber, 20, 30);
     loadFromList(plants, 'plants', plantsNumber, 35, 50);
     loadFromList(rocks, 'rocks', rocksNumber, 15, 30);
+    //loadFromList(mountains, 'mountains', 5, 200, 250)
 
 }
 
@@ -106,16 +107,16 @@ export function loadScene(name){
 
 
 export function saveScene(){
+
     let exporter = new GLTFExporter();
 
-    exporter.parse( currentObjects[1], function ( glb ) {
-
-	    let blob = new Blob( [glb], { type: 'application/octet-stream' } );
+    exporter.parse( currentObjects, function ( glb ) {
 
         let link = document.createElement( 'a' );
         link.style.display = 'none';
+        document.body.appendChild( link );
 
-        link.href = URL.createObjectURL( blob );
+        link.href = URL.createObjectURL(new Blob( [glb], { type: 'application/octet-stream' } ));
         link.download = 'scene.glb';
         link.click();
 

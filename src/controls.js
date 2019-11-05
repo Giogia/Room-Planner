@@ -4,10 +4,8 @@ import * as THREE from 'three';
 import OrbitControls from 'three-orbitcontrols';
 import {MapControls} from 'three-controls';
 
-import {camera, currentObjects, renderer, canvas, raycaster} from "./app";
+import {camera, currentObjects, renderer, canvas} from "./app";
 import ThreeDragger from 'three-dragger';
-import {editDrawing} from "./draw";
-import {editButton} from "./buttons";
 
 export var dragControls, mapControls, orbitControls;
 

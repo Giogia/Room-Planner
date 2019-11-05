@@ -6,8 +6,6 @@ import { LineGeometry } from "three/examples/jsm/lines/LineGeometry";
 import { LineMaterial } from "three/examples/jsm/lines/LineMaterial";
 import { Line2 } from "three/examples/jsm/lines/Line2";
 
-import earcut from 'earcut';
-
 import {floorPlan} from "./draw";
 
 
