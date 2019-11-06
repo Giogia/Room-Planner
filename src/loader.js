@@ -52,7 +52,7 @@ export function addObject(event){
     });
 }
 
-
+// TODO make function dependent only on path not list
 function loadFromList(list, listName, number, near, far){
 
     for(let i = 0; i < number; i++) {
@@ -74,6 +74,7 @@ function loadFromList(list, listName, number, near, far){
             let z = Math.cos(angle) * radius;
 
             model.position.set(x, 0, z);
+            model.rotation.set(0, angle, 0);
         });
     }
 }
@@ -86,7 +87,8 @@ export function randomBackgroundObjects(treesNumber=2000, plantsNumber=100, rock
     loadFromList(plants, 'plants', plantsNumber, 40, 50);
     loadFromList(plants, 'plants', plantsNumber, 55, 70);
     loadFromList(rocks, 'rocks', rocksNumber, 35, 50);
-    loadFromList(mountains, 'mountains', mountainsNumber, 150, 200)
+    loadFromList(mountains, 'mountains', mountainsNumber, 150, 200);
+    loadFromList(['grass'], 'plants', plantsNumber, 20, 50);
 
 }
 

@@ -1,6 +1,6 @@
 import {MDCRipple} from "@material/ripple/component";
 
-import {hideElement, toggleView} from "./view";
+import {hideButton, toggleView} from "./view";
 import {deleteDrawing, editDrawing} from "./draw";
 import {canvas} from "./app";
 import {saveScene} from "./loader";
@@ -14,29 +14,15 @@ export function createButtons(){
     buttons = document.getElementById('buttons');
 
     deleteButton = createIconButton('delete');
-    deleteButton.addEventListener('click', function (){
-        canvas.addEventListener( 'click', deleteDrawing, false);
-        canvas.removeEventListener( 'click', editDrawing, false);
-    });
-    hideElement(deleteButton, 300, 0);
-
     editButton = createIconButton( 'edit');
-    editButton.addEventListener('click', function (){
-        canvas.addEventListener( 'click', editDrawing, false);
-        canvas.removeEventListener( 'click', deleteDrawing, false);
-    });
-    hideElement(editButton, 150, 0);
-
     downloadButton = createIconButton( 'save');
-    downloadButton.addEventListener('click', function (){
-        canvas.removeEventListener( 'click', editDrawing, false);
-        canvas.removeEventListener( 'click', deleteDrawing, false);
-    });
-    downloadButton.addEventListener('click', saveScene, false);
-
     viewButton = createIconButton('layers');
-    buttons.appendChild(viewButton);
-    viewButton.addEventListener('click', toggleView, false);
+
+    hideButton(deleteButton, 300, 0);
+    hideButton(editButton, 150, 0);
+
+    activateButtons();
+
 }
 
 
@@ -57,3 +43,56 @@ function createIconButton(name){
     return button
 }
 
+
+export function activateButtons(){
+
+    activateDrawButtons();
+
+    downloadButton.addEventListener('click', viewMode, false);
+    downloadButton.addEventListener('click', saveScene, false);
+
+    viewButton.addEventListener('click', viewMode, false);
+    viewButton.addEventListener('click', toggleView, false);
+}
+
+
+export function activateDrawButtons(){
+
+    editButton.addEventListener('click', editMode, false);
+    deleteButton.addEventListener('click', deleteMode, false);
+}
+
+export function deactivateDrawButtons(){
+
+    editButton.removeEventListener('click', editMode, false);
+    deleteButton.removeEventListener('click', deleteMode, false);
+}
+
+
+export function deactivateButtons(){
+
+    deactivateDrawButtons();
+
+    downloadButton.removeEventListener('click', viewMode, false);
+    downloadButton.removeEventListener('click', saveScene, false);
+
+    viewButton.removeEventListener('click', viewMode, false);
+    viewButton.removeEventListener('click', toggleView, false);
+}
+
+
+function viewMode(){
+    canvas.removeEventListener( 'click', editDrawing, false);
+    canvas.removeEventListener( 'click', deleteDrawing, false);
+}
+
+function editMode(){
+    canvas.addEventListener( 'click', editDrawing, false);
+    canvas.removeEventListener( 'click', deleteDrawing, false);
+}
+
+
+function deleteMode(){
+    canvas.addEventListener( 'click', deleteDrawing, false);
+    canvas.removeEventListener( 'click', editDrawing, false);
+}

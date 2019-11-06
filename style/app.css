@@ -29,7 +29,6 @@ canvas{
     transition: opacity 3s ease-out;
     background-color: black;
     z-index: 100;
-    will-change: opacity;
 }
 
 #loading-gif {
@@ -129,6 +128,7 @@ model-viewer{
     width:100%;
     position:relative;
     border-radius: 3%;
+    exposure: 1;
 }
 
 #buttons {

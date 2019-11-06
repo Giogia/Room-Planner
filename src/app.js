@@ -12,7 +12,7 @@ import {floorPlan} from "./draw";
 import {createButtons} from "./buttons";
 import {MDCDrawer} from "@material/drawer/component";
 
-export var scene, camera, renderer, canvas;
+export var scene, camera, renderer, canvas, raycaster;
 export var ground;
 export var currentObjects = [];
 export let floorModel, wallsModel;
@@ -21,59 +21,49 @@ export let list, drawer;
 
 function init(){
 
-    // Wait to be loaded completely
-    document.addEventListener('DOMContentLoaded', (event) => {
+    canvas = document.getElementById( 'canvas');
+    document.body.appendChild(canvas);
 
-        canvas = document.getElementById( 'canvas');
-        document.body.appendChild(canvas);
+    list = document.getElementById('list');
 
-        createRenderer();
-        createScene();
+    createDrawer();
+    createButtons();
 
-        createCamera();
-        createDrawer();
+    createRenderer();
+    createScene();
+    createCamera();
+    createRayCaster();
 
-        camera.position.set(8, 12, 12);
+    addLights();
+    createGround();
 
-        enableOrbitControls();
-        enableMapControls();
-        //enableDragControls();
+    enableOrbitControls();
+    enableMapControls();
+    //enableDragControls();
 
-        addLights();
-        createGround();
+    list.addEventListener('click', addObject, false);
+    canvas.addEventListener('dblclick', selectObject, false);
 
-        floorModel = createModel(floorPlan);
-        scene.add(floorModel);
-        hide(floorModel.children);
+    floorModel = createModel(floorPlan);
+    scene.add(floorModel);
+    hide(floorModel.children);
 
-        wallsModel = createWallsModel(floorPlan);
-        scene.add(wallsModel);
+    wallsModel = createWallsModel(floorPlan);
+    scene.add(wallsModel);
 
-        window.onresize = function () {
-            camera.aspect = canvas.clientWidth / canvas.clientHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize( canvas.clientWidth, canvas.clientHeight );
-        };
+    autoResize();
 
-        list = document.getElementById('list');
-        list.addEventListener('click', addObject, false);
-        canvas.addEventListener('dblclick', selectObject, false);
-        createButtons();
-        randomBackgroundObjects();
+    loadingAnimation();
 
-        let loading = document.getElementById('loading');
-        loading.style.opacity = '0';
-        setTimeout(function(){
-            loading.style.display = 'none';
-        }, 4000);
+    animate();
 
-        TWEEN.update();
-        setTimeout(function(){
-            tweenCamera(new THREE.Vector3(6, 8, 8), 3000);
-        }, 500);
+    randomBackgroundObjects();
+}
 
-        animate();
-    });
+
+function createDrawer() {
+    drawer = new MDCDrawer.attachTo(document.getElementsByClassName("mdc-drawer")[0]);
+    drawer.open = true;
 }
 
 
@@ -88,10 +78,9 @@ function createRenderer(){
 
 function createScene(){
     scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xd7edff);
-    scene.fog = new THREE.Fog(0xd7edff, 50, 200);
+    scene.background = new THREE.Color(0xe3f2ff);
+    scene.fog = new THREE.Fog(0xedf6ff, 45, 200);
 }
-
 
 function createCamera(){
     const fov = 35;
@@ -99,6 +88,12 @@ function createCamera(){
     const near = 0.1;
     const far = 200;
     camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+    camera.position.set(8, 12, 12);
+}
+
+
+function createRayCaster() {
+    raycaster = new THREE.Raycaster();
 }
 
 
@@ -116,9 +111,29 @@ function createGround() {
 }
 
 
-function createDrawer() {
-    drawer = new MDCDrawer.attachTo(document.getElementsByClassName("mdc-drawer")[0]);
-    drawer.open = true;
+function loadingAnimation(){
+
+     document.addEventListener('DOMContentLoaded', (event) => {
+
+        let loading = document.getElementById('loading');
+
+        loading.style.opacity = '0';
+
+        setTimeout(function(){
+            loading.style.display = 'none';
+        }, 3000);
+
+        tweenCamera(new THREE.Vector3(6, 8, 8), 3000);
+
+     });
+}
+
+function autoResize(){
+    window.onresize = function () {
+        camera.aspect = canvas.clientWidth / canvas.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize( canvas.clientWidth, canvas.clientHeight );
+    };
 }
 
 
@@ -136,7 +151,7 @@ export function updateModel(){
 }
 
 
-function selectObject(event){
+export function selectObject(event){
 
     let mouse = new THREE.Vector2();
 
@@ -145,11 +160,12 @@ function selectObject(event){
 
     raycaster.setFromCamera( mouse, camera );
 
-    console.log(currentObjects);
+    console.log('current', currentObjects);
 
     let intersects = raycaster.intersectObjects( currentObjects );
+    console.log('intersected', intersects);
 
-    for (let intersect of intersects) {
+    /*for (let intersect of intersects) {
 
         if(intersect.object.type == "Scene"){
              intersect.object.material.color.setHex(0xe8405e);
@@ -157,6 +173,7 @@ function selectObject(event){
 
 		console.log(intersect);
 	}
+     */
 }
 
 
@@ -164,14 +181,15 @@ function animate() {
 
     requestAnimationFrame( animate );
 
+    TWEEN.update();
+
     orbitControls.update();
     mapControls.update();
     //dragControls.update(currentObjects);
+
     hideCloseWalls();
 
     renderer.render( scene, camera );
-
-    TWEEN.update();
 }
 
 init();

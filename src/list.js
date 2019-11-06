@@ -1,6 +1,6 @@
 'use strict';
 import '@google/model-viewer';
-import { furniture, plants } from "./objects";
+import { furniture } from "./objects";
 
 let ul;
 
@@ -24,15 +24,16 @@ function updateList(event){
 
     let found = getList(search.toLowerCase());
 
-    list.appendChild(ul);
-
     if(found === false){
+
         let message = document.createElement('div');
         message.className = "mdc-typography";
         message.innerText = "No results found";
         message.id = 'search-message';
         ul.appendChild(message);
     }
+
+    list.appendChild(ul);
 
 }
 
@@ -63,7 +64,7 @@ function getList(word){
     return found
 }
 
-createList();
 
+createList();
 form.onsubmit = updateList;
 search.addEventListener('click', updateList, false);

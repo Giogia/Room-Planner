@@ -6,6 +6,7 @@ import {MapControls} from 'three-controls';
 
 import {camera, currentObjects, renderer, canvas} from "./app";
 import ThreeDragger from 'three-dragger';
+import {floorPlan} from "./draw";
 
 export var dragControls, mapControls, orbitControls;
 
