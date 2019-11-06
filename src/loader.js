@@ -80,7 +80,7 @@ function loadFromList(list, listName, number, near, far){
 }
 
 
-export function randomBackgroundObjects(treesNumber=2000, plantsNumber=100, rocksNumber=50, mountainsNumber=50){
+export function randomBackgroundObjects(treesNumber=2000, plantsNumber=300, rocksNumber=50, mountainsNumber=50){
 
     loadFromList(trees, 'trees', treesNumber, 50, 120);
     loadFromList(trees, 'trees', treesNumber, 125, 150);
@@ -89,6 +89,7 @@ export function randomBackgroundObjects(treesNumber=2000, plantsNumber=100, rock
     loadFromList(rocks, 'rocks', rocksNumber, 35, 50);
     loadFromList(mountains, 'mountains', mountainsNumber, 150, 200);
     loadFromList(['grass'], 'plants', plantsNumber, 20, 50);
+    loadFromList(['grass'], 'plants', plantsNumber, 55, 60);
 
 }
 

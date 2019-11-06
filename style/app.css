@@ -165,6 +165,16 @@ model-viewer{
     z-index: 1;
 }
 
+#controls{
+    position: absolute;
+    display: block;
+    right: 0;
+    width: 75%;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 ::-webkit-scrollbar {
     display: none;
 }

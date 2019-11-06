@@ -51,7 +51,9 @@ export function enableMapControls(){
 
 export function enableDragControls(){
 
-    dragControls = new ThreeDragger(currentObjects, camera, renderer.domElement);
+    let dragZone = document.getElementById( 'controls');
+
+    dragControls = new ThreeDragger(currentObjects, camera, dragZone);
 
     dragControls.on( 'dragstart', function () {
         orbitControls.enabled = false;

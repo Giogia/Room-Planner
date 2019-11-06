@@ -80,7 +80,7 @@ export function tweenCamera(targetPosition, duration=2000){
 
             orbitControls.enabled = false;
             mapControls.enabled = false;
-            //dragControls.enabled = false;
+            dragControls.enabled = false;
         })
 
         .onUpdate( function() {
@@ -99,7 +99,7 @@ export function tweenCamera(targetPosition, duration=2000){
             }
             else {
                 orbitControls.enabled = true;
-                //dragControls.enabled = true;
+                dragControls.enabled = true;
             }
         } )
         .start();

@@ -39,7 +39,7 @@ function init(){
 
     enableOrbitControls();
     enableMapControls();
-    //enableDragControls();
+    enableDragControls();
 
     list.addEventListener('click', addObject, false);
     canvas.addEventListener('dblclick', selectObject, false);
@@ -185,7 +185,7 @@ function animate() {
 
     orbitControls.update();
     mapControls.update();
-    //dragControls.update(currentObjects);
+    dragControls.update(currentObjects);
 
     hideCloseWalls();
 
