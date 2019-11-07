@@ -21,43 +21,45 @@ export let list, drawer;
 
 function init(){
 
-    canvas = document.getElementById( 'canvas');
-    document.body.appendChild(canvas);
+    document.addEventListener('DOMContentLoaded', (event) => {
 
-    list = document.getElementById('list');
+        canvas = document.getElementById( 'canvas');
+        document.body.appendChild(canvas);
 
-    createDrawer();
-    createButtons();
+        list = document.getElementById('list');
 
-    createRenderer();
-    createScene();
-    createCamera();
-    createRayCaster();
+        createDrawer();
+        createButtons();
 
-    addLights();
-    createGround();
+        createRenderer();
+        createScene();
+        createCamera();
+        createRayCaster();
 
-    enableOrbitControls();
-    enableMapControls();
-    enableDragControls();
+        addLights();
+        createGround();
 
-    list.addEventListener('click', addObject, false);
-    canvas.addEventListener('dblclick', selectObject, false);
+        enableOrbitControls();
+        enableMapControls();
+        enableDragControls();
 
-    floorModel = createModel(floorPlan);
-    scene.add(floorModel);
-    hide(floorModel.children);
+        list.addEventListener('click', addObject, false);
+        canvas.addEventListener('dblclick', selectObject, false);
 
-    wallsModel = createWallsModel(floorPlan);
-    scene.add(wallsModel);
+        floorModel = createModel(floorPlan);
+        scene.add(floorModel);
+        hide(floorModel.children);
 
-    autoResize();
+        wallsModel = createWallsModel(floorPlan);
+        scene.add(wallsModel);
 
-    loadingAnimation();
+        randomBackgroundObjects();
 
-    animate();
+        autoResize();
 
-    randomBackgroundObjects();
+        animate();
+        loadingAnimation();
+    });
 }
 
 
@@ -113,20 +115,13 @@ function createGround() {
 
 function loadingAnimation(){
 
-     document.addEventListener('DOMContentLoaded', (event) => {
+    let loading = document.getElementById('loading');
+    loading.style.opacity = '0';
 
-        let loading = document.getElementById('loading');
+    tweenCamera(new THREE.Vector3(6, 8, 8), 3000);
 
-        loading.style.opacity = '0';
-
-        setTimeout(function(){
-            loading.style.display = 'none';
-        }, 3000);
-
-        tweenCamera(new THREE.Vector3(6, 8, 8), 3000);
-
-     });
 }
+
 
 function autoResize(){
     window.onresize = function () {

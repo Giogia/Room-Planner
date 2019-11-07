@@ -24,6 +24,7 @@
     "@google/model-viewer": "^0.7.2",
     "@material/drawer": "^4.0.0",
     "@material/ripple": "^4.0.0",
+    "graph.js": "^1.21.1",
     "lodash": "^4.17.15",
     "material-components-web": "^4.0.0",
     "material-design-icons": "^3.0.1",

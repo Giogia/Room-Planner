@@ -29,6 +29,7 @@ canvas{
     transition: opacity 3s ease-out;
     background-color: black;
     z-index: 100;
+    pointer-events: none;
 }
 
 #loading-gif {

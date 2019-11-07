@@ -135,6 +135,7 @@ function drawLine(event){
 }
 
 
+// TODO model is corrupted after deleting
 export function deleteDrawing(event){
 
     let position = worldCoordinates(event);

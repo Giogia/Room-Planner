@@ -8,6 +8,7 @@ let list = document.getElementById('list');
 let form = document.getElementById('search-form');
 let search = document.getElementById('search-icon');
 
+
 function createList(){
 
     getList();
@@ -57,6 +58,7 @@ function getList(word){
             model.src = './models/furniture/' + object + '.glb';
             model.id = object;
             model.autoRotate = 'true';
+            model.shadowIntensity = '1';
             li.appendChild(model);
         }
     }

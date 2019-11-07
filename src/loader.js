@@ -6,6 +6,7 @@ import { GLTFExporter} from "three/examples/jsm/exporters/GLTFExporter";
 import {scene, currentObjects, renderer, camera, wallsModel} from './app';
 import randomInt from 'random-int'
 import {plants, trees, rocks, mountains} from "./objects";
+import {floor} from "./walls";
 
 async function loadModel(path){
 
@@ -113,7 +114,7 @@ export function saveScene(){
 
     let exporter = new GLTFExporter();
 
-    exporter.parse( currentObjects, function ( glb ) {
+    exporter.parse( floor, function ( glb ) {
 
         let link = document.createElement( 'a' );
         link.style.display = 'none';

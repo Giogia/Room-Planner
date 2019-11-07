@@ -18,6 +18,7 @@ import {
 
 let floorPlanView = false;
 
+
 export function toggleView(event) {
 
     event.preventDefault();
@@ -54,12 +55,15 @@ function modelView(){
     updateModel();
 
     tweenCamera(new THREE.Vector3(6, 8, 8));
+
     show(currentObjects);
     show(wallsModel.children);
     hide(floorModel.children);
 
     hideButton(deleteButton, 300);
     hideButton(editButton, 150);
+
+    deactivateDrawButtons();
 
     list.addEventListener('click', addObject, false);
     canvas.addEventListener('dblclick', selectObject, false);
@@ -68,30 +72,27 @@ function modelView(){
 
 export function tweenCamera(targetPosition, duration=2000){
 
+    deactivateButtons();
+
+    orbitControls.enabled = false;
+    mapControls.enabled = false;
+    dragControls.enabled = false;
+
     let position = new THREE.Vector3().copy(camera.position);
 
-    new TWEEN.Tween(position).to( targetPosition, duration )
+    new TWEEN.Tween(position)
+
+        .to( targetPosition, duration )
 
         .easing( TWEEN.Easing.Quintic.Out )
 
-        .onStart( function() {
-
-            deactivateButtons();
-
-            orbitControls.enabled = false;
-            mapControls.enabled = false;
-            dragControls.enabled = false;
-        })
-
         .onUpdate( function() {
             camera.position.copy(position);
-        } )
+        })
 
         .onComplete( function () {
 
             camera.position.copy(targetPosition);
-
-            activateButtons();
 
             if (floorPlanView) {
                 mapControls.saveState();
@@ -101,8 +102,11 @@ export function tweenCamera(targetPosition, duration=2000){
                 orbitControls.enabled = true;
                 dragControls.enabled = true;
             }
-        } )
+        })
+
         .start();
+
+    activateButtons();
 }
 
 

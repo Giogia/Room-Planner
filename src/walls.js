@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import { LineGeometry } from "three/examples/jsm/lines/LineGeometry";
 import { LineMaterial } from "three/examples/jsm/lines/LineMaterial";
 import { Line2 } from "three/examples/jsm/lines/Line2";
+import Graph from "graph.js/dist/graph.es6";
 
 import {floorPlan} from "./draw";
 
@@ -14,6 +15,7 @@ const HEIGHT = 1.3;
 
 const MATERIAL = new THREE.MeshLambertMaterial({color: 0xffffff, transparent: true, opacity: 0.95});
 
+export let floor;
 
 export function createModel () {
 
@@ -28,6 +30,8 @@ export function createModel () {
   return group;
 }
 
+
+// TODO creation of a
 export function createWallsModel () {
 
   let columns = getColumnsModels(floorPlan.points);
@@ -38,8 +42,8 @@ export function createWallsModel () {
   _.each(walls, (wall) => group.add(wall));
   _.each(columns, (column) => group.add(column));
 
-  //drawFloor();
-  //group.add(floor);
+  floor = drawFloor(floorPlan);
+  group.add(floor);
 
 
   //let floor = drawFloor([floorplan.points[0], floorplan.points[1], floorplan.points[2], floorplan.points[3]]);
@@ -125,60 +129,69 @@ function getWallsModels ({lines, points}) {
 }
 
 
-function drawFloor() {
+function drawFloor({lines, points}) {
 
-  for(let point of floorPlan.points){
+  let graph = new Graph();
 
-    let lines = _.filter(floorPlan.lines, { from: point.id });
+  _.each(points, (point) => graph.addVertex(point.id, {value: 1}));
+  _.each(lines, (line) => graph.addEdge(line.from, line.to, { value:1}));
+  _.each(lines, (line) => graph.addEdge(line.to, line.from, { value:1}));
 
-    //let face = [firstLine.from, firstLine.to];
+  let cycles = [];
 
-    console.log(lines);
-
-
-
-    //let seconLine = _.find(floorPlan.lines, {from: firstLine.to});
-
-    //face.push(seconLine.to);
-    //console.log(seconLine);
-
-  }
-  /*
-  let vertices = [];
-
-  _.each(floorPlan.points, (point) => vertices.push([point.x,point.z]));
-  console.log("vertices", vertices);
-
-  let data = [];
-
-   _.each(vertices, (point) => data.push(point[0], point[1]));
-
-  console.log("data", data);
-
-  let triangles = earcut(data);
-
-  console.log('hull', triangles);
-
-  let geometry = new THREE.Geometry();
-
-  _.each(vertices, (point) => geometry.vertices.push(new THREE.Vector3(point[0],0, point[1])));
-
-  for( let i=0; i<triangles.length; i+=3){
-
-      let sorted = [triangles[i], triangles[i+1], triangles[i+2]].sort();
-      console.log('sorted', sorted);
-      geometry.faces.push(new THREE.Face3(sorted[i], sorted[i+1], sorted[i+2]));
+  // remove cycles on two nodes
+  for (let cycle of graph.cycles()){
+    if(cycle.length>2){
+      cycles.push(cycle)
+    }
   }
 
-  console.log('faces', geometry.faces);
+  let rooms = [];
 
-  //_.each(triangles, (triangle) => geometry.faces.push(new THREE.Face3(triangle[0],triangle[1],triangle[2])));
+  for (let cycle of cycles) {
 
-  //let texture = new THREE.TextureLoader().load( './assets/wooden2.jpg' );
+    let subCycle = false;
+
+    for (let cycle2 of cycles) {
+
+        if(isSubCycle(cycle2, cycle)) {
+          subCycle = true;
+          break;
+        }
+      }
+
+    if(!subCycle){
+      rooms.push(cycle);
+    }
+  }
+
+  let shape = new THREE.Shape();
+
+  for( let room of rooms){
+
+    shape.moveTo(points[room[room.length-1]].x, points[room[room.length-1]].z);
+
+    for( let point of room){
+      shape.lineTo(points[point].x, points[point].z);
+    }
+  }
+
+  let extrudeSettings = { depth: 0.2, bevelEnabled: false };
+
+  let geometry = new THREE.ExtrudeBufferGeometry(shape, extrudeSettings);
 
   let material = new THREE.MeshLambertMaterial( { color: 0xd6b68b } );
 
-  return new THREE.Mesh( geometry, material );
+  let floor = new THREE.Mesh( geometry, material );
 
-   */
+  floor.rotateX(Math.PI/2);
+
+  return floor
+
 }
+
+function isSubCycle(subCycle, cycle){
+
+  return (_.isEqual(_.sortBy(subCycle), _.sortBy(cycle)) ? false : subCycle.every(val => cycle.includes(val)));
+}
+
