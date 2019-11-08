@@ -103,7 +103,7 @@ function createGround() {
 
     ground = new THREE.Mesh(
         new THREE.PlaneBufferGeometry(2000, 2000),
-        new THREE.MeshLambertMaterial({ color: 0x202020 }));
+        new THREE.MeshLambertMaterial({ color: 0x202020, opacity: 0.75 }));
     ground.rotation.x = -Math.PI / 2;
     ground.receiveShadow = true;
     scene.add(ground);

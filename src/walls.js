@@ -84,7 +84,10 @@ function getLineModels ({lines, points}) {
     let geometry = new LineGeometry();
     geometry.setPositions([points[from].x, 0, points[from].z, points[to].x, 0, points[to].z]);
 
-    return new Line2(geometry, material);
+    let line = new Line2(geometry, material);
+    line.translateY(0.01);
+
+    return line
   });
 }
 
@@ -149,11 +152,8 @@ function drawFloor({lines, points}) {
   let rooms = [];
 
   for (let cycle of cycles) {
-
     let subCycle = false;
-
     for (let cycle2 of cycles) {
-
         if(isSubCycle(cycle2, cycle)) {
           subCycle = true;
           break;
@@ -165,26 +165,29 @@ function drawFloor({lines, points}) {
     }
   }
 
-  let shape = new THREE.Shape();
+  console.log(rooms);
+
+  floor = new THREE.Group();
 
   for( let room of rooms){
-
+    let shape = new THREE.Shape();
     shape.moveTo(points[room[room.length-1]].x, points[room[room.length-1]].z);
-
     for( let point of room){
       shape.lineTo(points[point].x, points[point].z);
     }
+
+    let extrudeSettings = { depth: 0.01, bevelEnabled: false };
+
+    let geometry = new THREE.ExtrudeBufferGeometry(shape, extrudeSettings);
+
+    let material = new THREE.MeshPhongMaterial( { color: 0xd6b68b } );
+
+    let mesh = new THREE.Mesh( geometry, material );
+
+    mesh.rotateX(Math.PI/2);
+    mesh.translateZ(-0.01);
+    floor.add(mesh);
   }
-
-  let extrudeSettings = { depth: 0.2, bevelEnabled: false };
-
-  let geometry = new THREE.ExtrudeBufferGeometry(shape, extrudeSettings);
-
-  let material = new THREE.MeshLambertMaterial( { color: 0xd6b68b } );
-
-  let floor = new THREE.Mesh( geometry, material );
-
-  floor.rotateX(Math.PI/2);
 
   return floor
 
