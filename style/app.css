@@ -28,7 +28,7 @@ canvas{
     height: 100%;
     transition: opacity 3s ease-out;
     background-color: black;
-    z-index: 100;
+    z-index: 110;
     pointer-events: none;
 }
 
@@ -129,7 +129,6 @@ model-viewer{
     width:100%;
     position:relative;
     border-radius: 3%;
-    exposure: 1;
 }
 
 #buttons {

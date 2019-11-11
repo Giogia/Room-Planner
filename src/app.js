@@ -6,16 +6,16 @@ import * as TWEEN from 'tween.js';
 import {enableOrbitControls, enableMapControls, enableDragControls, orbitControls, mapControls, dragControls} from "./controls";
 import { addLights } from './lights';
 import {addObject, loadScene, randomBackgroundObjects} from "./loader";
-import { createModel, createWallsModel } from "./walls";
-import {hide, hideCloseWalls, tweenCamera} from "./view";
+import {createFloorModel, createModel, createWallsModel} from "./walls";
+import {hide, hideCloseWalls, showRoomCenters, tweenCamera} from "./view";
 import {floorPlan} from "./draw";
 import {createButtons} from "./buttons";
 import {MDCDrawer} from "@material/drawer/component";
 
-export var scene, camera, renderer, canvas, raycaster;
+export var scene, camera, renderer, canvas, raycaster, textureLoader;
 export var ground;
 export var currentObjects = [];
-export let floorModel, wallsModel;
+export let drawModel, floorModel, wallsModel, roomCenters;
 export let list, drawer;
 
 
@@ -35,6 +35,7 @@ function init(){
         createScene();
         createCamera();
         createRayCaster();
+        createTextureLoader();
 
         addLights();
         createGround();
@@ -46,9 +47,15 @@ function init(){
         list.addEventListener('click', addObject, false);
         canvas.addEventListener('dblclick', selectObject, false);
 
-        floorModel = createModel(floorPlan);
+        drawModel = createModel(floorPlan);
+        scene.add(drawModel);
+        hide(drawModel.children);
+
+        floorModel = createFloorModel(floorPlan)[0];
         scene.add(floorModel);
-        hide(floorModel.children);
+
+        roomCenters = createFloorModel(floorPlan)[1];
+        scene.add(roomCenters);
 
         wallsModel = createWallsModel(floorPlan);
         scene.add(wallsModel);
@@ -57,8 +64,11 @@ function init(){
 
         autoResize();
 
-        animate();
-        loadingAnimation();
+        setTimeout(function(){
+            animate();
+            loadingAnimation();
+        }, 0);
+
     });
 }
 
@@ -75,13 +85,14 @@ function createRenderer(){
     renderer.setSize( canvas.clientWidth, canvas.clientHeight );
     renderer.gammaOutput = true;
     canvas.appendChild(renderer.domElement);
+
 }
 
 
 function createScene(){
     scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xe3f2ff);
-    scene.fog = new THREE.Fog(0xedf6ff, 45, 200);
+    scene.background = new THREE.Color(0xddeeff);
+    scene.fog = new THREE.Fog(0xddeeff, 45, 200);
 }
 
 function createCamera(){
@@ -98,18 +109,29 @@ function createRayCaster() {
     raycaster = new THREE.Raycaster();
 }
 
+function createTextureLoader(){
+    textureLoader = new THREE.TextureLoader();
+}
 
 function createGround() {
+
+    let material = new THREE.MeshStandardMaterial( {
+                            roughness: 1,
+                            color: 0xffffff,
+                            metalness: 0.02,
+                            bumpScale: 1
+                        } );
 
     ground = new THREE.Mesh(
         new THREE.PlaneBufferGeometry(2000, 2000),
         new THREE.MeshLambertMaterial({ color: 0x202020, opacity: 0.75 }));
     ground.rotation.x = -Math.PI / 2;
     ground.receiveShadow = true;
+
     scene.add(ground);
 
-    let axesHelper = new THREE.AxesHelper( 50 );
-    scene.add( axesHelper );
+    //let axesHelper = new THREE.AxesHelper( 50 );
+    //scene.add( axesHelper );
 }
 
 
@@ -134,12 +156,17 @@ function autoResize(){
 
 export function updateScene(){
 
-    scene.remove(floorModel);
-    floorModel = createModel(floorPlan);
-    scene.add(floorModel);
+    scene.remove(drawModel);
+    drawModel = createModel(floorPlan);
+    scene.add(drawModel);
 }
 
 export function updateModel(){
+
+    scene.remove(floorModel);
+    floorModel = createFloorModel(floorPlan);
+    scene.add(floorModel);
+
     scene.remove(wallsModel);
     wallsModel = createWallsModel(floorPlan);
     scene.add(wallsModel);
@@ -183,6 +210,7 @@ function animate() {
     dragControls.update(currentObjects);
 
     hideCloseWalls();
+    showRoomCenters();
 
     renderer.render( scene, camera );
 }

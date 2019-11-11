@@ -4,7 +4,7 @@ import * as THREE from "three";
 import {dragControls, mapControls, orbitControls} from "./controls";
 import * as TWEEN from "tween.js";
 
-import {camera, currentObjects, wallsModel, floorModel, list, updateModel, canvas} from "./app";
+import {camera, currentObjects, wallsModel, drawModel, list, updateModel, canvas, floorModel} from "./app";
 import {drawer, selectObject} from "./app";
 import {addObject} from "./loader";
 import {
@@ -15,6 +15,7 @@ import {
     activateButtons,
     deactivateDrawButtons
 } from "./buttons";
+import {roomCenters} from "./app";
 
 let floorPlanView = false;
 
@@ -36,8 +37,9 @@ function drawView(){
     tweenCamera(new THREE.Vector3(0, 30, 1));
 
     hide(currentObjects);
+    hide(floorModel.children);
     hide(wallsModel.children);
-    show(floorModel.children);
+    show(drawModel.children);
 
     showButton(deleteButton, 0);
     showButton(editButton, 0);
@@ -57,8 +59,9 @@ function modelView(){
     tweenCamera(new THREE.Vector3(6, 8, 8));
 
     show(currentObjects);
+    show(floorModel.children);
     show(wallsModel.children);
-    hide(floorModel.children);
+    hide(drawModel.children);
 
     hideButton(deleteButton, 300);
     hideButton(editButton, 150);
@@ -98,7 +101,7 @@ export function tweenCamera(targetPosition, duration=2000){
                 mapControls.saveState();
                 mapControls.enabled = true;
             }
-            else {
+            if (!floorPlanView) {
                 orbitControls.enabled = true;
                 dragControls.enabled = true;
             }
@@ -113,10 +116,22 @@ export function tweenCamera(targetPosition, duration=2000){
 export function hideCloseWalls(){
     if(!floorPlanView){
         for( let mesh of wallsModel.children){
-            mesh.visible = camera.position.distanceTo(mesh.position) >= 8;
+            let distance = camera.position.distanceTo(mesh.position);
+            mesh.visible = distance >= 1;
+            mesh.material.opacity = Math.log(distance-6);
         }
     }
 }
+
+export function showRoomCenters(){
+    if(!floorPlanView){
+        for( let mesh of roomCenters.children){
+            let distance = camera.position.distanceTo(mesh.position);
+            mesh.visible = distance <= 10;
+        }
+    }
+}
+
 
 export function hide(objects) {
 

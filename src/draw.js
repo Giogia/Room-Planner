@@ -101,12 +101,13 @@ function showLine(event){
 
     let material = new LineMaterial({
         color: 'blue',
-        opacity: 0.5,
-        linewidth: 0.08,
+        transparent: true,
+        opacity: 0.3,
+        linewidth: 0.008,
     });
 
     let geometry = new LineGeometry();
-    geometry.setPositions([point.x, 0, point.z, position.x, 0, position.z]);
+    geometry.setPositions([point.x, 0.02, point.z, position.x, 0.02, position.z]);
 
     scene.remove(currentLine);
     currentLine = new Line2(geometry, material);

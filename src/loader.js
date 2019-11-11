@@ -3,10 +3,10 @@
 import { GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 import { GLTFExporter} from "three/examples/jsm/exporters/GLTFExporter";
 
-import {scene, currentObjects, renderer, camera, wallsModel} from './app';
+import {scene, currentObjects, renderer, camera, floorModel, wallsModel, canvas} from './app';
 import randomInt from 'random-int'
 import {plants, trees, rocks, mountains} from "./objects";
-import {floor} from "./walls";
+import * as THREE from 'three';
 
 async function loadModel(path){
 
@@ -44,10 +44,7 @@ export function addObject(event){
         let model = gltf.scene;
         model.name = name;
 
-        let low = 0;
-        let high = 5;
-
-        model.position.set(randomInt(low,high), 0, randomInt(low,high));
+        model.position.set(camera.position.x/4, 0.03, camera.position.z/4);
 
         currentObjects.push(model);
     });
@@ -114,7 +111,7 @@ export function saveScene(){
 
     let exporter = new GLTFExporter();
 
-    exporter.parse( floor, function ( glb ) {
+    exporter.parse( floorModel, function ( glb ) {
 
         let link = document.createElement( 'a' );
         link.style.display = 'none';
