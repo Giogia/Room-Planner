@@ -1,6 +1,6 @@
 import {MDCRipple} from "@material/ripple/component";
 
-import {hideButton, toggleView} from "./view";
+import {toggleView} from "./view";
 import {deleteDrawing, editDrawing} from "./draw";
 import {canvas} from "./app";
 import {saveScene} from "./loader";
@@ -29,11 +29,11 @@ export function createButtons(){
 function createIconButton(name){
 
     let button = document.createElement('button');
-    button.className = 'mdc-fab';
+    button.className = 'mdc-fab mdc-elevation__z24';
     button.id = name;
     buttons.appendChild(button);
 
-    let icon = document.createElement('i');
+    let icon = document.createElement('span');
     icon.className = 'material-icons mdc-fab__icon';
     icon.innerText = name;
     button.appendChild(icon);
@@ -95,4 +95,20 @@ function editMode(){
 function deleteMode(){
     canvas.addEventListener( 'click', deleteDrawing, false);
     canvas.removeEventListener( 'click', editDrawing, false);
+}
+
+
+export function hideButton(element, translation=97, timeout=250){
+    element.style.transform = 'translateY('+ translation.toString() +'%)';
+
+    setTimeout(function(){
+        element.style.opacity = '0';
+    }, timeout);
+}
+
+
+export function showButton(element, translation=97){
+    element.style.opacity = '100';
+    element.style.transform = 'translateY(-'+ translation.toString() +'%)';
+
 }

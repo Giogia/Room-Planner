@@ -13,7 +13,7 @@ import randomInt from "random-int";
 let inside = require("point-in-polygon");
 
 
-const DEPTH = 0.1;
+const DEPTH = 0.03;
 const HEIGHT = 1.3;
 
 const MATERIAL = new THREE.MeshLambertMaterial({color: 0xffffff, transparent: true, opacity: 1});
@@ -37,11 +37,13 @@ export function createWallsModel () {
 
   let columns = getColumnsModels(floorPlan.points);
   let walls = getWallsModels(floorPlan);
+  let skirtings = getSkirtingModel(floorPlan);
 
   let group = new THREE.Group();
 
   _.each(walls, (wall) => group.add(wall));
   _.each(columns, (column) => group.add(column));
+  _.each(skirtings, (skirting) => group.add(skirting));
 
   return group;
 }
@@ -49,14 +51,15 @@ export function createWallsModel () {
 
 function getPointModels (points) {
   return _.map(points, ({id, x, z, selected}) => {
-    let geometry = new THREE.SphereBufferGeometry(0.08, 32, 32);
+    let geometry = new THREE.SphereBufferGeometry(0.06, 32, 32);
 
-    let material = selected ? new THREE.MeshBasicMaterial({color: 'blue'}): new THREE.MeshBasicMaterial({color: 'white'});
+    let material = selected ? new THREE.MeshBasicMaterial({color: 0x3cb391}): new THREE.MeshBasicMaterial({color: 'white'});
 
     let mesh = new THREE.Mesh(geometry, material);
     mesh.castShadow = true;
     mesh.receiveShadow = true;
     mesh.position.x = x;
+    mesh.position.y = 0;
     mesh.position.z = z;
     mesh.data = {id};
     return mesh;
@@ -74,7 +77,7 @@ function getLineModels ({lines, points}) {
     });
 
     let geometry = new LineGeometry();
-    geometry.setPositions([points[from].x, 0.01, points[from].z, points[to].x, 0.01, points[to].z]);
+    geometry.setPositions([points[from].x, 0, points[from].z, points[to].x, 0, points[to].z]);
 
     let line = new Line2(geometry, material);
 
@@ -88,7 +91,7 @@ function getColumnsModels (points){
     let columnGeometry = new THREE.CylinderGeometry(DEPTH/2, DEPTH/2, HEIGHT, 32);
     let columnMesh = new THREE.Mesh(columnGeometry, new THREE.MeshLambertMaterial({color: 0xffffff, transparent: true, opacity: 1}));
 
-    columnMesh.position.set(x, HEIGHT/2 + 0.03, z);
+    columnMesh.position.set(x, HEIGHT/2, z);
     columnMesh.castShadow = true;
     columnMesh.receiveShadow = true;
 
@@ -105,31 +108,10 @@ function getWallsModels ({lines, points}) {
     let width = Math.hypot(startPoint.x - endPoint.x, startPoint.z - endPoint.z);
 
     let wallGeometry = new THREE.BoxGeometry(width, HEIGHT, DEPTH);
-    let material = new THREE.MeshStandardMaterial({
-        roughness: 0.05,
+    let material = new THREE.MeshLambertMaterial({
         color: 0xffffff,
-        bumpScale: 0.05,
-        metalness: 0.02,
         transparent: true,
         opacity: 1,
-    });
-
-    textureLoader.load( "assets/plaster_bump.jpg", function ( map ) {
-        map.wrapS = THREE.RepeatWrapping;
-        map.wrapT = THREE.RepeatWrapping;
-        map.anisotropy = 4;
-        map.repeat.set( width, HEIGHT);
-        material.bumpMap = map;
-        material.needsUpdate = true;
-    });
-
-    textureLoader.load( "assets/plaster_roughness.jpg", function ( map ) {
-        map.wrapS = THREE.RepeatWrapping;
-        map.wrapT = THREE.RepeatWrapping;
-        map.anisotropy = 4;
-        map.repeat.set( width, HEIGHT );
-        material.roughnessMap = map;
-        material.needsUpdate = true;
     });
 
     let wallMesh = new THREE.Mesh(wallGeometry, material);
@@ -140,12 +122,77 @@ function getWallsModels ({lines, points}) {
     let angle = -Math.atan(offsetZ / offsetX);
 
 
-    wallMesh.position.set(endPoint.x + offsetX / 2, HEIGHT / 2 + 0.03, endPoint.z + offsetZ / 2);
+    wallMesh.position.set(endPoint.x + offsetX / 2, HEIGHT / 2, endPoint.z + offsetZ / 2);
     wallMesh.castShadow = true;
     wallMesh.receiveShadow = true;
     wallMesh.rotateY(angle);
 
     return wallMesh;
+  });
+}
+
+function getSkirtingModel({lines, points}){
+    return _.map(lines, ({from, to}) => {
+
+        let startPoint = points[from];
+        let endPoint = points[to];
+
+        let width = Math.hypot(startPoint.x - endPoint.x, startPoint.z - endPoint.z);
+
+        let skirtingGeometry = new THREE.BoxGeometry(1.01 * width, HEIGHT/20, 1.2 * DEPTH);
+        let material = new THREE.MeshStandardMaterial({
+            roughness: 0.05,
+            color: 0xffffff,
+            bumpScale: 0.05,
+            metalness: 0.02,
+            transparent: true,
+            opacity: 1,
+        });
+
+        material.polygonOffset = true;
+        material.polygonOffsetFactor = -1;
+
+        textureLoader.load( "assets/materials/wood_diffuse.jpg", function ( map ) {
+            map.wrapS = THREE.RepeatWrapping;
+            map.wrapT = THREE.RepeatWrapping;
+            map.anisotropy = 4;
+            map.repeat.set( width, HEIGHT);
+            material.map = map;
+            material.needsUpdate = true;
+        });
+
+        textureLoader.load( "assets/materials/wood_bump.jpg", function ( map ) {
+            map.wrapS = THREE.RepeatWrapping;
+            map.wrapT = THREE.RepeatWrapping;
+            map.anisotropy = 4;
+            map.repeat.set( width, HEIGHT);
+            material.bumpMap = map;
+            material.needsUpdate = true;
+        });
+
+        textureLoader.load( "assets/materials/wood_roughness.jpg", function ( map ) {
+            map.wrapS = THREE.RepeatWrapping;
+            map.wrapT = THREE.RepeatWrapping;
+            map.anisotropy = 4;
+            map.repeat.set( width, HEIGHT );
+            material.roughnessMap = map;
+            material.needsUpdate = true;
+        });
+
+        let skirtingMesh = new THREE.Mesh(skirtingGeometry, material);
+
+        let offsetX = startPoint.x - endPoint.x;
+        let offsetZ = startPoint.z - endPoint.z;
+
+        let angle = -Math.atan(offsetZ / offsetX);
+
+
+        skirtingMesh.position.set(endPoint.x + offsetX / 2, HEIGHT / 40 , endPoint.z + offsetZ / 2);
+        skirtingMesh.castShadow = true;
+        skirtingMesh.receiveShadow = true;
+        skirtingMesh.rotateY(angle);
+
+        return skirtingMesh;
   });
 }
 
@@ -184,7 +231,7 @@ export function createFloorModel({lines, points}) {
     }
 
     let floor = new THREE.Group();
-    let centers = [new THREE.Vector3(0,0,0)];
+    let centers = [];
     let extrudeSettings = { depth: 0.03, bevelEnabled: false };
 
     for( let room of rooms){
@@ -225,10 +272,14 @@ export function createFloorModel({lines, points}) {
                             bumpScale: 2
                         } );
 
-            let angle = Math.PI/2 * randomInt(0,1);
-            let choice = Math.floor( 4 * Math.random())+1;
+            material.polygonOffset = true;
+            material.polygonOffsetFactor = -1;
 
-            textureLoader.load( "assets/tiles"+choice+"_diffuse.jpg", function ( map ) {
+            let angle = Math.PI/2 * randomInt(0,1);
+
+            let choice = (floor.children.length) % 5 + 1;
+
+            textureLoader.load( "assets/materials/tiles"+choice.toString()+"_diffuse.jpg", function ( map ) {
                 map.wrapS = THREE.RepeatWrapping;
                 map.wrapT = THREE.RepeatWrapping;
                 map.anisotropy = 4;
@@ -237,7 +288,7 @@ export function createFloorModel({lines, points}) {
                 material.map = map;
                 material.needsUpdate = true;
             });
-            textureLoader.load( "assets/tiles"+choice+"_bump.jpg", function ( map ) {
+            textureLoader.load( "assets/materials/tiles"+choice.toString()+"_bump.jpg", function ( map ) {
                 map.wrapS = THREE.RepeatWrapping;
                 map.wrapT = THREE.RepeatWrapping;
                 map.anisotropy = 4;
@@ -246,7 +297,7 @@ export function createFloorModel({lines, points}) {
                 material.bumpMap = map;
                 material.needsUpdate = true;
             });
-            textureLoader.load( "assets/tiles"+choice+"_roughness.jpg", function ( map ) {
+            textureLoader.load( "assets/materials/tiles"+choice.toString()+"_roughness.jpg", function ( map ) {
                 map.wrapS = THREE.RepeatWrapping;
                 map.wrapT = THREE.RepeatWrapping;
                 map.anisotropy = 4;

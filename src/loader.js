@@ -3,9 +3,10 @@
 import { GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 import { GLTFExporter} from "three/examples/jsm/exporters/GLTFExporter";
 
-import {scene, currentObjects, renderer, camera, floorModel, wallsModel, canvas} from './app';
+import {scene, currentObjects, renderer, camera, floorModel, wallsModel, canvas, backgroundObjects} from './app';
 import randomInt from 'random-int'
 import {plants, trees, rocks, mountains} from "./objects";
+
 import * as THREE from 'three';
 
 async function loadModel(path){
@@ -73,12 +74,14 @@ function loadFromList(list, listName, number, near, far){
 
             model.position.set(x, 0, z);
             model.rotation.set(0, angle, 0);
+
+            backgroundObjects.push(model);
         });
     }
 }
 
 
-export function randomBackgroundObjects(treesNumber=2000, plantsNumber=300, rocksNumber=50, mountainsNumber=50){
+export function randomBackgroundObjects(treesNumber=3000, plantsNumber=300, rocksNumber=50, mountainsNumber=50){
 
     loadFromList(trees, 'trees', treesNumber, 50, 120);
     loadFromList(trees, 'trees', treesNumber, 125, 150);
@@ -97,12 +100,10 @@ export function loadScene(name){
 
     loader.load(name, gltf => {
 
-        scene.add(gltf.scene);
+        let model = gltf.scene;
+        scene.add(model);
         renderer.render(scene, camera);
-    }, undefined,
-
-    error => {
-      console.log(error);
+        currentObjects.push(model);
     });
 }
 
@@ -111,7 +112,14 @@ export function saveScene(){
 
     let exporter = new GLTFExporter();
 
-    exporter.parse( floorModel, function ( glb ) {
+    let group = new THREE.Group();
+    _.each(backgroundObjects, object => group.add(object.clone()));
+    //_.each(currentObjects, object => group.add(object.clone()));
+    //_.each(wallsModel, wall => group.add(wall.clone()));
+    //_.each(wallsModel, wall => group.add(wall.clone()));
+    //_.each(floorModel, floor => group.add(floor.clone()));
+
+    exporter.parse( group, function ( glb ) {
 
         let link = document.createElement( 'a' );
         link.style.display = 'none';

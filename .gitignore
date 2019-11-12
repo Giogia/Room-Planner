@@ -52,6 +52,7 @@ tmtagsHistory
 ######################
 *.obj
 *.mtl
+*.glb
 
 # Node Packet Manager
 three/node_modules/*

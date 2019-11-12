@@ -17,8 +17,8 @@ canvas{
 :root{
     --mdc-theme-primary: rgb(255, 255, 255);
     --mdc-theme-on-primary: rgb(185, 117, 32);
-    --mdc-theme-secondary: rgb(248, 248, 255);
-    --mdc-theme-on-secondary: #bc7f1e;
+    --mdc-theme-secondary: rgb(255, 255, 255);
+    --mdc-theme-on-secondary: #377e7c;
  }
 
 #loading {

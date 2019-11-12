@@ -15,6 +15,7 @@ import {MDCDrawer} from "@material/drawer/component";
 export var scene, camera, renderer, canvas, raycaster, textureLoader;
 export var ground;
 export var currentObjects = [];
+export var backgroundObjects = [];
 export let drawModel, floorModel, wallsModel, roomCenters;
 export let list, drawer;
 
@@ -60,14 +61,16 @@ function init(){
         wallsModel = createWallsModel(floorPlan);
         scene.add(wallsModel);
 
-        randomBackgroundObjects();
+        //randomBackgroundObjects();
+        loadScene('background.glb');
 
         autoResize();
 
+        animate();
+
         setTimeout(function(){
-            animate();
             loadingAnimation();
-        }, 0);
+        }, 2000);
 
     });
 }
@@ -96,9 +99,9 @@ function createScene(){
 }
 
 function createCamera(){
-    const fov = 35;
+    const fov = 25;
     const aspect = canvas.clientWidth / canvas.clientHeight;
-    const near = 0.1;
+    const near = 0.01;
     const far = 200;
     camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
     camera.position.set(8, 12, 12);
@@ -126,6 +129,7 @@ function createGround() {
         new THREE.PlaneBufferGeometry(2000, 2000),
         new THREE.MeshLambertMaterial({ color: 0x202020, opacity: 0.75 }));
     ground.rotation.x = -Math.PI / 2;
+    ground.position.y = -3;
     ground.receiveShadow = true;
 
     scene.add(ground);
@@ -164,12 +168,19 @@ export function updateScene(){
 export function updateModel(){
 
     scene.remove(floorModel);
-    floorModel = createFloorModel(floorPlan);
+    floorModel = createFloorModel(floorPlan)[0];
     scene.add(floorModel);
+    hide(floorModel.children);
+
+    scene.remove(roomCenters);
+    roomCenters = createFloorModel(floorPlan)[1];
+    scene.add(roomCenters);
+    hide(roomCenters.children);
 
     scene.remove(wallsModel);
     wallsModel = createWallsModel(floorPlan);
     scene.add(wallsModel);
+    hide(wallsModel.children);
 }
 
 
@@ -184,18 +195,15 @@ export function selectObject(event){
 
     console.log('current', currentObjects);
 
-    let intersects = raycaster.intersectObjects( currentObjects );
+    let intersects = raycaster.intersectObjects( scene.children );
     console.log('intersected', intersects);
 
-    /*for (let intersect of intersects) {
+    for (let intersect of intersects) {
 
         if(intersect.object.type == "Scene"){
-             intersect.object.material.color.setHex(0xe8405e);
+             intersect.object.material.opacity = 0.2;
         }
-
-		console.log(intersect);
 	}
-     */
 }
 
 

@@ -58,7 +58,7 @@ function getList(word){
             model.src = './models/furniture/' + object + '.glb';
             model.id = object;
             model.autoRotate = 'true';
-            model.shadowIntensity = '1';
+            model.exposure = 0.5;
             li.appendChild(model);
         }
     }

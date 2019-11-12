@@ -25,7 +25,7 @@ export function  enableOrbitControls(){
     orbitControls.dampingFactor = 0.09;
     orbitControls.rotateSpeed = 1;
     orbitControls.minDistance = 0;
-    orbitControls.maxDistance = 50;
+    orbitControls.maxDistance = 30;
 
     orbitControls.update();
 }

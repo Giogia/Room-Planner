@@ -14,7 +14,6 @@ export function addLights(){
     createSpot(-250, 200, 250);
     createSpot(250, 200, 250);
     createSpot(250, 200, -250);
-    //createSpot(-250, 200, -250);
 
     scene.add(spot);
 }

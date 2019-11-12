@@ -1,16 +1,13 @@
 import * as THREE from 'three';
 import _ from 'lodash';
 
-import {canvas, camera, scene, updateScene} from "./app";
+import {canvas, camera, scene, updateScene, updateModel} from "./app";
 import {LineMaterial} from "three/examples/jsm/lines/LineMaterial";
 import {LineGeometry} from "three/examples/jsm/lines/LineGeometry";
 import {Line2} from "three/examples/jsm/lines/Line2";
 
 export let selected = { points: [], lines:[] };
 export let currentLine;
-
-//export let floorPlan = { points:[], lines:[] };
-
 
 export let floorPlan = {
 
@@ -100,7 +97,7 @@ function showLine(event){
     let point = _.find(floorPlan.points,{ selected: true });
 
     let material = new LineMaterial({
-        color: 'blue',
+        color: 0x3cb391,
         transparent: true,
         opacity: 0.3,
         linewidth: 0.008,

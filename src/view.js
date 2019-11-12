@@ -13,8 +13,10 @@ import {
     activateDrawButtons,
     deactivateButtons,
     activateButtons,
-    deactivateDrawButtons
-} from "./buttons";
+    deactivateDrawButtons,
+    showButton,
+    hideButton } from "./buttons";
+
 import {roomCenters} from "./app";
 
 let floorPlanView = false;
@@ -25,21 +27,13 @@ export function toggleView(event) {
     event.preventDefault();
 
     drawer.open = !drawer.open;
-
-    (floorPlanView) ? modelView(): drawView();
-
     floorPlanView = !floorPlanView;
+
+    (floorPlanView) ? drawView() : modelView();
 }
 
 
 function drawView(){
-
-    tweenCamera(new THREE.Vector3(0, 30, 1));
-
-    hide(currentObjects);
-    hide(floorModel.children);
-    hide(wallsModel.children);
-    show(drawModel.children);
 
     showButton(deleteButton, 0);
     showButton(editButton, 0);
@@ -48,20 +42,21 @@ function drawView(){
 
     list.removeEventListener('click', addObject, false);
     canvas.removeEventListener('dblclick', selectObject, false);
+
+    hide(currentObjects);
+    hide(floorModel.children);
+    hide(roomCenters.children);
+    hide(wallsModel.children);
+    show(drawModel.children);
+
+    tweenCamera(new THREE.Vector3(0, 30, 2));
+
 }
 
 
 function modelView(){
 
     mapControls.reset();
-    updateModel();
-
-    tweenCamera(new THREE.Vector3(6, 8, 8));
-
-    show(currentObjects);
-    show(floorModel.children);
-    show(wallsModel.children);
-    hide(drawModel.children);
 
     hideButton(deleteButton, 300);
     hideButton(editButton, 150);
@@ -70,6 +65,20 @@ function modelView(){
 
     list.addEventListener('click', addObject, false);
     canvas.addEventListener('dblclick', selectObject, false);
+
+    updateModel();
+
+    setTimeout( function(){
+        tweenCamera(new THREE.Vector3(6, 8, 8));
+    }, 1000);
+
+    setTimeout( function(){
+        show(currentObjects);
+        show(floorModel.children);
+        show(roomCenters.children);
+        show(wallsModel.children);
+        hide(drawModel.children);
+    },2000);
 }
 
 
@@ -87,7 +96,7 @@ export function tweenCamera(targetPosition, duration=2000){
 
         .to( targetPosition, duration )
 
-        .easing( TWEEN.Easing.Quintic.Out )
+        .easing( TWEEN.Easing.Circular.Out )
 
         .onUpdate( function() {
             camera.position.copy(position);
@@ -118,7 +127,7 @@ export function hideCloseWalls(){
         for( let mesh of wallsModel.children){
             let distance = camera.position.distanceTo(mesh.position);
             mesh.visible = distance >= 1;
-            mesh.material.opacity = Math.log(distance-6);
+            mesh.material.opacity = Math.log(distance-8);
         }
     }
 }
@@ -145,17 +154,4 @@ export function show(objects) {
     for (let mesh of objects) {
         mesh.visible = true;
     }
-}
-
-export function hideButton(element, translation=100, timeout=250){
-    element.style.transform = 'translateY('+ translation.toString() +'%)';
-
-    setTimeout(function(){
-        element.style.opacity = '0';
-    }, timeout);
-}
-
-export function showButton(element, translation=100){
-    element.style.opacity = '100';
-    element.style.transform = 'translateY(-'+ translation.toString() +'%)';
 }
