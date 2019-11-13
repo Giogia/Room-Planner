@@ -5,9 +5,10 @@ import { scene } from './app';
 
 export let hemisphere, ambient, directional, spot;
 
+
 export function addLights(){
 
-    hemisphere = new THREE.HemisphereLight(0xddeeff, 0x0f0e0d, 0.6 );
+    hemisphere = new THREE.HemisphereLight(0xddeeff, 0x0f0e0d, 0.8 );
     hemisphere.position.set(0, 20, 0);
     scene.add( hemisphere );
 
@@ -17,6 +18,7 @@ export function addLights(){
 
     scene.add(spot);
 }
+
 
 function createSpot(x,y,z){
     spot = new THREE.SpotLight(0xfff5e1, 0.3);

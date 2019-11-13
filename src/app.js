@@ -6,17 +6,16 @@ import * as TWEEN from 'tween.js';
 import {enableOrbitControls, enableMapControls, enableDragControls, orbitControls, mapControls, dragControls} from "./controls";
 import { addLights } from './lights';
 import {addObject, loadScene, randomBackgroundObjects} from "./loader";
-import {createFloorModel, createModel, createWallsModel} from "./walls";
+import {createFloorModel, createDrawModel, createWallsModel } from "./walls";
 import {hide, hideCloseWalls, showRoomCenters, tweenCamera} from "./view";
-import {floorPlan} from "./draw";
 import {createButtons} from "./buttons";
 import {MDCDrawer} from "@material/drawer/component";
 
-export var scene, camera, renderer, canvas, raycaster, textureLoader;
+export var scene, camera, renderer, canvas, raycaster;
 export var ground;
 export var currentObjects = [];
 export var backgroundObjects = [];
-export let drawModel, floorModel, wallsModel, roomCenters;
+export var drawModel, floorModel, wallsModel, skirtingModel, roomCenters;
 export let list, drawer;
 
 
@@ -36,10 +35,9 @@ function init(){
         createScene();
         createCamera();
         createRayCaster();
-        createTextureLoader();
 
         addLights();
-        createGround();
+        addGround();
 
         enableOrbitControls();
         enableMapControls();
@@ -48,17 +46,20 @@ function init(){
         list.addEventListener('click', addObject, false);
         canvas.addEventListener('dblclick', selectObject, false);
 
-        drawModel = createModel(floorPlan);
+        drawModel = createDrawModel();
         scene.add(drawModel);
         hide(drawModel.children);
 
-        floorModel = createFloorModel(floorPlan)[0];
+        floorModel = createFloorModel()[0];
         scene.add(floorModel);
 
-        roomCenters = createFloorModel(floorPlan)[1];
+        roomCenters = createFloorModel()[1];
         scene.add(roomCenters);
 
-        wallsModel = createWallsModel(floorPlan);
+        skirtingModel = createWallsModel(true);
+        scene.add(skirtingModel);
+
+        wallsModel = createWallsModel();
         scene.add(wallsModel);
 
         //randomBackgroundObjects();
@@ -70,7 +71,7 @@ function init(){
 
         setTimeout(function(){
             loadingAnimation();
-        }, 2000);
+        }, 1000);
 
     });
 }
@@ -98,6 +99,7 @@ function createScene(){
     scene.fog = new THREE.Fog(0xddeeff, 45, 200);
 }
 
+
 function createCamera(){
     const fov = 25;
     const aspect = canvas.clientWidth / canvas.clientHeight;
@@ -112,22 +114,13 @@ function createRayCaster() {
     raycaster = new THREE.Raycaster();
 }
 
-function createTextureLoader(){
-    textureLoader = new THREE.TextureLoader();
-}
 
-function createGround() {
-
-    let material = new THREE.MeshStandardMaterial( {
-                            roughness: 1,
-                            color: 0xffffff,
-                            metalness: 0.02,
-                            bumpScale: 1
-                        } );
+function addGround() {
 
     ground = new THREE.Mesh(
         new THREE.PlaneBufferGeometry(2000, 2000),
         new THREE.MeshLambertMaterial({ color: 0x202020, opacity: 0.75 }));
+
     ground.rotation.x = -Math.PI / 2;
     ground.position.y = -3;
     ground.receiveShadow = true;
@@ -158,32 +151,6 @@ function autoResize(){
 }
 
 
-export function updateScene(){
-
-    scene.remove(drawModel);
-    drawModel = createModel(floorPlan);
-    scene.add(drawModel);
-}
-
-export function updateModel(){
-
-    scene.remove(floorModel);
-    floorModel = createFloorModel(floorPlan)[0];
-    scene.add(floorModel);
-    hide(floorModel.children);
-
-    scene.remove(roomCenters);
-    roomCenters = createFloorModel(floorPlan)[1];
-    scene.add(roomCenters);
-    hide(roomCenters.children);
-
-    scene.remove(wallsModel);
-    wallsModel = createWallsModel(floorPlan);
-    scene.add(wallsModel);
-    hide(wallsModel.children);
-}
-
-
 export function selectObject(event){
 
     let mouse = new THREE.Vector2();
@@ -204,6 +171,38 @@ export function selectObject(event){
              intersect.object.material.opacity = 0.2;
         }
 	}
+}
+
+
+export function updateScene(){
+
+    scene.remove(drawModel);
+    drawModel = createDrawModel();
+    scene.add(drawModel);
+}
+
+
+export function updateModel(){
+
+    scene.remove(floorModel);
+    floorModel = createFloorModel()[0];
+    scene.add(floorModel);
+    hide(floorModel.children);
+
+    scene.remove(roomCenters);
+    roomCenters = createFloorModel()[1];
+    scene.add(roomCenters);
+    hide(roomCenters.children);
+
+    scene.remove(wallsModel);
+    wallsModel = createWallsModel();
+    scene.add(wallsModel);
+    hide(wallsModel.children);
+
+    scene.remove(skirtingModel);
+    skirtingModel = createWallsModel(true);
+    scene.add(skirtingModel);
+    hide(skirtingModel.children);
 }
 
 

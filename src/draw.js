@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import _ from 'lodash';
 
-import {canvas, camera, scene, updateScene, updateModel} from "./app";
+import {canvas, camera, scene, updateScene} from "./app";
 import {LineMaterial} from "three/examples/jsm/lines/LineMaterial";
 import {LineGeometry} from "three/examples/jsm/lines/LineGeometry";
 import {Line2} from "three/examples/jsm/lines/Line2";
@@ -65,9 +65,10 @@ export function editDrawing(event){
 
 function selectPoint(point){
 
-    let selected = _.find(floorPlan.points,{ selected: true });
+    let points = floorPlan.points;
+    let selected = _.find(points,{ selected: true });
 
-    floorPlan.points[point.id].selected = !floorPlan.points[point.id].selected;
+    points[point.id].selected = !points[point.id].selected;
     updateScene();
 
     if(selected === undefined){
@@ -114,18 +115,21 @@ function showLine(event){
 
 function drawLine(event){
 
+    let points = floorPlan.points;
+    let lines = floorPlan.lines;
+
     let position = worldCoordinates(event);
-    let start = _.find(floorPlan.points, {selected: true});
-    let end = _.find(floorPlan.points, {x:position.x, z:position.z});
+    let start = _.find(points, {selected: true});
+    let end = _.find(points, {x:position.x, z:position.z});
 
     // fix to avoid drawing line from to same point.
     if(start === end){
-        start = _.findLast(floorPlan.points, {selected: true});
+        start = _.findLast(points, {selected: true});
     }
 
     scene.remove(currentLine);
-    floorPlan.lines.push({from: start.id, to: end.id});
-    for( let point of floorPlan.points){ point.selected = false}
+    lines.push({from: start.id, to: end.id});
+    for( let point of points){ point.selected = false}
     updateScene();
 
     canvas.removeEventListener( 'mousemove', showLine, false);

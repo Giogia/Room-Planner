@@ -1,23 +1,18 @@
-'use strict';
-
 import * as THREE from "three";
-import {dragControls, mapControls, orbitControls} from "./controls";
 import * as TWEEN from "tween.js";
 
-import {camera, currentObjects, wallsModel, drawModel, list, updateModel, canvas, floorModel} from "./app";
-import {drawer, selectObject} from "./app";
-import {addObject} from "./loader";
-import {
-    editButton,
-    deleteButton,
-    activateDrawButtons,
-    deactivateButtons,
-    activateButtons,
-    deactivateDrawButtons,
-    showButton,
-    hideButton } from "./buttons";
+import {dragControls, mapControls, orbitControls} from "./controls";
 
-import {roomCenters} from "./app";
+import { drawer, camera, list, canvas } from "./app";
+import { currentObjects } from "./app";
+import { wallsModel, drawModel, roomCenters, skirtingModel, floorModel} from "./app";
+import {updateModel, selectObject} from "./app";
+
+import {addObject} from "./loader";
+
+import {editButton, deleteButton} from "./buttons";
+import { activateDrawButtons, deactivateButtons, activateButtons, deactivateDrawButtons, showButton, hideButton } from "./buttons";
+
 
 let floorPlanView = false;
 
@@ -47,6 +42,7 @@ function drawView(){
     hide(floorModel.children);
     hide(roomCenters.children);
     hide(wallsModel.children);
+    hide(skirtingModel.children);
     show(drawModel.children);
 
     tweenCamera(new THREE.Vector3(0, 30, 2));
@@ -77,8 +73,9 @@ function modelView(){
         show(floorModel.children);
         show(roomCenters.children);
         show(wallsModel.children);
+        show(skirtingModel.children);
         hide(drawModel.children);
-    },2000);
+    },1000);
 }
 
 

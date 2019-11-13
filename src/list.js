@@ -9,11 +9,18 @@ let form = document.getElementById('search-form');
 let search = document.getElementById('search-icon');
 
 
+function init(){
+    createList();
+    form.onsubmit = updateList;
+    search.addEventListener('click', updateList, false);
+}
+
 function createList(){
 
     getList();
     list.appendChild(ul);
 }
+
 
 function updateList(event){
 
@@ -37,6 +44,7 @@ function updateList(event){
     list.appendChild(ul);
 
 }
+
 
 function getList(word){
 
@@ -66,7 +74,5 @@ function getList(word){
     return found
 }
 
+init();
 
-createList();
-form.onsubmit = updateList;
-search.addEventListener('click', updateList, false);

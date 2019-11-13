@@ -3,11 +3,12 @@
 import { GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 import { GLTFExporter} from "three/examples/jsm/exporters/GLTFExporter";
 
-import {scene, currentObjects, renderer, camera, floorModel, wallsModel, canvas, backgroundObjects} from './app';
+import {scene, currentObjects, renderer, camera, backgroundObjects} from './app';
 import randomInt from 'random-int'
 import {plants, trees, rocks, mountains} from "./objects";
 
 import * as THREE from 'three';
+
 
 async function loadModel(path){
 
@@ -50,6 +51,7 @@ export function addObject(event){
         currentObjects.push(model);
     });
 }
+
 
 // TODO make function dependent only on path not list
 function loadFromList(list, listName, number, near, far){
@@ -113,10 +115,10 @@ export function saveScene(){
     let exporter = new GLTFExporter();
 
     let group = new THREE.Group();
-    _.each(backgroundObjects, object => group.add(object.clone()));
+    //_.each(backgroundObjects, object => group.add(object.clone()));
     //_.each(currentObjects, object => group.add(object.clone()));
     //_.each(wallsModel, wall => group.add(wall.clone()));
-    //_.each(wallsModel, wall => group.add(wall.clone()));
+    //_.each(skirtingModel, skirt => group.add(skirt.clone()));
     //_.each(floorModel, floor => group.add(floor.clone()));
 
     exporter.parse( group, function ( glb ) {

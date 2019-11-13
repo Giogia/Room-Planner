@@ -8,17 +8,14 @@ import { Line2 } from "three/examples/jsm/lines/Line2";
 import Graph from "graph.js/dist/graph.es6";
 
 import {floorPlan} from "./draw";
-import { textureLoader } from "./app";
-import randomInt from "random-int";
 let inside = require("point-in-polygon");
-
+import { textureLoader, floorMaterial, skirtingMaterial} from "./materials";
 
 const DEPTH = 0.03;
 const HEIGHT = 1.3;
 
-const MATERIAL = new THREE.MeshLambertMaterial({color: 0xffffff, transparent: true, opacity: 1});
 
-export function createModel () {
+export function createDrawModel () {
 
   let points = getPointModels(floorPlan.points);
   let lines = getLineModels(floorPlan);
@@ -31,19 +28,15 @@ export function createModel () {
   return group;
 }
 
+export function createWallsModel (skirting=false) {
 
-// TODO creation of a
-export function createWallsModel () {
-
-  let columns = getColumnsModels(floorPlan.points);
-  let walls = getWallsModels(floorPlan);
-  let skirtings = getSkirtingModel(floorPlan);
+  let columns = getColumnsModels(floorPlan.points, skirting);
+  let walls = getWallsModels(floorPlan, skirting);
 
   let group = new THREE.Group();
 
   _.each(walls, (wall) => group.add(wall));
   _.each(columns, (column) => group.add(column));
-  _.each(skirtings, (skirting) => group.add(skirting));
 
   return group;
 }
@@ -51,155 +44,98 @@ export function createWallsModel () {
 
 function getPointModels (points) {
   return _.map(points, ({id, x, z, selected}) => {
-    let geometry = new THREE.SphereBufferGeometry(0.06, 32, 32);
 
-    let material = selected ? new THREE.MeshBasicMaterial({color: 0x3cb391}): new THREE.MeshBasicMaterial({color: 'white'});
+      let geometry = new THREE.SphereBufferGeometry(0.06, 32, 32);
+      let material = selected ? new THREE.MeshBasicMaterial({color: 0x3cb391}): new THREE.MeshBasicMaterial({color: 'white'});
 
-    let mesh = new THREE.Mesh(geometry, material);
-    mesh.castShadow = true;
-    mesh.receiveShadow = true;
-    mesh.position.x = x;
-    mesh.position.y = 0;
-    mesh.position.z = z;
-    mesh.data = {id};
-    return mesh;
+      let mesh = new THREE.Mesh(geometry, material);
+
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      mesh.position.x = x;
+      mesh.position.y = 0;
+      mesh.position.z = z;
+      mesh.data = {id};
+
+      return mesh;
   });
 }
 
 function getLineModels ({lines, points}) {
   return _.map(lines, ({from, to}) => {
 
-    let material = new LineMaterial({
-      color: 0xffffff,
-      linewidth: 0.008,
-      transparent: true,
-      opacity: 0.9
-    });
+      let geometry = new LineGeometry();
+      let material = new LineMaterial({color: 0xffffff, linewidth: 0.008, transparent: true, opacity: 0.9});
 
-    let geometry = new LineGeometry();
-    geometry.setPositions([points[from].x, 0, points[from].z, points[to].x, 0, points[to].z]);
+      geometry.setPositions([points[from].x, 0, points[from].z, points[to].x, 0, points[to].z]);
 
-    let line = new Line2(geometry, material);
-
-    return line
+      return new Line2(geometry, material);
   });
 }
 
-function getColumnsModels (points){
+function getColumnsModels (points, skirting=false){
   return _.map(points, ({id, x, z})=> {
 
-    let columnGeometry = new THREE.CylinderGeometry(DEPTH/2, DEPTH/2, HEIGHT, 32);
-    let columnMesh = new THREE.Mesh(columnGeometry, new THREE.MeshLambertMaterial({color: 0xffffff, transparent: true, opacity: 1}));
+      let height = skirting? HEIGHT/20 : HEIGHT;
+      let depth = skirting? 1.2 * DEPTH : DEPTH;
 
-    columnMesh.position.set(x, HEIGHT/2, z);
-    columnMesh.castShadow = true;
-    columnMesh.receiveShadow = true;
+      let geometry = new THREE.CylinderGeometry(depth/2, depth/2, height, 32);
+      let material = skirting? skirtingMaterial : new THREE.MeshLambertMaterial({color: 0xffffff, transparent: true, opacity: 1});
 
-    return columnMesh;
+      let mesh = new THREE.Mesh(geometry, material);
+
+      mesh.position.set(x, height/2, z);
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+
+      return mesh;
   });
 }
 
-function getWallsModels ({lines, points}) {
+function getWallsModels ({lines, points}, skirting=false) {
   return _.map(lines, ({from, to}) => {
 
     let startPoint = points[from];
     let endPoint = points[to];
-
     let width = Math.hypot(startPoint.x - endPoint.x, startPoint.z - endPoint.z);
 
-    let wallGeometry = new THREE.BoxGeometry(width, HEIGHT, DEPTH);
-    let material = new THREE.MeshLambertMaterial({
-        color: 0xffffff,
-        transparent: true,
-        opacity: 1,
-    });
+    let height = skirting? HEIGHT/20 : HEIGHT;
+    let depth = skirting? 1.2 * DEPTH : DEPTH;
 
-    let wallMesh = new THREE.Mesh(wallGeometry, material);
+    let geometry = new THREE.BoxGeometry(width, height, depth);
+    let material = skirting? skirtingMaterial : new THREE.MeshLambertMaterial({color: 0xffffff, transparent: true, opacity: 1});
 
-    let offsetX = startPoint.x - endPoint.x;
-    let offsetZ = startPoint.z - endPoint.z;
-
-    let angle = -Math.atan(offsetZ / offsetX);
-
-
-    wallMesh.position.set(endPoint.x + offsetX / 2, HEIGHT / 2, endPoint.z + offsetZ / 2);
-    wallMesh.castShadow = true;
-    wallMesh.receiveShadow = true;
-    wallMesh.rotateY(angle);
-
-    return wallMesh;
-  });
-}
-
-function getSkirtingModel({lines, points}){
-    return _.map(lines, ({from, to}) => {
-
-        let startPoint = points[from];
-        let endPoint = points[to];
-
-        let width = Math.hypot(startPoint.x - endPoint.x, startPoint.z - endPoint.z);
-
-        let skirtingGeometry = new THREE.BoxGeometry(1.01 * width, HEIGHT/20, 1.2 * DEPTH);
-        let material = new THREE.MeshStandardMaterial({
-            roughness: 0.05,
-            color: 0xffffff,
-            bumpScale: 0.05,
-            metalness: 0.02,
-            transparent: true,
-            opacity: 1,
-        });
-
-        material.polygonOffset = true;
-        material.polygonOffsetFactor = -1;
-
+    if(skirting){
         textureLoader.load( "assets/materials/wood_diffuse.jpg", function ( map ) {
             map.wrapS = THREE.RepeatWrapping;
             map.wrapT = THREE.RepeatWrapping;
             map.anisotropy = 4;
             map.repeat.set( width, HEIGHT);
-            material.map = map;
-            material.needsUpdate = true;
+            skirtingMaterial.map = map;
+            skirtingMaterial.needsUpdate = true;
         });
+    }
 
-        textureLoader.load( "assets/materials/wood_bump.jpg", function ( map ) {
-            map.wrapS = THREE.RepeatWrapping;
-            map.wrapT = THREE.RepeatWrapping;
-            map.anisotropy = 4;
-            map.repeat.set( width, HEIGHT);
-            material.bumpMap = map;
-            material.needsUpdate = true;
-        });
+    let mesh = new THREE.Mesh(geometry, material);
 
-        textureLoader.load( "assets/materials/wood_roughness.jpg", function ( map ) {
-            map.wrapS = THREE.RepeatWrapping;
-            map.wrapT = THREE.RepeatWrapping;
-            map.anisotropy = 4;
-            map.repeat.set( width, HEIGHT );
-            material.roughnessMap = map;
-            material.needsUpdate = true;
-        });
+    let offsetX = startPoint.x - endPoint.x;
+    let offsetZ = startPoint.z - endPoint.z;
+    let angle = -Math.atan(offsetZ / offsetX);
 
-        let skirtingMesh = new THREE.Mesh(skirtingGeometry, material);
+    mesh.position.set(endPoint.x + offsetX / 2, height / 2, endPoint.z + offsetZ / 2);
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+    mesh.rotateY(angle);
 
-        let offsetX = startPoint.x - endPoint.x;
-        let offsetZ = startPoint.z - endPoint.z;
-
-        let angle = -Math.atan(offsetZ / offsetX);
-
-
-        skirtingMesh.position.set(endPoint.x + offsetX / 2, HEIGHT / 40 , endPoint.z + offsetZ / 2);
-        skirtingMesh.castShadow = true;
-        skirtingMesh.receiveShadow = true;
-        skirtingMesh.rotateY(angle);
-
-        return skirtingMesh;
+    return mesh;
   });
 }
 
-
-export function createFloorModel({lines, points}) {
+export function createFloorModel() {
 
     let graph = new Graph();
+    let points = floorPlan.points;
+    let lines = floorPlan.lines;
 
     _.each(points, (point) => graph.addVertex(point.id, {value: 1}));
     _.each(lines, (line) => graph.addEdge(line.from, line.to, { value:1}));
@@ -220,7 +156,7 @@ export function createFloorModel({lines, points}) {
 
         let contained = false;
         for (let j = i + 1; j < cycles.length; j++) {
-            if (isSubCycle(cycles[j], cycles[i])) {
+            if (cycles[j].every(val => cycles[i].includes(val))) {
                 contained = true;
                 break;
             }
@@ -265,49 +201,7 @@ export function createFloorModel({lines, points}) {
 
         if(!overlapped){
 
-            let material = new THREE.MeshStandardMaterial( {
-                            roughness: 1,
-                            color: 0xffffff,
-                            metalness: 0.02,
-                            bumpScale: 2
-                        } );
-
-            material.polygonOffset = true;
-            material.polygonOffsetFactor = -1;
-
-            let angle = Math.PI/2 * randomInt(0,1);
-
-            let choice = (floor.children.length) % 5 + 1;
-
-            textureLoader.load( "assets/materials/tiles"+choice.toString()+"_diffuse.jpg", function ( map ) {
-                map.wrapS = THREE.RepeatWrapping;
-                map.wrapT = THREE.RepeatWrapping;
-                map.anisotropy = 4;
-                map.repeat.set(2,2);
-                map.rotation = angle;
-                material.map = map;
-                material.needsUpdate = true;
-            });
-            textureLoader.load( "assets/materials/tiles"+choice.toString()+"_bump.jpg", function ( map ) {
-                map.wrapS = THREE.RepeatWrapping;
-                map.wrapT = THREE.RepeatWrapping;
-                map.anisotropy = 4;
-                map.repeat.set(2, 2);
-                map.rotation = angle;
-                material.bumpMap = map;
-                material.needsUpdate = true;
-            });
-            textureLoader.load( "assets/materials/tiles"+choice.toString()+"_roughness.jpg", function ( map ) {
-                map.wrapS = THREE.RepeatWrapping;
-                map.wrapT = THREE.RepeatWrapping;
-                map.anisotropy = 4;
-                map.repeat.set(2, 2);
-                map.rotation = angle;
-                material.roughnessMap = map;
-                material.needsUpdate = true;
-            });
-
-            let mesh = new THREE.Mesh( geometry, material );
+            let mesh = new THREE.Mesh( geometry, floorMaterial );
 
             mesh.rotateX(Math.PI/2);
             mesh.translateZ(-0.03);
@@ -320,13 +214,6 @@ export function createFloorModel({lines, points}) {
     _.each(getPointModels(centers), (wall) => centersGroup.add(wall));
 
     return [floor, centersGroup];
-
-}
-
-
-function isSubCycle(subCycle, cycle){
-
-  return subCycle.every(val => cycle.includes(val));
 }
 
 
