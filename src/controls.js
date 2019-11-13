@@ -95,10 +95,10 @@ export function enableDragControls(){
         }
 
         // reset group position otherwise children are over-translated
-        group.parent.position.set(group.position.x,group.position.y,group.position.z);
+        //group.parent.position.set(group.position.x,group.position.y,group.position.z);
 
         for( let child of group.parent.children ){
-            child.position.set(position.x, position.y, position.z);
+            child.position.set(position.x - group.parent.position.x, position.y - group.parent.position.y, position.z - group.parent.position.z);
         }
 
     });
