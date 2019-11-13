@@ -63,18 +63,14 @@ function modelView(){
 
     updateModel();
 
-    setTimeout( function(){
-        tweenCamera(new THREE.Vector3(6, 8, 8));
-    }, 500);
+    tweenCamera(new THREE.Vector3(6, 8, 8));
 
-    setTimeout( function(){
-        show(currentObjects);
-        show(floorModel.children);
-        show(roomCenters.children);
-        show(wallsModel.children);
-        show(skirtingModel.children);
-        hide(drawModel.children);
-    },500);
+    show(currentObjects);
+    show(floorModel.children);
+    show(roomCenters.children);
+    show(wallsModel.children);
+    show(skirtingModel.children);
+    hide(drawModel.children);
 }
 
 

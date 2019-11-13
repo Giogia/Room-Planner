@@ -1,13 +1,14 @@
 'use strict';
 
 import * as THREE from 'three';
-import OrbitControls from 'three-orbitcontrols';
+import OrbitControls from 'three-controls/src/js/OrbitControls';
 import {MapControls} from 'three-controls';
+import TransformControls from "three-controls/src/js/TransformControls";
 
-import {camera, currentObjects, renderer, canvas} from "./app";
+import {camera, currentObjects, renderer, canvas, animate} from "./app";
 import ThreeDragger from 'three-dragger';
 
-export var dragControls, mapControls, orbitControls;
+export var dragControls, mapControls, transformControls, orbitControls;
 
 
 export function  enableOrbitControls(){
@@ -21,13 +22,23 @@ export function  enableOrbitControls(){
     orbitControls.enableDamping = true;
     orbitControls.screenSpacePanning = false;
     orbitControls.minPolarAngle = 0;
-    orbitControls.maxPolarAngle = Math.PI/2-Math.PI/64;
+    orbitControls.maxPolarAngle = Math.PI/2-Math.PI/32;
     orbitControls.dampingFactor = 0.09;
-    orbitControls.rotateSpeed = 1;
+    orbitControls.rotateSpeed = 0.1;
     orbitControls.minDistance = 0;
     orbitControls.maxDistance = 30;
 
     orbitControls.update();
+}
+
+export function enableTransformControls(){
+
+    transformControls = new TransformControls(camera, renderer.domElement);
+    transformControls.enabled = true;
+    transformControls.showX = true;
+    transformControls.showY = true;
+    transformControls.showZ = true;
+    transformControls.addEventListener('change', animate);
 }
 
 
@@ -84,7 +95,7 @@ export function enableDragControls(){
         }
 
         // reset group position otherwise children are over-translated
-        group.parent.position.set(0,0,0);
+        group.parent.position.set(group.position.x,group.position.y,group.position.z);
 
         for( let child of group.parent.children ){
             child.position.set(position.x, position.y, position.z);

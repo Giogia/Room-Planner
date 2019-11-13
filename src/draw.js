@@ -146,7 +146,7 @@ export function deleteDrawing(event){
     let selected = _.find(points,{ x: position.x, z: position.z });
 
     if(selected){
-       
+
         _.remove(lines, line => { return line.from === points.indexOf(selected)});
         _.remove(lines, line => { return line.to === points.indexOf(selected)});
 

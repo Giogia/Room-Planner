@@ -3,11 +3,12 @@
 import { GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 import { GLTFExporter} from "three/examples/jsm/exporters/GLTFExporter";
 
-import {scene, currentObjects, renderer, camera, backgroundObjects} from './app';
+import {scene, currentObjects, renderer, camera, backgroundObjects, ground} from './app';
 import randomInt from 'random-int'
 import {plants, trees, rocks, mountains} from "./objects";
 
 import * as THREE from 'three';
+import {transformControls} from "./controls";
 
 
 async function loadModel(path){
@@ -45,6 +46,8 @@ export function addObject(event){
 
         let model = gltf.scene;
         model.name = name;
+
+        //let bBox = new THREE.Box3().setFromObject( model ).getCenter( model.position ).multiplyScalar( - 1 );
 
         model.position.set(camera.position.x/4, 0.03, camera.position.z/4);
 

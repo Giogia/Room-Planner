@@ -3,7 +3,9 @@
 import * as THREE from 'three';
 import * as TWEEN from 'tween.js';
 
-import {enableOrbitControls, enableMapControls, enableDragControls, orbitControls, mapControls, dragControls} from "./controls";
+import { enableOrbitControls, enableMapControls, enableDragControls, enableTransformControls} from "./controls"
+import {orbitControls, mapControls, transformControls, dragControls} from "./controls";
+
 import { addLights } from './lights';
 import {addObject, loadScene, randomBackgroundObjects} from "./loader";
 import {createFloorModel, createDrawModel, createWallsModel } from "./walls";
@@ -36,12 +38,13 @@ function init(){
         createCamera();
         createRayCaster();
 
-        addLights();
-        addGround();
-
         enableOrbitControls();
         enableMapControls();
         enableDragControls();
+        enableTransformControls();
+
+        addLights();
+        addGround();
 
         list.addEventListener('click', addObject, false);
         canvas.addEventListener('dblclick', selectObject, false);
@@ -63,7 +66,7 @@ function init(){
         scene.add(wallsModel);
 
         //randomBackgroundObjects();
-        loadScene('background.glb');
+        //loadScene('background.glb');
 
         autoResize();
 
@@ -95,8 +98,8 @@ function createRenderer(){
 
 function createScene(){
     scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xddeeff);
-    scene.fog = new THREE.Fog(0xddeeff, 45, 200);
+    scene.background = new THREE.Color(0x404040);
+    scene.fog = new THREE.Fog(0x404040, 30, 70);
 }
 
 
@@ -104,7 +107,7 @@ function createCamera(){
     const fov = 25;
     const aspect = canvas.clientWidth / canvas.clientHeight;
     const near = 0.01;
-    const far = 200;
+    const far = 100;
     camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
     camera.position.set(8, 12, 12);
 }
@@ -118,11 +121,11 @@ function createRayCaster() {
 function addGround() {
 
     ground = new THREE.Mesh(
-        new THREE.PlaneBufferGeometry(2000, 2000),
-        new THREE.MeshLambertMaterial({ color: 0x202020, opacity: 0.75 }));
+        new THREE.PlaneBufferGeometry(100, 100),
+        new THREE.MeshLambertMaterial({ color: 0x202020 }));
 
     ground.rotation.x = -Math.PI / 2;
-    ground.position.y = -3;
+    ground.position.y = -0.05;
     ground.receiveShadow = true;
 
     scene.add(ground);
@@ -206,7 +209,7 @@ export function updateModel(){
 }
 
 
-function animate() {
+export function animate() {
 
     requestAnimationFrame( animate );
 
