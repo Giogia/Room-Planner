@@ -46,7 +46,6 @@ function drawView(){
     show(drawModel.children);
 
     tweenCamera(new THREE.Vector3(0, 30, 2));
-
 }
 
 
@@ -66,7 +65,7 @@ function modelView(){
 
     setTimeout( function(){
         tweenCamera(new THREE.Vector3(6, 8, 8));
-    }, 1000);
+    }, 500);
 
     setTimeout( function(){
         show(currentObjects);
@@ -75,7 +74,7 @@ function modelView(){
         show(wallsModel.children);
         show(skirtingModel.children);
         hide(drawModel.children);
-    },1000);
+    },500);
 }
 
 

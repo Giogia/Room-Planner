@@ -43,7 +43,7 @@ export function createWallsModel (skirting=false) {
 
 
 function getPointModels (points) {
-  return _.map(points, ({id, x, z, selected}) => {
+  return _.map(points, ({x, z, selected}) => {
 
       let geometry = new THREE.SphereBufferGeometry(0.06, 32, 32);
       let material = selected ? new THREE.MeshBasicMaterial({color: 0x3cb391}): new THREE.MeshBasicMaterial({color: 'white'});
@@ -55,7 +55,6 @@ function getPointModels (points) {
       mesh.position.x = x;
       mesh.position.y = 0;
       mesh.position.z = z;
-      mesh.data = {id};
 
       return mesh;
   });
@@ -74,7 +73,7 @@ function getLineModels ({lines, points}) {
 }
 
 function getColumnsModels (points, skirting=false){
-  return _.map(points, ({id, x, z})=> {
+  return _.map(points, ({x, z})=> {
 
       let height = skirting? HEIGHT/20 : HEIGHT;
       let depth = skirting? 1.2 * DEPTH : DEPTH;
@@ -137,7 +136,7 @@ export function createFloorModel() {
     let points = floorPlan.points;
     let lines = floorPlan.lines;
 
-    _.each(points, (point) => graph.addVertex(point.id, {value: 1}));
+    _.each(points, (point) => graph.addVertex(points.indexOf(point), {value: 1}));
     _.each(lines, (line) => graph.addEdge(line.from, line.to, { value:1}));
     _.each(lines, (line) => graph.addEdge(line.to, line.from, { value:1}));
 

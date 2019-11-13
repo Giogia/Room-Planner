@@ -12,19 +12,19 @@ export let currentLine;
 export let floorPlan = {
 
     points: [
-        {id: 0, x: -5, z: -5, selected:false },
-        {id: 1, x: 0, z: -5, selected:false },
-        {id: 2, x: -5, z: 0, selected:false },
-        {id: 3, x: 0, z: 0, selected:false },
-        {id: 4, x: 5, z: 0, selected:false },
-        {id: 5, x: -5, z: 3, selected:false },
-        {id: 6, x: 0, z: 2, selected:false },
-        {id: 7, x: 1, z: 2, selected:false },
-        {id: 8, x: 5, z: 2, selected:false },
-        {id: 9, x: -5, z: 5, selected:false },
-        {id: 10, x: 1, z: 5, selected:false },
-        {id: 11, x: 5, z: 5, selected:false },
-        {id: 12, x: 0, z: 3, selected:false }
+        {x: -5, z: -5, selected:false },
+        {x: 0, z: -5, selected:false },
+        {x: -5, z: 0, selected:false },
+        {x: 0, z: 0, selected:false },
+        {x: 5, z: 0, selected:false },
+        {x: -5, z: 3, selected:false },
+        {x: 0, z: 2, selected:false },
+        {x: 1, z: 2, selected:false },
+        {x: 5, z: 2, selected:false },
+        {x: -5, z: 5, selected:false },
+        {x: 1, z: 5, selected:false },
+        {x: 5, z: 5, selected:false },
+        {x: 0, z: 3, selected:false }
     ],
 
     lines: [
@@ -68,7 +68,7 @@ function selectPoint(point){
     let points = floorPlan.points;
     let selected = _.find(points,{ selected: true });
 
-    points[point.id].selected = !points[point.id].selected;
+    points[points.indexOf(point)].selected = !points[points.indexOf(point)].selected;
     updateScene();
 
     if(selected === undefined){
@@ -128,7 +128,7 @@ function drawLine(event){
     }
 
     scene.remove(currentLine);
-    lines.push({from: start.id, to: end.id});
+    lines.push({from: points.indexOf(start), to: points.indexOf(end)});
     for( let point of points){ point.selected = false}
     updateScene();
 
@@ -137,17 +137,30 @@ function drawLine(event){
 }
 
 
-// TODO model is corrupted after deleting
 export function deleteDrawing(event){
 
+    let points = floorPlan.points;
+    let lines = floorPlan.lines;
+
     let position = worldCoordinates(event);
-    let selected = _.find(floorPlan.points,{ x: position.x, z: position.z });
+    let selected = _.find(points,{ x: position.x, z: position.z });
 
     if(selected){
+       
+        _.remove(lines, line => { return line.from === points.indexOf(selected)});
+        _.remove(lines, line => { return line.to === points.indexOf(selected)});
 
-        _.remove(floorPlan.points, function(point) { return point.id === selected.id});
-        _.remove(floorPlan.lines, function(line) { return line.from === selected.id});
-        _.remove(floorPlan.lines, function(line) { return line.to === selected.id});
+        _.map(lines, line =>{
+            if(line.to > points.indexOf(selected)){
+                line.to--;
+            }
+            if(line.from > points.indexOf(selected)){
+                line.from--;
+            }
+            return line
+        });
+
+        _.remove(points, point => { return point === selected });
 
         updateScene();
     }
@@ -176,10 +189,8 @@ export function worldCoordinates(event){
     position.z = Math.round( position.z );
 
     if(floorPlan.points.length === 0){
-        return {id: 0, x: position.x, z: position.z, selected: false}
+        return {x: position.x, z: position.z, selected: false}
     }
 
-    let lastElementId = floorPlan.points.slice(-1)[0].id;
-
-    return {id: lastElementId+1, x: position.x, z: position.z, selected: false}
+    return {x: position.x, z: position.z, selected: false}
 }
