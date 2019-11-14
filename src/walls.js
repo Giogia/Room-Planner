@@ -9,10 +9,10 @@ import Graph from "graph.js/dist/graph.es6";
 
 import {floorPlan} from "./draw";
 let inside = require("point-in-polygon");
-import { textureLoader, floorMaterial, skirtingMaterial} from "./materials";
+import {floorMaterial, skirtingMaterial} from "./materials";
 
-const DEPTH = 0.03;
-const HEIGHT = 1.3;
+export const DEPTH = 0.03;
+export const HEIGHT = 1.3;
 
 
 export function createDrawModel () {
@@ -46,7 +46,7 @@ function getPointModels (points) {
   return _.map(points, ({x, z, selected}) => {
 
       let geometry = new THREE.SphereBufferGeometry(0.06, 32, 32);
-      let material = selected ? new THREE.MeshBasicMaterial({color: 0x3cb391}): new THREE.MeshBasicMaterial({color: 'white'});
+      let material = selected ? new THREE.MeshBasicMaterial({color: 0xe2a149}): new THREE.MeshBasicMaterial({color: 'white'});
 
       let mesh = new THREE.Mesh(geometry, material);
 
@@ -79,7 +79,7 @@ function getColumnsModels (points, skirting=false){
       let depth = skirting? 1.2 * DEPTH : DEPTH;
 
       let geometry = new THREE.CylinderGeometry(depth/2, depth/2, height, 32);
-      let material = skirting? skirtingMaterial : new THREE.MeshLambertMaterial({color: 0xffffff, transparent: true, opacity: 1});
+      let material = skirting? skirtingMaterial : new THREE.MeshPhongMaterial({color: 0xffffff, transparent: true, opacity: 1});
 
       let mesh = new THREE.Mesh(geometry, material);
 
@@ -102,18 +102,7 @@ function getWallsModels ({lines, points}, skirting=false) {
     let depth = skirting? 1.2 * DEPTH : DEPTH;
 
     let geometry = new THREE.BoxGeometry(width, height, depth);
-    let material = skirting? skirtingMaterial : new THREE.MeshLambertMaterial({color: 0xffffff, transparent: true, opacity: 1});
-
-    if(skirting){
-        textureLoader.load( "assets/materials/wood_diffuse.jpg", function ( map ) {
-            map.wrapS = THREE.RepeatWrapping;
-            map.wrapT = THREE.RepeatWrapping;
-            map.anisotropy = 4;
-            map.repeat.set( width, HEIGHT);
-            skirtingMaterial.map = map;
-            skirtingMaterial.needsUpdate = true;
-        });
-    }
+    let material = skirting? skirtingMaterial : new THREE.MeshPhongMaterial({color: 0xffffff, transparent: true, opacity: 1});
 
     let mesh = new THREE.Mesh(geometry, material);
 

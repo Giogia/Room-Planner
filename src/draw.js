@@ -98,7 +98,7 @@ function showLine(event){
     let point = _.find(floorPlan.points,{ selected: true });
 
     let material = new LineMaterial({
-        color: 0x3cb391,
+        color: 0xe2a149,
         transparent: true,
         opacity: 0.3,
         linewidth: 0.008,

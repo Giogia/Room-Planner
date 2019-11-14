@@ -32,7 +32,7 @@ canvas{
     pointer-events: none;
 }
 
-.loading-gif {
+#loading-gif {
     position: absolute;
     top: 50%;
     left: 50%;

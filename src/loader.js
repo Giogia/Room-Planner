@@ -8,6 +8,7 @@ import randomInt from 'random-int'
 import {plants, trees, rocks, mountains} from "./objects";
 
 import * as THREE from 'three';
+import {transformControls} from "./controls";
 
 
 async function loadModel(path){
@@ -104,11 +105,18 @@ export function loadScene(name){
 
     loader.load(name, gltf => {
 
+        console.log("Adding Scene");
+
         let model = gltf.scene;
         scene.add(model);
         renderer.render(scene, camera);
         currentObjects.push(model);
-    });
+    },
+        function(){},
+
+        error => {
+        console.log(error);
+        });
 }
 
 
@@ -116,22 +124,15 @@ export function saveScene(){
 
     let exporter = new GLTFExporter();
 
-    let group = new THREE.Group();
-    //_.each(backgroundObjects, object => group.add(object.clone()));
-    //_.each(currentObjects, object => group.add(object.clone()));
-    //_.each(wallsModel, wall => group.add(wall.clone()));
-    //_.each(skirtingModel, skirt => group.add(skirt.clone()));
-    //_.each(floorModel, floor => group.add(floor.clone()));
+    exporter.parse( scene.children, function ( glb ) {
 
-    exporter.parse( group, function ( glb ) {
+    let link = document.createElement( 'a' );
+    link.style.display = 'none';
+    document.body.appendChild( link );
 
-        let link = document.createElement( 'a' );
-        link.style.display = 'none';
-        document.body.appendChild( link );
-
-        link.href = URL.createObjectURL(new Blob( [glb], { type: 'application/octet-stream' } ));
-        link.download = 'scene.glb';
-        link.click();
+    link.href = URL.createObjectURL(new Blob( [glb], { type: 'application/octet-stream' } ));
+    link.download = 'scene.glb';
+    link.click();
 
     },{ binary:true });
 }

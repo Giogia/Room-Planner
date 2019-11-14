@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import {HEIGHT} from "./walls";
 
 export let textureLoader = new THREE.TextureLoader();
 
@@ -47,6 +48,16 @@ export let skirtingMaterial = new THREE.MeshStandardMaterial({
     metalness: 0.02,
     transparent: true,
     opacity: 1,
+});
+
+
+textureLoader.load( "assets/materials/wood_diffuse.jpg", function ( map ) {
+    map.wrapS = THREE.RepeatWrapping;
+    map.wrapT = THREE.RepeatWrapping;
+    map.anisotropy = 4;
+    map.repeat.set( 1, HEIGHT);
+    skirtingMaterial.map = map;
+    skirtingMaterial.needsUpdate = true;
 });
 
 skirtingMaterial.polygonOffset = true;

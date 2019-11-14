@@ -29,11 +29,11 @@ export function createButtons(){
 function createIconButton(name){
 
     let button = document.createElement('button');
-    button.className = 'mdc-fab mdc-elevation__z24';
+    button.className = 'mdc-fab';
     button.id = name;
     buttons.appendChild(button);
 
-    let icon = document.createElement('span');
+    let icon = document.createElement('a');
     icon.className = 'material-icons mdc-fab__icon';
     icon.innerText = name;
     button.appendChild(icon);

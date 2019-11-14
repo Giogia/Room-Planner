@@ -5,7 +5,7 @@ import OrbitControls from 'three-controls/src/js/OrbitControls';
 import {MapControls} from 'three-controls';
 import TransformControls from "three-controls/src/js/TransformControls";
 
-import {camera, currentObjects, renderer, canvas, animate} from "./app";
+import {camera, currentObjects, renderer, canvas, animate, scene} from "./app";
 import ThreeDragger from 'three-dragger';
 
 export var dragControls, mapControls, transformControls, orbitControls;
@@ -35,10 +35,19 @@ export function enableTransformControls(){
 
     transformControls = new TransformControls(camera, renderer.domElement);
     transformControls.enabled = true;
+    transformControls.visible = true;
     transformControls.showX = true;
     transformControls.showY = true;
     transformControls.showZ = true;
-    transformControls.addEventListener('change', animate);
+
+    let geometry = new THREE.BoxBufferGeometry(2,2,2);
+    let material = new THREE.MeshLambertMaterial({color: 0xffffff});
+
+    let mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    transformControls.attach(mesh);
+    //scene.add(transformControls);
 }
 
 

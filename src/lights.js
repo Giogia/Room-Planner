@@ -12,7 +12,7 @@ export function addLights(){
     hemisphere.position.set(0, 20, 0);
     scene.add( hemisphere );
 
-    directional = new THREE.DirectionalLight( 0xffffff, 2 );
+    directional = new THREE.DirectionalLight( 0xffffff, 1.5 );
     directional.position.set( 6, 20, - 6 );
     directional.castShadow = true;
     directional.shadow.camera.top = 10;

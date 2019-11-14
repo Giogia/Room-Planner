@@ -41,7 +41,7 @@ function init(){
         enableOrbitControls();
         enableMapControls();
         enableDragControls();
-        //enableTransformControls();
+        enableTransformControls();
 
         addLights();
         addGround();
@@ -66,7 +66,7 @@ function init(){
         scene.add(wallsModel);
 
         //randomBackgroundObjects();
-        //loadScene('background.glb');
+        //('bedDouble.glb');
 
         autoResize();
 
@@ -109,7 +109,7 @@ function createCamera(){
     const near = 0.1;
     const far = 100;
     camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-    camera.position.set(8, 12, 12);
+    camera.position.set(-4, 12, 12);
 }
 
 
@@ -226,7 +226,6 @@ export function animate() {
     showRoomCenters();
 
     renderer.render( scene, camera );
-    console.log(camera.position);
 }
 
 init();
