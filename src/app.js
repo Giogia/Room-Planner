@@ -41,7 +41,7 @@ function init(){
         enableOrbitControls();
         enableMapControls();
         enableDragControls();
-        enableTransformControls();
+        //enableTransformControls();
 
         addLights();
         addGround();
@@ -106,7 +106,7 @@ function createScene(){
 function createCamera(){
     const fov = 25;
     const aspect = canvas.clientWidth / canvas.clientHeight;
-    const near = 0.01;
+    const near = 0.1;
     const far = 100;
     camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
     camera.position.set(8, 12, 12);
