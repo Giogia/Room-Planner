@@ -63,7 +63,7 @@ function modelView(){
 
     updateModel();
 
-    tweenCamera(new THREE.Vector3(6, 8, 8));
+    tweenCamera(new THREE.Vector3(-7, 9, -16));
 
     show(currentObjects);
     show(floorModel.children);

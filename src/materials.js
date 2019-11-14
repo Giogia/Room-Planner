@@ -3,10 +3,10 @@ import * as THREE from "three";
 export let textureLoader = new THREE.TextureLoader();
 
 export let floorMaterial = new THREE.MeshStandardMaterial( {
-    roughness: 1,
+    roughness: 2,
     color: 0xffffff,
-    metalness: 0.02,
-    bumpScale: 5
+    metalness: 0.2,
+    bumpScale: 3
 } );
 
 let choice = 3;

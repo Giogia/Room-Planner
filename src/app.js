@@ -98,8 +98,8 @@ function createRenderer(){
 
 function createScene(){
     scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x404040);
-    scene.fog = new THREE.Fog(0x404040, 30, 70);
+    scene.background = new THREE.Color(0x606060);
+    scene.fog = new THREE.Fog(0x606060, 15, 60);
 }
 
 
@@ -122,7 +122,10 @@ function addGround() {
 
     ground = new THREE.Mesh(
         new THREE.PlaneBufferGeometry(100, 100),
-        new THREE.MeshLambertMaterial({ color: 0x202020 }));
+        new THREE.MeshPhongMaterial( {
+						color: 0x020202,
+						depthWrite: false
+					}));
 
     ground.rotation.x = -Math.PI / 2;
     ground.position.y = -0.05;
@@ -140,7 +143,7 @@ function loadingAnimation(){
     let loading = document.getElementById('loading');
     loading.style.opacity = '0';
 
-    tweenCamera(new THREE.Vector3(6, 8, 8), 3000);
+    tweenCamera(new THREE.Vector3(-7, 9, -16), 3000);
 
 }
 
@@ -223,6 +226,7 @@ export function animate() {
     showRoomCenters();
 
     renderer.render( scene, camera );
+    console.log(camera.position);
 }
 
 init();

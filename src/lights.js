@@ -8,25 +8,18 @@ export let hemisphere, ambient, directional, spot;
 
 export function addLights(){
 
-    hemisphere = new THREE.HemisphereLight(0xddeeff, 0x0f0e0d, 0.8 );
+    hemisphere = new THREE.HemisphereLight(0xffffff, 0x444444, 1 );
     hemisphere.position.set(0, 20, 0);
     scene.add( hemisphere );
 
-    createSpot(-250, 200, 250);
-    createSpot(250, 200, 250);
-    createSpot(250, 200, -250);
-
-    scene.add(spot);
-}
-
-
-function createSpot(x,y,z){
-    spot = new THREE.SpotLight(0xfff5e1, 0.3);
-    spot.angle = 1;
-    spot.penumbra = 1;
-    spot.position.set(x, y, z);
-    spot.shadow.mapSize.height = spot.shadow.mapSize.width = 4096;
-    spot.castShadow = true;
-    spot.shadow.camera.far = 1000;
-    scene.add(spot);
+    directional = new THREE.DirectionalLight( 0xffffff );
+    directional.position.set( 6, 20, - 6 );
+    directional.castShadow = true;
+    directional.shadow.camera.top = 10;
+    directional.shadow.camera.bottom = - 10;
+    directional.shadow.camera.left = - 10;
+    directional.shadow.camera.right = 10;
+    directional.shadow.camera.near = 0.1;
+    directional.shadow.camera.far = 40;
+    scene.add( directional );
 }
