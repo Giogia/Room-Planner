@@ -3,15 +3,16 @@ import * as TWEEN from "tween.js";
 
 import {dragControls, mapControls, orbitControls} from "./controls";
 
-import { drawer, camera, list, canvas } from "./app";
+import {drawer, camera, list, canvas, scene} from "./app";
 import { currentObjects } from "./app";
-import { wallsModel, drawModel, roomCenters, skirtingModel, floorModel} from "./app";
+import { wallsModel, drawModel, roomCenters, skirtingModel, floorModel} from "./walls";
 import {updateModel, selectObject} from "./app";
 
 import {addObject} from "./loader";
 
-import {editButton, deleteButton} from "./buttons";
-import { activateDrawButtons, deactivateButtons, activateButtons, deactivateDrawButtons, showButton, hideButton } from "./buttons";
+import {editMode, modelButtons, drawButtons} from "./buttons";
+import { activateDrawButtons, deactivateButtons, activateButtons, deactivateDrawButtons} from "./buttons";
+import {directional} from "./lights";
 
 
 let floorPlanView = false;
@@ -30,13 +31,14 @@ export function toggleView(event) {
 
 function drawView(){
 
-    showButton(deleteButton, 0);
-    showButton(editButton, 0);
+    drawButtons();
 
     activateDrawButtons();
 
     list.removeEventListener('click', addObject, false);
     canvas.removeEventListener('dblclick', selectObject, false);
+
+    scene.remove( directional );
 
     hide(currentObjects);
     hide(floorModel.children);
@@ -45,7 +47,9 @@ function drawView(){
     hide(skirtingModel.children);
     show(drawModel.children);
 
-    tweenCamera(new THREE.Vector3(0, 30, 2));
+    tweenCamera(new THREE.Vector3(-0.01, 30, 0));
+
+    editMode();
 }
 
 
@@ -53,8 +57,7 @@ function modelView(){
 
     mapControls.reset();
 
-    hideButton(deleteButton, 300);
-    hideButton(editButton, 150);
+    modelButtons();
 
     deactivateDrawButtons();
 
@@ -62,6 +65,8 @@ function modelView(){
     canvas.addEventListener('dblclick', selectObject, false);
 
     updateModel();
+
+    scene.add( directional );
 
     tweenCamera(new THREE.Vector3(-7, 9, -16));
 
@@ -88,7 +93,7 @@ export function tweenCamera(targetPosition, duration=2000){
 
         .to( targetPosition, duration )
 
-        .easing( TWEEN.Easing.Circular.Out )
+        .easing( TWEEN.Easing.Quintic.InOut )
 
         .onUpdate( function() {
             camera.position.copy(position);

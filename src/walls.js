@@ -7,12 +7,39 @@ import { LineMaterial } from "three/examples/jsm/lines/LineMaterial";
 import { Line2 } from "three/examples/jsm/lines/Line2";
 import Graph from "graph.js/dist/graph.es6";
 
-import {floorPlan} from "./draw";
 let inside = require("point-in-polygon");
 import {floorMaterial, skirtingMaterial} from "./materials";
+import {hide} from "./view";
+import {scene} from "./app";
+import {loadJson} from "./loader";
 
-export const DEPTH = 0.03;
+export const DEPTH = 0.05;
 export const HEIGHT = 1.3;
+
+export let floorPlan;
+export let drawModel, floorModel, wallsModel, skirtingModel, roomCenters;
+
+export async function createModel (){
+
+    floorPlan = await loadJson('floorplan');
+    console.log(floorPlan);
+
+    drawModel = createDrawModel();
+    scene.add(drawModel);
+    hide(drawModel.children);
+
+    floorModel = createFloorModel()[0];
+    scene.add(floorModel);
+
+    roomCenters = createFloorModel()[1];
+    scene.add(roomCenters);
+
+    skirtingModel = createWallsModel(true);
+    scene.add(skirtingModel);
+
+    wallsModel = createWallsModel();
+    scene.add(wallsModel);
+}
 
 
 export function createDrawModel () {

@@ -4,11 +4,12 @@ import * as THREE from 'three';
 import * as TWEEN from 'tween.js';
 
 import { enableOrbitControls, enableMapControls, enableDragControls, enableTransformControls} from "./controls"
-import {orbitControls, mapControls, transformControls, dragControls} from "./controls";
+import {orbitControls, mapControls, dragControls} from "./controls";
 
 import { addLights } from './lights';
-import {addObject, loadScene, randomBackgroundObjects} from "./loader";
-import {createFloorModel, createDrawModel, createWallsModel } from "./walls";
+import {addObject, loadScene } from "./loader";
+import {createFloorModel, createDrawModel, createWallsModel, createModel} from "./walls";
+import {drawModel, floorModel, wallsModel, skirtingModel, roomCenters} from "./walls";
 import {hide, hideCloseWalls, showRoomCenters, tweenCamera} from "./view";
 import {createButtons} from "./buttons";
 import {MDCDrawer} from "@material/drawer/component";
@@ -17,66 +18,45 @@ export var scene, camera, renderer, canvas, raycaster;
 export var ground;
 export var currentObjects = [];
 export var backgroundObjects = [];
-export var drawModel, floorModel, wallsModel, skirtingModel, roomCenters;
 export let list, drawer;
 
 
-function init(){
+async function init(){
 
-    document.addEventListener('DOMContentLoaded', (event) => {
+    canvas = document.getElementById( 'canvas');
+    document.body.appendChild(canvas);
 
-        canvas = document.getElementById( 'canvas');
-        document.body.appendChild(canvas);
+    list = document.getElementById('list');
 
-        list = document.getElementById('list');
+    createDrawer();
+    createButtons();
 
-        createDrawer();
-        createButtons();
+    createRenderer();
+    createScene();
+    createCamera();
+    createRayCaster();
 
-        createRenderer();
-        createScene();
-        createCamera();
-        createRayCaster();
+    enableOrbitControls();
+    enableMapControls();
+    enableDragControls();
+    enableTransformControls();
 
-        enableOrbitControls();
-        enableMapControls();
-        enableDragControls();
-        enableTransformControls();
+    addLights();
+    addGround();
 
-        addLights();
-        addGround();
+    list.addEventListener('click', addObject, false);
+    canvas.addEventListener('dblclick', selectObject, false);
 
-        list.addEventListener('click', addObject, false);
-        canvas.addEventListener('dblclick', selectObject, false);
+    await createModel();
+    //await loadScene();
 
-        drawModel = createDrawModel();
-        scene.add(drawModel);
-        hide(drawModel.children);
+    autoResize();
+    animate();
 
-        floorModel = createFloorModel()[0];
-        scene.add(floorModel);
+    setTimeout(function(){
+        loadingAnimation();
+    }, 1000);
 
-        roomCenters = createFloorModel()[1];
-        scene.add(roomCenters);
-
-        skirtingModel = createWallsModel(true);
-        scene.add(skirtingModel);
-
-        wallsModel = createWallsModel();
-        scene.add(wallsModel);
-
-        //randomBackgroundObjects();
-        //('bedDouble.glb');
-
-        autoResize();
-
-        animate();
-
-        setTimeout(function(){
-            loadingAnimation();
-        }, 1000);
-
-    });
 }
 
 
@@ -98,8 +78,8 @@ function createRenderer(){
 
 function createScene(){
     scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x606060);
-    scene.fog = new THREE.Fog(0x606060, 15, 60);
+    scene.background = new THREE.Color(0x383941);
+    scene.fog = new THREE.Fog(0x383941, 15, 60);
 }
 
 
@@ -122,8 +102,8 @@ function addGround() {
 
     ground = new THREE.Mesh(
         new THREE.PlaneBufferGeometry(100, 100),
-        new THREE.MeshPhongMaterial( {
-						color: 0x020202,
+        new THREE.MeshLambertMaterial( {
+						color: 0x030303,
 						depthWrite: false
 					}));
 
@@ -133,8 +113,8 @@ function addGround() {
 
     scene.add(ground);
 
-    //let axesHelper = new THREE.AxesHelper( 50 );
-    //scene.add( axesHelper );
+    let gridHelper = new THREE.GridHelper( 100, 50, 0x000000, 0x000000);
+    scene.add( gridHelper );
 }
 
 
@@ -148,15 +128,6 @@ function loadingAnimation(){
 }
 
 
-function autoResize(){
-    window.onresize = function () {
-        camera.aspect = canvas.clientWidth / canvas.clientHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize( canvas.clientWidth, canvas.clientHeight );
-    };
-}
-
-
 export function selectObject(event){
 
     let mouse = new THREE.Vector2();
@@ -166,17 +137,13 @@ export function selectObject(event){
 
     raycaster.setFromCamera( mouse, camera );
 
-    console.log('current', currentObjects);
+    let intersects = raycaster.intersectObjects( scene.children, true);
 
-    let intersects = raycaster.intersectObjects( scene.children );
-    console.log('intersected', intersects);
+    //TODO add action for objects
 
-    for (let intersect of intersects) {
+    console.log(intersects);
 
-        if(intersect.object.type == "Scene"){
-             intersect.object.material.opacity = 0.2;
-        }
-	}
+    return intersects
 }
 
 
@@ -209,6 +176,16 @@ export function updateModel(){
     skirtingModel = createWallsModel(true);
     scene.add(skirtingModel);
     hide(skirtingModel.children);
+}
+
+
+function autoResize(){
+    window.onresize = function () {
+        camera.aspect = canvas.clientWidth / canvas.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize( canvas.clientWidth, canvas.clientHeight );
+        animate();
+    };
 }
 
 

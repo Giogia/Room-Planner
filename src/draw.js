@@ -2,57 +2,20 @@ import * as THREE from 'three';
 import _ from 'lodash';
 
 import {canvas, camera, scene, updateScene} from "./app";
+import {floorPlan} from "./walls";
 import {LineMaterial} from "three/examples/jsm/lines/LineMaterial";
 import {LineGeometry} from "three/examples/jsm/lines/LineGeometry";
 import {Line2} from "three/examples/jsm/lines/Line2";
 
-export let selected = { points: [], lines:[] };
-export let currentLine;
+import {checkIntersection} from "line-intersect";
 
-export let floorPlan = {
-
-    points: [
-        {x: -5, z: -5, selected:false },
-        {x: 0, z: -5, selected:false },
-        {x: -5, z: 0, selected:false },
-        {x: 0, z: 0, selected:false },
-        {x: 5, z: 0, selected:false },
-        {x: -5, z: 3, selected:false },
-        {x: 0, z: 2, selected:false },
-        {x: 1, z: 2, selected:false },
-        {x: 5, z: 2, selected:false },
-        {x: -5, z: 5, selected:false },
-        {x: 1, z: 5, selected:false },
-        {x: 5, z: 5, selected:false },
-        {x: 0, z: 3, selected:false }
-    ],
-
-    lines: [
-        {from: 0, to: 1},
-        {from: 0, to: 2},
-        {from: 1, to: 3},
-        {from: 2, to: 3},
-        {from: 2, to: 5},
-        {from: 3, to: 4},
-        {from: 3, to: 6},
-        {from: 4, to: 8},
-        {from: 5, to: 12},
-        {from: 5, to: 9},
-        {from: 6, to: 7},
-        {from: 6, to: 12},
-        {from: 7, to: 8},
-        {from: 7, to: 10},
-        {from: 8, to: 11},
-        {from: 9, to: 10},
-        {from: 10, to: 11}
-    ],
-};
-
+let currentLine;
 
 export function editDrawing(event){
 
     let position = worldCoordinates(event);
-    let point = _.find(floorPlan.points,{ x: position.x, z: position.z });
+    let point = _.find(floorPlan.points,
+        { x: Math.round(position.x * 4)/4, z: Math.round( position.z * 4)/4});
 
     if(point){
         selectPoint(point);
@@ -128,8 +91,38 @@ function drawLine(event){
     }
 
     scene.remove(currentLine);
-    lines.push({from: points.indexOf(start), to: points.indexOf(end)});
+    let newLine = {from: points.indexOf(start), to: points.indexOf(end)};
+    lines.push(newLine);
     for( let point of points){ point.selected = false}
+
+    // create intersection point if two lines intersect
+    for(let intersecting of lines){
+
+        let start2 = points[intersecting.from];
+        let end2 = points[intersecting.to];
+
+        let intersection = checkIntersection(start.x, start.z, end.x, end.z, start2.x, start2.z, end2.x, end2.z);
+
+        if( intersection.point ){
+
+            if(!_.find(points, {x: Math.round(intersection.point.x * 4)/4, z: Math.round(intersection.point.y * 4)/4})){
+
+                console.log(intersection.point);
+
+                let intersectionPoint = {x: Math.round(intersection.point.x * 4)/4, z: Math.round(intersection.point.y * 4)/4, selected: false};
+
+                drawPoint(intersectionPoint);
+
+                lines.push({from:points.indexOf(intersectionPoint), to:intersecting.from});
+                lines.push({from:points.indexOf(intersectionPoint), to:intersecting.to});
+                lines.push({from:points.indexOf(intersectionPoint), to:newLine.from});
+                lines.push({from:points.indexOf(intersectionPoint), to:newLine.to});
+                _.remove(lines, line => { return line === intersecting || line === newLine});
+
+            }
+        }
+    }
+
     updateScene();
 
     canvas.removeEventListener( 'mousemove', showLine, false);
@@ -144,6 +137,8 @@ export function deleteDrawing(event){
 
     let position = worldCoordinates(event);
     let selected = _.find(points,{ x: position.x, z: position.z });
+
+    console.log(position, selected);
 
     if(selected){
 
@@ -185,12 +180,8 @@ export function worldCoordinates(event){
 
     position.copy( camera.position ).add( vector.multiplyScalar( distance ) );
 
-    position.x = Math.round( position.x );
-    position.z = Math.round( position.z );
-
-    if(floorPlan.points.length === 0){
-        return {x: position.x, z: position.z, selected: false}
-    }
+    position.x = Math.round( position.x * 4)/ 4;
+    position.z = Math.round( position.z * 4)/ 4;
 
     return {x: position.x, z: position.z, selected: false}
 }
