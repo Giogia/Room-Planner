@@ -3,8 +3,7 @@
 import * as THREE from 'three';
 import { scene } from './app';
 
-export let hemisphere, ambient, directional, spot;
-
+export let hemisphere, directional;
 
 export function addLights(){
 
