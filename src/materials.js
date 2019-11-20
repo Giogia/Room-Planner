@@ -10,13 +10,14 @@ export let floorMaterial = new THREE.MeshStandardMaterial( {
     bumpScale: 3
 } );
 
-let choice = 3;
+let choice = 2;
+let repeat = 1.2;
 
 textureLoader.load( "assets/materials/tiles"+choice.toString()+"_diffuse.jpg", function ( map ) {
     map.wrapS = THREE.RepeatWrapping;
     map.wrapT = THREE.RepeatWrapping;
     map.anisotropy = 4;
-    map.repeat.set(2,2);
+    map.repeat.set(repeat, repeat);
     floorMaterial.map = map;
     floorMaterial.needsUpdate = true;
 });
@@ -24,7 +25,7 @@ textureLoader.load( "assets/materials/tiles"+choice.toString()+"_bump.jpg", func
     map.wrapS = THREE.RepeatWrapping;
     map.wrapT = THREE.RepeatWrapping;
     map.anisotropy = 4;
-    map.repeat.set(2, 2);
+    map.repeat.set(repeat, repeat);
     floorMaterial.bumpMap = map;
     floorMaterial.needsUpdate = true;
 });
@@ -32,7 +33,7 @@ textureLoader.load( "assets/materials/tiles"+choice.toString()+"_roughness.jpg",
     map.wrapS = THREE.RepeatWrapping;
     map.wrapT = THREE.RepeatWrapping;
     map.anisotropy = 4;
-    map.repeat.set(2, 2);
+    map.repeat.set(repeat, repeat);
     floorMaterial.roughnessMap = map;
     floorMaterial.needsUpdate = true;
 });
