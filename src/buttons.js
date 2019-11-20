@@ -3,7 +3,7 @@ import {MDCRipple} from "@material/ripple/component";
 import {toggleView} from "./view";
 import {deleteDrawing, editDrawing} from "./draw";
 import {canvas} from "./app";
-import {saveScene} from "./loader";
+import {exportScene} from "./loader";
 
 
 export let buttons, viewButton, downloadButton, editButton, deleteButton;
@@ -49,7 +49,7 @@ export function activateButtons(){
     activateDrawButtons();
 
     downloadButton.addEventListener('click', viewMode, false);
-    downloadButton.addEventListener('click', saveScene, false);
+    downloadButton.addEventListener('click', exportScene, false);
 
     viewButton.addEventListener('click', viewMode, false);
     viewButton.addEventListener('click', toggleView, false);
@@ -74,19 +74,19 @@ export function deactivateButtons(){
     deactivateDrawButtons();
 
     downloadButton.removeEventListener('click', viewMode, false);
-    downloadButton.removeEventListener('click', saveScene, false);
+    downloadButton.removeEventListener('click', exportScene, false);
 
     viewButton.removeEventListener('click', viewMode, false);
     viewButton.removeEventListener('click', toggleView, false);
 }
 
 
-function viewMode(){
+export function viewMode(){
     canvas.removeEventListener( 'click', editDrawing, false);
     canvas.removeEventListener( 'click', deleteDrawing, false);
 }
 
-function editMode(){
+export function editMode(){
     canvas.addEventListener( 'click', editDrawing, false);
     canvas.removeEventListener( 'click', deleteDrawing, false);
 }
@@ -98,7 +98,7 @@ function deleteMode(){
 }
 
 
-export function hideButton(element, translation=97, timeout=250){
+export function hideButton(element, translation=150, timeout=150){
     element.style.transform = 'translateY('+ translation.toString() +'%)';
 
     setTimeout(function(){
@@ -107,8 +107,26 @@ export function hideButton(element, translation=97, timeout=250){
 }
 
 
-export function showButton(element, translation=97){
+export function showButton(element, translation=150){
     element.style.opacity = '100';
-    element.style.transform = 'translateY(-'+ translation.toString() +'%)';
+    element.style.transform = 'translateY('+ translation.toString() +'%)';
 
+}
+
+
+export function modelButtons(){
+    hideButton(deleteButton, 300);
+    hideButton(editButton, 150);
+    setTimeout(function(){
+        showButton(downloadButton, 0);
+    }, 250);
+}
+
+
+export function drawButtons(){
+    hideButton(downloadButton, 150);
+    setTimeout( function(){
+        showButton(deleteButton, 150);
+        showButton(editButton, 150);
+    }, 250);
 }
