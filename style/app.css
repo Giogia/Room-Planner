@@ -26,7 +26,7 @@ canvas{
     display: block;
     width: 100%;
     height: 100%;
-    transition: opacity 1s ease-out;
+    transition: opacity 2s ease-out;
     background-color: white;
     z-index: 110;
     pointer-events: none;
@@ -151,7 +151,7 @@ model-viewer{
 .mdc-fab{
     margin: 25%;
     transform: translateY(-3%);
-    -webkit-transition: transform 0.25s ease-in-out;
+    -webkit-transition: transform 0.15s ease-in-out;
 }
 
 .mdc-fab:hover{
