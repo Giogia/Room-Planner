@@ -43,8 +43,23 @@ export async function addObject(event){
 
 export async function loadJson(name){
 
-    let response = await fetch('http://localhost:3000/'+ name.toString());
+    let response = await fetch('http://localhost:63342/Room-Planner/json/'+ name.toString()+ '.json');
     return (await response).json();
+}
+
+
+async function saveJson(name, payload){
+
+    let data = new FormData();
+    data.append( 'http://localhost:63342/Room-Planner/json/'+ name.toString(), JSON.stringify( payload ) );
+
+    fetch('http',
+    {
+        method: "POST",
+        body: data
+    })
+    .then(function(res){ return res.json(); })
+    .then(function(data){ alert( JSON.stringify( data ) ) })
 }
 
 
@@ -55,6 +70,12 @@ export async function loadScene(){
     objects.forEach( object => {
         loadModel(object.name, object.x, object.y, object.z)
     });
+}
+
+
+async function dirList(name){
+
+    let response = await fetch()
 }
 
 

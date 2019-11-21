@@ -21,8 +21,8 @@ export let drawModel, floorModel, wallsModel, skirtingModel, roomCenters;
 
 export async function createModel (){
 
-    floorPlan = await loadJson('floorplan');
-    console.log(floorPlan);
+    let json = await loadJson('floorplan');
+    floorPlan = json['floorPlan'];
 
     drawModel = createDrawModel();
     scene.add(drawModel);
