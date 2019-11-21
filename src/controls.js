@@ -2,7 +2,7 @@
 
 import * as THREE from 'three';
 import OrbitControls from 'three-controls/src/js/OrbitControls';
-import {MapControls} from 'three-controls';
+import MapControls from 'three-controls/src/js/MapControls';
 import TransformControls from "three-controls/src/js/TransformControls";
 //import { PointerLockControls } from './jsm/controls/PointerLockControls.js';
 
@@ -27,10 +27,10 @@ export function  enableOrbitControls(){
     orbitControls.screenSpacePanning = false;
     orbitControls.minPolarAngle = 0;
     orbitControls.maxPolarAngle = Math.PI/2-Math.PI/32;
-    orbitControls.dampingFactor = 0.09;
+    orbitControls.dampingFactor = 0.05;
     orbitControls.rotateSpeed = 0.1;
     orbitControls.minDistance = 0;
-    orbitControls.maxDistance = 30;
+    orbitControls.maxDistance = 100;
 
     orbitControls.update();
 }
@@ -68,15 +68,16 @@ export function enableTransformControls(){
 export function enableMapControls(){
 
     mapControls = new MapControls(camera, renderer.domElement, {
-        target: new THREE.Vector3(0,1,0)
+        target: new THREE.Plane(new THREE.Vector3(0,1,0),0),
     });
 
     mapControls.enableRotate = false;
-    mapControls.enablePan = true;
     mapControls.screenSpacePanning = false;
-    mapControls.panSpeed = 1;
-    mapControls.minDistance = 10;
-    mapControls.maxDistance = 60;
+    mapControls.enableDamping = false;
+
+    mapControls.enableZoom = true;
+    mapControls.minDistance = 0;
+    mapControls.maxDistance = 100;
 
     mapControls.enabled = false;
     mapControls.update();
@@ -98,7 +99,6 @@ export function enableMapControls(){
 export function enableDragControls(){
 
     let dragZone = document.getElementById( 'controls');
-    let currentObject;
     let position = new THREE.Vector3();
 
     dragControls = new ThreeDragger(draggableObjects, camera, dragZone);
@@ -131,13 +131,6 @@ export function enableDragControls(){
         }
 
         group.position.set(position.x, position.y, position.z);
-
-        /*for( let child of group.parent.children ){
-            child.position.set(position.x, position.y, position.z);
-        }
-
-         */
-
     });
 
     dragControls.on( 'dragend', async function () {
