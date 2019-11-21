@@ -1,47 +1,38 @@
 import * as THREE from "three";
-import {HEIGHT} from "./walls";
 
 export let textureLoader = new THREE.TextureLoader();
+export let fontLoader = new THREE.FontLoader();
 
+// Material for Room Floors
 export let floorMaterial = new THREE.MeshStandardMaterial( {
     roughness: 2,
     color: 0xffffff,
     metalness: 0.2,
-    bumpScale: 3
+    bumpScale: 3,
+    polygonOffset: true,
+    polygonOffsetFactor: -1
 } );
 
 let choice = 2;
 let repeat = 1.2;
 
-textureLoader.load( "assets/materials/tiles"+choice.toString()+"_diffuse.jpg", function ( map ) {
+let diffuseMap = textureLoader.load( "assets/materials/tiles"+choice.toString()+"_diffuse.jpg");
+let bumpMap = textureLoader.load( "assets/materials/tiles"+choice.toString()+"_bump.jpg");
+let roughnessMap = textureLoader.load( "assets/materials/tiles"+choice.toString()+"_roughness.jpg");
+
+for(let map of [diffuseMap, bumpMap, roughnessMap]){
     map.wrapS = THREE.RepeatWrapping;
     map.wrapT = THREE.RepeatWrapping;
     map.anisotropy = 4;
     map.repeat.set(repeat, repeat);
-    floorMaterial.map = map;
-    floorMaterial.needsUpdate = true;
-});
-textureLoader.load( "assets/materials/tiles"+choice.toString()+"_bump.jpg", function ( map ) {
-    map.wrapS = THREE.RepeatWrapping;
-    map.wrapT = THREE.RepeatWrapping;
-    map.anisotropy = 4;
-    map.repeat.set(repeat, repeat);
-    floorMaterial.bumpMap = map;
-    floorMaterial.needsUpdate = true;
-});
-textureLoader.load( "assets/materials/tiles"+choice.toString()+"_roughness.jpg", function ( map ) {
-    map.wrapS = THREE.RepeatWrapping;
-    map.wrapT = THREE.RepeatWrapping;
-    map.anisotropy = 4;
-    map.repeat.set(repeat, repeat);
-    floorMaterial.roughnessMap = map;
-    floorMaterial.needsUpdate = true;
-});
+}
 
-floorMaterial.polygonOffset = true;
-floorMaterial.polygonOffsetFactor = -1;
+floorMaterial.map = diffuseMap;
+floorMaterial.bumpMap = bumpMap;
+floorMaterial.roughnessMap = roughnessMap;
+floorMaterial.needsUpdate = true;
 
-
+// Material for Skirting
 export let skirtingMaterial = new THREE.MeshStandardMaterial({
     roughness: 0.05,
     color: 0xffffff,
@@ -49,17 +40,25 @@ export let skirtingMaterial = new THREE.MeshStandardMaterial({
     metalness: 0.02,
     transparent: true,
     opacity: 1,
+    polygonOffset: true,
+    polygonOffsetFactor: -1
 });
 
+let skirtingMap = textureLoader.load( "assets/materials/wood_diffuse.jpg");
+skirtingMap.wrapS = THREE.RepeatWrapping;
+skirtingMap.wrapT = THREE.RepeatWrapping;
+skirtingMap.anisotropy = 4;
+skirtingMap.repeat.set( 1, 1.3);
 
-textureLoader.load( "assets/materials/wood_diffuse.jpg", function ( map ) {
-    map.wrapS = THREE.RepeatWrapping;
-    map.wrapT = THREE.RepeatWrapping;
-    map.anisotropy = 4;
-    map.repeat.set( 1, HEIGHT);
-    skirtingMaterial.map = map;
-    skirtingMaterial.needsUpdate = true;
+skirtingMaterial.map = skirtingMap;
+skirtingMaterial.needsUpdate = true;
+
+// Material for Text
+export let textMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+
+export let font;
+
+fontLoader.load( 'assets/font.typeface.json', res => {
+    font = res;
 });
 
-skirtingMaterial.polygonOffset = true;
-skirtingMaterial.polygonOffsetFactor = -1;

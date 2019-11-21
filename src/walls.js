@@ -12,6 +12,7 @@ import {floorMaterial, skirtingMaterial} from "./materials";
 import {hide} from "./view";
 import {scene} from "./app";
 import {loadJson, saveJson} from "./loader";
+import {addText} from "./draw";
 
 export const DEPTH = 0.05;
 export const HEIGHT = 1.3;
@@ -48,8 +49,34 @@ export function createDrawModel () {
 
   let group = new THREE.Group();
 
-  _.each(points, (point) => group.add(point));
-  _.each(lines, (line) => group.add(line));
+  _.each(points, point => group.add(point));
+  _.each(lines, line => group.add(line));
+
+  _.each(floorPlan.lines, line => {
+
+      let points = floorPlan.points;
+
+      let distanceX = points[line.to].x - points[line.from].x;
+      let distanceZ = points[line.to].z - points[line.from].z;
+
+      let x = (points[line.from].x + points[line.to].x)/2;
+      let z = (points[line.from].z + points[line.to].z)/2;
+
+      // Move text from line positino a little bit
+      const move = 0.2;
+
+      if(distanceX === 0){ x = x + move}
+      if(distanceZ === 0){ z = z + move}
+      if(distanceX !== 0 && distanceZ !== 0 ){
+          x = x - Math.sign(distanceZ) * move;
+          z = z + Math.sign(distanceX) * move;
+      }
+
+      let message = (Math.floor(Math.hypot(distanceX, distanceZ)*10)/10).toString() + 'm'
+
+      let text = addText(message, x, 0, z);
+      group.add(text);
+  });
 
   return group;
 }

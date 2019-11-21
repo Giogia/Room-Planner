@@ -8,6 +8,8 @@ import {LineGeometry} from "three/examples/jsm/lines/LineGeometry";
 import {Line2} from "three/examples/jsm/lines/Line2";
 
 import {checkIntersection} from "line-intersect";
+import {font, textMaterial} from "./materials";
+import {TextGeometry} from "three";
 
 let currentLine;
 
@@ -181,3 +183,17 @@ export function worldCoordinates(event){
 
     return {x: position.x, z: position.z, selected: false}
 }
+
+
+export function addText(message, x, y, z){
+
+    let geometry = new THREE.ShapeBufferGeometry(font.generateShapes(message, 0.1, 100));
+    let mesh = new THREE.Mesh(geometry, textMaterial);
+
+    mesh.position.set(x, y, z);
+    mesh.rotateX(-Math.PI/2);
+    mesh.rotateZ(-Math.PI/2);
+
+    return mesh
+}
+
