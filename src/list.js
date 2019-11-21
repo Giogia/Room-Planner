@@ -1,6 +1,6 @@
 'use strict';
 import '@google/model-viewer';
-import { furniture } from "./objects";
+import { furniture } from "./furnitureList";
 
 let ul, found, completeList;
 
