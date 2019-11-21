@@ -3,14 +3,34 @@
 import { GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 import { GLTFExporter} from "three/examples/jsm/exporters/GLTFExporter";
 
-import {scene, currentObjects, renderer, camera, backgroundObjects, ground} from './app';
-import randomInt from 'random-int'
-import {plants, trees, rocks, mountains} from "./objects";
+import {scene, camera} from './app';
 
 import * as THREE from 'three';
+import {draggableObjects} from "./controls";
+import {currentObjects} from "./objects";
+
+let url = 'http://localhost:3000/';
 
 
-async function loadModel(name, x=camera.position.x/4, y=0.03, z=camera.position.z/4) {
+export async function loadJson(name){
+
+    let response = await fetch(url + name.toString());
+    return (await response).json();
+}
+
+
+export async function saveJson(name, data){
+
+    await fetch(url + name.toString(),
+    {
+        method: 'put',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    })
+}
+
+
+export async function importModel(name, x=camera.position.x/4, y=0.03, z=camera.position.z/4) {
 
     let path  = './models/furniture/' + name + '.glb';
 
@@ -29,53 +49,9 @@ async function loadModel(name, x=camera.position.x/4, y=0.03, z=camera.position.
     model.position.set(x, y, z);
 
     scene.add(model);
-    currentObjects.push(model);
-}
+    draggableObjects.push(model);
 
-
-export async function addObject(event){
-
-    let name = event.target.id;
-
-    await loadModel(name)
-}
-
-
-export async function loadJson(name){
-
-    let response = await fetch('http://localhost:63342/Room-Planner/json/'+ name.toString()+ '.json');
-    return (await response).json();
-}
-
-
-async function saveJson(name, payload){
-
-    let data = new FormData();
-    data.append( 'http://localhost:63342/Room-Planner/json/'+ name.toString(), JSON.stringify( payload ) );
-
-    fetch('http',
-    {
-        method: "POST",
-        body: data
-    })
-    .then(function(res){ return res.json(); })
-    .then(function(data){ alert( JSON.stringify( data ) ) })
-}
-
-
-export async function loadScene(){
-
-    let objects = await loadJson('objects');
-
-    objects.forEach( object => {
-        loadModel(object.name, object.x, object.y, object.z)
-    });
-}
-
-
-async function dirList(name){
-
-    let response = await fetch()
+    return model
 }
 
 
@@ -95,6 +71,7 @@ export function exportScene(){
 
     },{ binary:true });
 }
+
 
 
 

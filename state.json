@@ -1,0 +1,163 @@
+{
+  "floorPlan": {
+    "points": [
+      {
+        "x": -5,
+        "z": -5,
+        "selected": false
+      },
+      {
+        "x": 0,
+        "z": -5,
+        "selected": false
+      },
+      {
+        "x": -5,
+        "z": 0,
+        "selected": false
+      },
+      {
+        "x": 0,
+        "z": 0,
+        "selected": false
+      },
+      {
+        "x": -5,
+        "z": 3,
+        "selected": false
+      },
+      {
+        "x": 0,
+        "z": 2,
+        "selected": false
+      },
+      {
+        "x": 1,
+        "z": 2,
+        "selected": false
+      },
+      {
+        "x": 5,
+        "z": 2,
+        "selected": false
+      },
+      {
+        "x": -5,
+        "z": 5,
+        "selected": false
+      },
+      {
+        "x": 1,
+        "z": 5,
+        "selected": false
+      },
+      {
+        "x": 5,
+        "z": 5,
+        "selected": false
+      },
+      {
+        "x": 0,
+        "z": 3,
+        "selected": false
+      },
+      {
+        "x": 5,
+        "z": 0,
+        "selected": false
+      }
+    ],
+    "lines": [
+      {
+        "from": 0,
+        "to": 1
+      },
+      {
+        "from": 0,
+        "to": 2
+      },
+      {
+        "from": 1,
+        "to": 3
+      },
+      {
+        "from": 2,
+        "to": 3
+      },
+      {
+        "from": 2,
+        "to": 4
+      },
+      {
+        "from": 3,
+        "to": 5
+      },
+      {
+        "from": 4,
+        "to": 11
+      },
+      {
+        "from": 4,
+        "to": 8
+      },
+      {
+        "from": 5,
+        "to": 6
+      },
+      {
+        "from": 5,
+        "to": 11
+      },
+      {
+        "from": 6,
+        "to": 7
+      },
+      {
+        "from": 6,
+        "to": 9
+      },
+      {
+        "from": 7,
+        "to": 10
+      },
+      {
+        "from": 8,
+        "to": 9
+      },
+      {
+        "from": 9,
+        "to": 10
+      },
+      {
+        "from": 3,
+        "to": 12
+      },
+      {
+        "from": 12,
+        "to": 7
+      }
+    ]
+  },
+  "currentObjects": {
+    "objects": [
+      {
+        "name": "bedBunk",
+        "x": -2.358444742638845,
+        "y": 0,
+        "z": -2.0587796699493808
+      },
+      {
+        "name": "chair",
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      {
+        "name": "bathtub",
+        "x": 2.01287637255242,
+        "y": 0.03,
+        "z": -3.6784323026421104
+      }
+    ]
+  }
+}

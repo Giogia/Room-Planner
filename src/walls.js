@@ -11,7 +11,7 @@ let inside = require("point-in-polygon");
 import {floorMaterial, skirtingMaterial} from "./materials";
 import {hide} from "./view";
 import {scene} from "./app";
-import {loadJson} from "./loader";
+import {loadJson, saveJson} from "./loader";
 
 export const DEPTH = 0.05;
 export const HEIGHT = 1.3;
@@ -21,8 +21,7 @@ export let drawModel, floorModel, wallsModel, skirtingModel, roomCenters;
 
 export async function createModel (){
 
-    let json = await loadJson('floorplan');
-    floorPlan = json['floorPlan'];
+    floorPlan = await loadJson('floorPlan');
 
     drawModel = createDrawModel();
     scene.add(drawModel);
@@ -229,6 +228,40 @@ export function createFloorModel() {
     _.each(getPointModels(centers), (wall) => centersGroup.add(wall));
 
     return [floor, centersGroup];
+}
+
+
+export async function updateScene(){
+
+    scene.remove(drawModel);
+    drawModel = createDrawModel();
+    scene.add(drawModel);
+
+    await saveJson('floorPlan', floorPlan);
+}
+
+
+export function updateModel(){
+
+    scene.remove(floorModel);
+    floorModel = createFloorModel()[0];
+    scene.add(floorModel);
+    hide(floorModel.children);
+
+    scene.remove(roomCenters);
+    roomCenters = createFloorModel()[1];
+    scene.add(roomCenters);
+    hide(roomCenters.children);
+
+    scene.remove(wallsModel);
+    wallsModel = createWallsModel();
+    scene.add(wallsModel);
+    hide(wallsModel.children);
+
+    scene.remove(skirtingModel);
+    skirtingModel = createWallsModel(true);
+    scene.add(skirtingModel);
+    hide(skirtingModel.children);
 }
 
 

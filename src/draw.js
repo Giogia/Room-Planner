@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 import _ from 'lodash';
 
-import {canvas, camera, scene, updateScene} from "./app";
-import {floorPlan} from "./walls";
+import {canvas, camera, scene} from "./app";
+import {floorPlan,  updateScene} from "./walls";
 import {LineMaterial} from "three/examples/jsm/lines/LineMaterial";
 import {LineGeometry} from "three/examples/jsm/lines/LineGeometry";
 import {Line2} from "three/examples/jsm/lines/Line2";
@@ -107,8 +107,6 @@ function drawLine(event){
 
             if(!_.find(points, {x: Math.round(intersection.point.x * 4)/4, z: Math.round(intersection.point.y * 4)/4})){
 
-                console.log(intersection.point);
-
                 let intersectionPoint = {x: Math.round(intersection.point.x * 4)/4, z: Math.round(intersection.point.y * 4)/4, selected: false};
 
                 drawPoint(intersectionPoint);
@@ -137,8 +135,6 @@ export function deleteDrawing(event){
 
     let position = worldCoordinates(event);
     let selected = _.find(points,{ x: position.x, z: position.z });
-
-    console.log(position, selected);
 
     if(selected){
 

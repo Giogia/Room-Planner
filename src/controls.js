@@ -4,12 +4,16 @@ import * as THREE from 'three';
 import OrbitControls from 'three-controls/src/js/OrbitControls';
 import {MapControls} from 'three-controls';
 import TransformControls from "three-controls/src/js/TransformControls";
+//import { PointerLockControls } from './jsm/controls/PointerLockControls.js';
 
-import {camera, currentObjects, renderer, canvas, animate, scene} from "./app";
+import {camera, renderer, canvas, animate, scene} from "./app";
 import ThreeDragger from 'three-dragger';
+import {editMode, viewMode} from "./buttons";
+import {currentObjects} from "./objects";
+import {saveJson} from "./loader";
 
-export var dragControls, mapControls, transformControls, orbitControls;
-
+export var dragControls, mapControls, transformControls, orbitControls, pointerLockControls;
+export var draggableObjects = [];
 
 export function  enableOrbitControls(){
 
@@ -31,6 +35,14 @@ export function  enableOrbitControls(){
     orbitControls.update();
 }
 
+/*export function pointerLockControls(){
+
+    pointerLockControls = new PointerLockControls(camera, renderer.domElement);
+
+}
+
+
+ */
 export function enableTransformControls(){
 
     transformControls = new TransformControls(camera, renderer.domElement);
@@ -40,13 +52,15 @@ export function enableTransformControls(){
     transformControls.showY = true;
     transformControls.showZ = true;
 
-    let geometry = new THREE.BoxBufferGeometry(2,2,2);
+    /*let geometry = new THREE.BoxBufferGeometry(2,2,2);
     let material = new THREE.MeshLambertMaterial({color: 0xffffff});
 
     let mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
 
     transformControls.attach(mesh);
+
+     */
     //scene.add(transformControls);
 }
 
@@ -66,14 +80,28 @@ export function enableMapControls(){
 
     mapControls.enabled = false;
     mapControls.update();
+
+    mapControls.addEventListener('change', function(){
+        setTimeout( function(){
+            viewMode();
+        }, 100);
+    });
+
+    mapControls.addEventListener('end', function(){
+        setTimeout( function(){
+            editMode();
+        }, 100);
+    });
 }
 
 
 export function enableDragControls(){
 
     let dragZone = document.getElementById( 'controls');
+    let currentObject;
+    let position = new THREE.Vector3();
 
-    dragControls = new ThreeDragger(currentObjects, camera, dragZone);
+    dragControls = new ThreeDragger(draggableObjects, camera, dragZone);
 
     dragControls.on( 'dragstart', function () {
         orbitControls.enabled = false;
@@ -82,7 +110,6 @@ export function enableDragControls(){
     dragControls.on('drag', function (event) {
 
         let vector = new THREE.Vector3();
-        let position = new THREE.Vector3();
 
         vector.set(
             ( event.event.clientX / canvas.clientWidth ) * 2 - 1,
@@ -99,21 +126,34 @@ export function enableDragControls(){
 
         let group = event.target;
 
-        while(group.parent.type != 'Scene'){
+        while(group.type !== 'Scene'){
             group = group.parent
         }
 
-        // reset group position otherwise children are over-translated
-        group.parent.position.set(- group.position.x, - group.position.y, - group.position.z);
+        group.position.set(position.x, position.y, position.z);
 
-        for( let child of group.parent.children ){
-            child.position.set(position.x - group.parent.position.x, position.y - group.parent.position.y, position.z - group.parent.position.z);
+        /*for( let child of group.parent.children ){
+            child.position.set(position.x, position.y, position.z);
         }
+
+         */
 
     });
 
-    dragControls.on( 'dragend', function () {
+    dragControls.on( 'dragend', async function () {
         orbitControls.enabled = true;
-    } );
+
+        for (let object of dragControls.objects){
+
+             console.log(object);
+
+            let dragged = _.find(currentObjects.objects, {name: object.name});
+            dragged.x = object.position.x;
+            dragged.y = object.position.y;
+            dragged.z = object.position.z;
+        }
+
+        await saveJson('currentObjects', currentObjects);
+    });
 }
 

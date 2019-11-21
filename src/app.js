@@ -3,21 +3,25 @@
 import * as THREE from 'three';
 import * as TWEEN from 'tween.js';
 
-import { enableOrbitControls, enableMapControls, enableDragControls, enableTransformControls} from "./controls"
+import {
+    enableOrbitControls,
+    enableMapControls,
+    enableDragControls,
+    enableTransformControls,
+    draggableObjects
+} from "./controls"
 import {orbitControls, mapControls, dragControls} from "./controls";
 
-import { addLights } from './lights';
-import {addObject, loadScene } from "./loader";
-import {createFloorModel, createDrawModel, createWallsModel, createModel} from "./walls";
-import {drawModel, floorModel, wallsModel, skirtingModel, roomCenters} from "./walls";
-import {hide, hideCloseWalls, showRoomCenters, tweenCamera} from "./view";
+import { addLights } from "./lights";
+import {saveJson} from "./loader";
+import {currentObjects, initObjects, addObject, selectObject} from "./objects";
+import {createModel, floorPlan} from "./walls";
+import {hideCloseWalls, showRoomCenters, tweenCamera} from "./view";
 import {createButtons} from "./buttons";
 import {MDCDrawer} from "@material/drawer/component";
 
-export var scene, camera, renderer, canvas, raycaster;
-export var ground;
-export var currentObjects = [];
-export var backgroundObjects = [];
+export let scene, camera, renderer, canvas, raycaster;
+export let ground;
 export let list, drawer;
 
 
@@ -48,7 +52,7 @@ async function init(){
     canvas.addEventListener('dblclick', selectObject, false);
 
     await createModel();
-    //await loadScene();
+    await initObjects();
 
     autoResize();
     animate();
@@ -56,6 +60,8 @@ async function init(){
     setTimeout(function(){
         loadingAnimation();
     }, 1000);
+
+    //autoSave();
 
 }
 
@@ -128,57 +134,6 @@ function loadingAnimation(){
 }
 
 
-export function selectObject(event){
-
-    let mouse = new THREE.Vector2();
-
-    mouse.x = ( event.clientX / canvas.clientWidth ) * 2 - 1;
-	mouse.y = - ( event.clientY / canvas.clientHeight ) * 2 + 1;
-
-    raycaster.setFromCamera( mouse, camera );
-
-    let intersects = raycaster.intersectObjects( scene.children, true);
-
-    //TODO add action for objects
-
-    console.log(intersects);
-
-    return intersects
-}
-
-
-export function updateScene(){
-
-    scene.remove(drawModel);
-    drawModel = createDrawModel();
-    scene.add(drawModel);
-}
-
-
-export function updateModel(){
-
-    scene.remove(floorModel);
-    floorModel = createFloorModel()[0];
-    scene.add(floorModel);
-    hide(floorModel.children);
-
-    scene.remove(roomCenters);
-    roomCenters = createFloorModel()[1];
-    scene.add(roomCenters);
-    hide(roomCenters.children);
-
-    scene.remove(wallsModel);
-    wallsModel = createWallsModel();
-    scene.add(wallsModel);
-    hide(wallsModel.children);
-
-    scene.remove(skirtingModel);
-    skirtingModel = createWallsModel(true);
-    scene.add(skirtingModel);
-    hide(skirtingModel.children);
-}
-
-
 function autoResize(){
     window.onresize = function () {
         camera.aspect = canvas.clientWidth / canvas.clientHeight;
@@ -186,6 +141,15 @@ function autoResize(){
         renderer.setSize( canvas.clientWidth, canvas.clientHeight );
         animate();
     };
+}
+
+
+function autoSave(){
+
+    setInterval(async function(){
+        await saveJson('floorPlan', floorPlan);
+        await saveJson('currentObjects', currentObjects);
+    }, 10000);
 }
 
 
@@ -197,7 +161,7 @@ export function animate() {
 
     orbitControls.update();
     mapControls.update();
-    dragControls.update(currentObjects);
+    dragControls.update(draggableObjects);
 
     hideCloseWalls();
     showRoomCenters();

@@ -1,17 +1,14 @@
 import * as THREE from "three";
 import * as TWEEN from "tween.js";
 
-import {dragControls, mapControls, orbitControls} from "./controls";
+import {dragControls, draggableObjects, mapControls, orbitControls} from "./controls";
 
 import {drawer, camera, list, canvas, scene} from "./app";
-import { currentObjects } from "./app";
-import { wallsModel, drawModel, roomCenters, skirtingModel, floorModel} from "./walls";
-import {updateModel, selectObject} from "./app";
-
-import {addObject} from "./loader";
+import {addObject, selectObject} from "./objects";
+import {wallsModel, drawModel, roomCenters, skirtingModel, floorModel, updateModel} from "./walls";
 
 import {editMode, modelButtons, drawButtons} from "./buttons";
-import { activateDrawButtons, deactivateButtons, activateButtons, deactivateDrawButtons} from "./buttons";
+import {activateDrawButtons, deactivateButtons, activateButtons, deactivateDrawButtons} from "./buttons";
 import {directional} from "./lights";
 
 
@@ -40,7 +37,7 @@ function drawView(){
 
     scene.remove( directional );
 
-    hide(currentObjects);
+    hide(draggableObjects);
     hide(floorModel.children);
     hide(roomCenters.children);
     hide(wallsModel.children);
@@ -70,7 +67,7 @@ function modelView(){
 
     tweenCamera(new THREE.Vector3(-7, 9, -16));
 
-    show(currentObjects);
+    show(draggableObjects);
     show(floorModel.children);
     show(roomCenters.children);
     show(wallsModel.children);
