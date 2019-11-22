@@ -7,9 +7,8 @@ import {LineMaterial} from "three/examples/jsm/lines/LineMaterial";
 import {LineGeometry} from "three/examples/jsm/lines/LineGeometry";
 import {Line2} from "three/examples/jsm/lines/Line2";
 
-import {checkIntersection} from "line-intersect";
+import {checkIntersection, colinearPointWithinSegment} from "line-intersect";
 import {font, textMaterial} from "./materials";
-import {TextGeometry} from "three";
 
 let currentLine;
 
@@ -53,6 +52,33 @@ function selectPoint(point){
 function drawPoint(position){
 
     floorPlan.points.push(position);
+
+    let points = floorPlan.points;
+    let lines = floorPlan.lines;
+
+    // if it is drawn on one or more line those get split in two lines
+    for(let intersecting of lines) {
+
+        let start = points[intersecting.from];
+        let end = points[intersecting.to];
+
+        let id = points.indexOf(position);
+
+        if (intersecting.from !== id && intersecting.to !== id) {
+
+            // check if points are collinear
+            if ((end.z - start.z) * (position.x - start.x) === (end.x - start.x) * (position.z - start.z)) {
+                if(colinearPointWithinSegment(position.x, position.z, start.x, start.z, end.x, end.z)){
+
+                    lines.push({from: points.indexOf(position), to: intersecting.from});
+                    lines.push({from: points.indexOf(position), to: intersecting.to});
+                    _.remove(lines, line => { return line === intersecting });
+                }
+            }
+        }
+
+    }
+
     updateScene();
 }
 
@@ -107,18 +133,10 @@ function drawLine(event){
 
         if( intersection.point ){
 
-            if(!_.find(points, {x: Math.round(intersection.point.x * 4)/4, z: Math.round(intersection.point.y * 4)/4})){
+            let intersectionPoint = {x: Math.round(intersection.point.x * 4)/4, z: Math.round(intersection.point.y * 4)/4, selected: false};
 
-                let intersectionPoint = {x: Math.round(intersection.point.x * 4)/4, z: Math.round(intersection.point.y * 4)/4, selected: false};
-
+            if(!_.find(points, {x: intersectionPoint.x, z: intersectionPoint.z})){
                 drawPoint(intersectionPoint);
-
-                lines.push({from:points.indexOf(intersectionPoint), to:intersecting.from});
-                lines.push({from:points.indexOf(intersectionPoint), to:intersecting.to});
-                lines.push({from:points.indexOf(intersectionPoint), to:newLine.from});
-                lines.push({from:points.indexOf(intersectionPoint), to:newLine.to});
-                _.remove(lines, line => { return line === intersecting || line === newLine});
-
             }
         }
     }

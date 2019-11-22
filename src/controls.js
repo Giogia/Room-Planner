@@ -90,7 +90,7 @@ export function enableMapControls(){
 
     mapControls.addEventListener('end', function(){
         setTimeout( function(){
-            
+
             if(currentMode === "edit"){
                 editMode();
             }
