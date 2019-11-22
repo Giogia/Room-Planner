@@ -82,21 +82,19 @@ export function enableMapControls(){
     mapControls.enabled = false;
     mapControls.update();
 
-    let previousMode;
-
     mapControls.addEventListener('change', function(){
         setTimeout( function(){
-            previousMode = currentMode;
             viewMode();
         }, 100);
     });
 
     mapControls.addEventListener('end', function(){
         setTimeout( function(){
-            if(previousMode === "edit"){
+            
+            if(currentMode === "edit"){
                 editMode();
             }
-            if(previousMode === "delete"){
+            if(currentMode === "delete"){
                 deleteMode();
             }
         }, 100);

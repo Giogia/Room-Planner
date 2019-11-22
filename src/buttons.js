@@ -82,7 +82,6 @@ export function deactivateButtons(){
 
 
 export function viewMode(){
-    currentMode = "view";
     canvas.removeEventListener( 'click', editDrawing, false);
     canvas.removeEventListener( 'click', deleteDrawing, false);
 }
