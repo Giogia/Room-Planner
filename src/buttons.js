@@ -7,7 +7,7 @@ import {exportScene} from "./loader";
 
 
 export let buttons, viewButton, downloadButton, editButton, deleteButton;
-
+export let currentMode;
 
 export function createButtons(){
 
@@ -82,17 +82,20 @@ export function deactivateButtons(){
 
 
 export function viewMode(){
+    currentMode = "view";
     canvas.removeEventListener( 'click', editDrawing, false);
     canvas.removeEventListener( 'click', deleteDrawing, false);
 }
 
 export function editMode(){
+    currentMode = "edit";
     canvas.addEventListener( 'click', editDrawing, false);
     canvas.removeEventListener( 'click', deleteDrawing, false);
 }
 
 
-function deleteMode(){
+export function deleteMode(){
+    currentMode = "delete";
     canvas.addEventListener( 'click', deleteDrawing, false);
     canvas.removeEventListener( 'click', editDrawing, false);
 }

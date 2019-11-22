@@ -8,7 +8,7 @@ import TransformControls from "three-controls/src/js/TransformControls";
 
 import {camera, renderer, canvas, animate, scene} from "./app";
 import ThreeDragger from 'three-dragger';
-import {editMode, viewMode} from "./buttons";
+import {currentMode, deleteMode, editMode, viewMode} from "./buttons";
 import {currentObjects} from "./objects";
 import {saveJson} from "./loader";
 
@@ -82,15 +82,23 @@ export function enableMapControls(){
     mapControls.enabled = false;
     mapControls.update();
 
+    let previousMode;
+
     mapControls.addEventListener('change', function(){
         setTimeout( function(){
+            previousMode = currentMode;
             viewMode();
         }, 100);
     });
 
     mapControls.addEventListener('end', function(){
         setTimeout( function(){
-            editMode();
+            if(previousMode === "edit"){
+                editMode();
+            }
+            if(previousMode === "delete"){
+                deleteMode();
+            }
         }, 100);
     });
 }
