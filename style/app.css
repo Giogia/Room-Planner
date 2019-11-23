@@ -196,11 +196,15 @@ model-viewer{
 .mdc-fab{
     margin: 25%;
     transform: translateY(-3%);
-    transition: transform 0.15s ease-in-out;
+    transition: transform 0.1s ease-in-out;
 }
 
 .mdc-fab:hover{
     transform: translateY(3%);
+}
+
+.mdc-fab__icon{
+    transition: transform 0.1s ease-in-out;
 }
 
 #canvas{

@@ -172,6 +172,27 @@ export function hideModelButtons(){
 }
 
 
+export function showDrawIcon(){
+    hideButton(firstIcon);
+    setTimeout( () => {
+        firstIcon.style.display = 'none';
+        secondIcon.style.display = 'block';
+        showButton(secondIcon);
+    }, 100);
+
+}
+
+
+export function showModelIcon(){
+    hideButton(secondIcon);
+    setTimeout( () => {
+        secondIcon.style.display = 'none';
+        firstIcon.style.display = 'block';
+        showButton(firstIcon);
+    }, 100);
+}
+
+
 export function hideButton(element){
     element.style.transform = 'scale(0)';
 }
