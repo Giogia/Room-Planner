@@ -164,6 +164,14 @@ model-viewer{
     transform: scale(0);
 }
 
+#first-icon{
+    display: block;
+}
+
+#second-icon{
+    display: none;
+}
+
 .buttons {
     position: absolute;
     right: 0;

@@ -13,7 +13,7 @@ import {
     showDrawButtons,
     deactivateModelButtons,
     hideModelButtons,
-    hideDrawButtons, activateModelButtons, showModelButtons
+    hideDrawButtons, activateModelButtons, showModelButtons, firstIcon, secondIcon
 } from "./buttons";
 import {activateDrawButtons, deactivateButtons, activateButtons, deactivateDrawButtons} from "./buttons";
 import {directional} from "./lights";
@@ -40,6 +40,8 @@ function drawView(){
     setTimeout( () => {
         activateDrawButtons();
         showDrawButtons();
+        firstIcon.style.display = 'none';
+        secondIcon.style.display = 'block';
     }, 500);
 
     list.removeEventListener('click', addObject, false);
@@ -67,6 +69,8 @@ function modelView(){
     setTimeout( () => {
         activateModelButtons();
         showModelButtons();
+        secondIcon.style.display = 'none';
+        firstIcon.style.display = 'block';
     }, 500);
 
 

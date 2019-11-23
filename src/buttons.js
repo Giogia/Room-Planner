@@ -6,12 +6,14 @@ import {canvas} from "./app";
 import {exportScene} from "./loader";
 
 
-export let drawButtons, modelButtons, viewButton, downloadButton, editButton, deleteButton;
+export let drawButtons, modelButtons, viewButton, firstIcon, secondIcon, downloadButton, editButton, deleteButton;
 export let currentMode;
 
 export function createButtons(){
 
     viewButton = document.getElementById('view-button');
+    firstIcon = document.getElementById('first-icon');
+    secondIcon = document.getElementById('second-icon');
 
     drawButtons = document.getElementById('draw-buttons');
     drawButtons.style.display = 'none';
