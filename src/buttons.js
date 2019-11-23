@@ -6,31 +6,45 @@ import {canvas} from "./app";
 import {exportScene} from "./loader";
 
 
-export let buttons, viewButton, downloadButton, editButton, deleteButton;
+export let drawButtons, modelButtons, viewButton, downloadButton, editButton, deleteButton;
 export let currentMode;
 
 export function createButtons(){
 
-    buttons = document.getElementById('buttons');
+    viewButton = document.getElementById('view-button');
 
-    deleteButton = createIconButton('delete');
-    editButton = createIconButton( 'edit');
-    downloadButton = createIconButton( 'save');
-    viewButton = createIconButton('layers');
+    drawButtons = document.getElementById('draw-buttons');
+    drawButtons.style.display = 'none';
 
-    hideButton(deleteButton, 300, 0);
-    hideButton(editButton, 150, 0);
+    deleteButton = createIconButton('delete', drawButtons);
+    editButton = createIconButton( 'edit', drawButtons);
 
-    activateButtons();
+    hideButton(deleteButton);
+    hideButton(editButton);
+
+    modelButtons = document.getElementById('model-buttons');
+    downloadButton = createIconButton( 'save', modelButtons);
+
+    hideButton(downloadButton);
+
+    activateModelButtons();
 
 }
 
 
-function createIconButton(name){
+function createIconButton(name, buttons){
 
     let button = document.createElement('button');
-    button.className = 'mdc-fab';
+    button.className = 'mdc-fab mdc-fab--mini';
     button.id = name;
+
+    button.onmouseover = () => {
+        button.style.transform = 'translateY(3%)';
+    };
+    button.onmouseout = () => {
+        button.style.transform = 'translateY(-3%)';
+    };
+
     buttons.appendChild(button);
 
     let icon = document.createElement('a');
@@ -47,20 +61,34 @@ function createIconButton(name){
 export function activateButtons(){
 
     activateDrawButtons();
-
-    downloadButton.addEventListener('click', viewMode, false);
-    downloadButton.addEventListener('click', exportScene, false);
+    activateModelButtons();
 
     viewButton.addEventListener('click', viewMode, false);
     viewButton.addEventListener('click', toggleView, false);
 }
 
 
-export function activateDrawButtons(){
+export function deactivateButtons(){
 
+    deactivateDrawButtons();
+    deactivateModelButtons();
+
+    viewButton.removeEventListener('click', viewMode, false);
+    viewButton.removeEventListener('click', toggleView, false);
+}
+
+
+export function activateDrawButtons(){
     editButton.addEventListener('click', editMode, false);
     deleteButton.addEventListener('click', deleteMode, false);
 }
+
+
+export function activateModelButtons(){
+    downloadButton.addEventListener('click', viewMode, false);
+    downloadButton.addEventListener('click', exportScene, false);
+}
+
 
 export function deactivateDrawButtons(){
 
@@ -69,17 +97,11 @@ export function deactivateDrawButtons(){
 }
 
 
-export function deactivateButtons(){
-
-    deactivateDrawButtons();
+export function deactivateModelButtons(){
 
     downloadButton.removeEventListener('click', viewMode, false);
     downloadButton.removeEventListener('click', exportScene, false);
-
-    viewButton.removeEventListener('click', viewMode, false);
-    viewButton.removeEventListener('click', toggleView, false);
 }
-
 
 export function viewMode(){
     canvas.removeEventListener( 'click', editDrawing, false);
@@ -100,35 +122,61 @@ export function deleteMode(){
 }
 
 
-export function hideButton(element, translation=150, timeout=150){
-    element.style.transform = 'translateY('+ translation.toString() +'%)';
 
-    setTimeout(function(){
-        element.style.opacity = '0';
-    }, timeout);
+export function showDrawButtons(){
+
+    drawButtons.style.display = 'flex';
+
+    setTimeout(() => {
+        showButton(editButton);
+    }, 100);
+
+    setTimeout(() => {
+        showButton(deleteButton);
+    }, 200);
 }
 
 
-export function showButton(element, translation=150){
-    element.style.opacity = '100';
-    element.style.transform = 'translateY('+ translation.toString() +'%)';
+export function hideDrawButtons(){
+    hideButton(deleteButton);
+
+    setTimeout(() => {
+        hideButton(editButton);
+    }, 100);
+
+    setTimeout( () => {
+        drawButtons.style.display = 'none';
+    }, 200);
 
 }
 
 
-export function modelButtons(){
-    hideButton(deleteButton, 300);
-    hideButton(editButton, 150);
-    setTimeout(function(){
-        showButton(downloadButton, 0);
-    }, 250);
+export function showModelButtons(){
+    modelButtons.style.display = 'flex';
+
+    setTimeout( () => {
+        showButton(downloadButton);
+    }, 100);
+
 }
 
 
-export function drawButtons(){
-    hideButton(downloadButton, 150);
-    setTimeout( function(){
-        showButton(deleteButton, 150);
-        showButton(editButton, 150);
-    }, 250);
+export function hideModelButtons(){
+    hideButton(downloadButton);
+
+    setTimeout( () => {
+        modelButtons.style.display = 'none';
+    }, 100);
 }
+
+
+export function hideButton(element){
+    element.style.transform = 'scale(0)';
+}
+
+
+export function showButton(element){
+    element.style.transform = 'scale(1)';
+}
+
+

@@ -7,7 +7,14 @@ import {drawer, camera, list, canvas, scene} from "./app";
 import {addObject, selectObject} from "./objects";
 import {wallsModel, drawModel, roomCenters, skirtingModel, floorModel, updateModel} from "./walls";
 
-import {editMode, modelButtons, drawButtons} from "./buttons";
+import {
+    modelButtons,
+    drawButtons,
+    showDrawButtons,
+    deactivateModelButtons,
+    hideModelButtons,
+    hideDrawButtons, activateModelButtons, showModelButtons
+} from "./buttons";
 import {activateDrawButtons, deactivateButtons, activateButtons, deactivateDrawButtons} from "./buttons";
 import {directional} from "./lights";
 
@@ -28,9 +35,12 @@ export function toggleView(event) {
 
 function drawView(){
 
-    drawButtons();
-
-    activateDrawButtons();
+    deactivateModelButtons();
+    hideModelButtons();
+    setTimeout( () => {
+        activateDrawButtons();
+        showDrawButtons();
+    }, 500);
 
     list.removeEventListener('click', addObject, false);
     canvas.removeEventListener('dblclick', selectObject, false);
@@ -45,8 +55,6 @@ function drawView(){
     show(drawModel.children);
 
     tweenCamera(new THREE.Vector3(-0.01, 30, 0));
-
-    editMode();
 }
 
 
@@ -54,7 +62,13 @@ function modelView(){
 
     mapControls.reset();
 
-    modelButtons();
+    deactivateDrawButtons();
+    hideDrawButtons();
+    setTimeout( () => {
+        activateModelButtons();
+        showModelButtons();
+    }, 500);
+
 
     deactivateDrawButtons();
 
@@ -90,9 +104,9 @@ export function tweenCamera(targetPosition, duration=2000){
 
         .to( targetPosition, duration )
 
-        .easing( TWEEN.Easing.Quintic.InOut )
+        .easing( TWEEN.Easing.Quartic.InOut )
 
-        .onUpdate( function() {
+        .onUpdate( () => {
             camera.position.copy(position);
         })
 

@@ -7,11 +7,11 @@ export let hemisphere, directional;
 
 export function addLights(){
 
-    hemisphere = new THREE.HemisphereLight(0xffffff, 0x444444, 0.8 );
+    hemisphere = new THREE.HemisphereLight(0xffffff, 0x444455, 1 );
     hemisphere.position.set(0, 20, 0);
     scene.add( hemisphere );
 
-    directional = new THREE.DirectionalLight( 0xffffff, 1.5 );
+    directional = new THREE.DirectionalLight( 0xffffff, 2 );
     directional.position.set( 6, 20, - 6 );
     directional.castShadow = true;
     directional.shadow.camera.top = 10;
@@ -21,4 +21,8 @@ export function addLights(){
     directional.shadow.camera.near = 0.1;
     directional.shadow.camera.far = 100;
     scene.add( directional );
+
+    directional.intensity = 0.5;
+    directional.position.set( -6, 20, 6 );
+    scene.add(directional);
 }

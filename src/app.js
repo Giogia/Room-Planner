@@ -13,11 +13,10 @@ import {
 import {orbitControls, mapControls, dragControls} from "./controls";
 
 import { addLights } from "./lights";
-import {saveJson} from "./loader";
-import {currentObjects, initObjects, addObject, selectObject} from "./objects";
-import {createModel, floorPlan} from "./walls";
+import {initObjects, addObject, selectObject} from "./objects";
+import {createModel} from "./walls";
 import {hideCloseWalls, showRoomCenters, tweenCamera} from "./view";
-import {createButtons} from "./buttons";
+import {createButtons, downloadButton, showButton, viewButton} from "./buttons";
 import {MDCDrawer} from "@material/drawer/component";
 
 export let scene, camera, renderer, canvas, raycaster;
@@ -57,18 +56,40 @@ async function init(){
     autoResize();
     animate();
 
-    setTimeout(function(){
-        loadingAnimation();
-    }, 1000);
+    loadingAnimation();
 
-    //autoSave();
 
+}
+
+
+function loadingAnimation(){
+
+    let loadingIcon = document.getElementById('loading-icon');
+    loadingIcon.style["animation"] = 'disappear 1s both';
+
+    let loadingScreen = document.getElementById('loading-screen');
+    loadingScreen.style.opacity = '0';
+
+    tweenCamera(new THREE.Vector3(-7, 9, -16), 3000);
+
+    setTimeout( () => {
+
+        showButton(viewButton);
+
+        setTimeout( () => {
+            showButton(downloadButton);
+        }, 100);
+
+        setTimeout( () => {
+            drawer.open = true;
+        }, 200);
+
+    }, 3000);
 }
 
 
 function createDrawer() {
     drawer = new MDCDrawer.attachTo(document.getElementsByClassName("mdc-drawer")[0]);
-    drawer.open = true;
 }
 
 
@@ -84,8 +105,8 @@ function createRenderer(){
 
 function createScene(){
     scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x383941);
-    scene.fog = new THREE.Fog(0x383941, 15, 60);
+    scene.background = new THREE.Color(0x3d4043);
+    scene.fog = new THREE.Fog(0x3d4043, 15, 60);
 }
 
 
@@ -95,7 +116,7 @@ function createCamera(){
     const near = 0.1;
     const far = 100;
     camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-    camera.position.set(-4, 12, 12);
+    camera.position.set(-4, 100, 12);
 }
 
 
@@ -109,7 +130,7 @@ function addGround() {
     ground = new THREE.Mesh(
         new THREE.PlaneBufferGeometry(100, 100),
         new THREE.MeshLambertMaterial( {
-						color: 0x030303,
+						color: 0x030405,
 						depthWrite: false
 					}));
 
@@ -124,32 +145,13 @@ function addGround() {
 }
 
 
-function loadingAnimation(){
-
-    let loading = document.getElementById('loading');
-    loading.style.opacity = '0';
-
-    tweenCamera(new THREE.Vector3(-7, 9, -16), 3000);
-
-}
-
-
 function autoResize(){
-    window.onresize = function () {
+    window.onresize = () => {
         camera.aspect = canvas.clientWidth / canvas.clientHeight;
         camera.updateProjectionMatrix();
         renderer.setSize( canvas.clientWidth, canvas.clientHeight );
         animate();
     };
-}
-
-
-function autoSave(){
-
-    setInterval(async function(){
-        await saveJson('floorPlan', floorPlan);
-        await saveJson('currentObjects', currentObjects);
-    }, 10000);
 }
 
 

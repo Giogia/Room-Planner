@@ -29,7 +29,7 @@ export function  enableOrbitControls(){
     orbitControls.maxPolarAngle = Math.PI/2-Math.PI/32;
     orbitControls.dampingFactor = 0.05;
     orbitControls.rotateSpeed = 0.1;
-    orbitControls.minDistance = 0;
+    orbitControls.minDistance = 5;
     orbitControls.maxDistance = 100;
 
     orbitControls.update();
@@ -76,20 +76,20 @@ export function enableMapControls(){
     mapControls.enableDamping = false;
 
     mapControls.enableZoom = true;
-    mapControls.minDistance = 0;
+    mapControls.minDistance = 5;
     mapControls.maxDistance = 100;
 
     mapControls.enabled = false;
     mapControls.update();
 
-    mapControls.addEventListener('change', function(){
-        setTimeout( function(){
+    mapControls.addEventListener('change', () => {
+        setTimeout( () => {
             viewMode();
         }, 100);
     });
 
-    mapControls.addEventListener('end', function(){
-        setTimeout( function(){
+    mapControls.addEventListener('end', () => {
+        setTimeout( () => {
 
             if(currentMode === "edit"){
                 editMode();
