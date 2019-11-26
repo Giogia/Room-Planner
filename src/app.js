@@ -58,38 +58,45 @@ async function init(){
 
     loadingAnimation();
 
-
 }
 
 
 function loadingAnimation(){
 
-    let loadingIcon = document.getElementById('loading-icon');
-    loadingIcon.style["animation"] = 'disappear 1s both';
-
-    let loadingScreen = document.getElementById('loading-screen');
-    loadingScreen.style.opacity = '0';
-
-    tweenCamera(new THREE.Vector3(-7, 9, -16), 3000);
-
     setTimeout( () => {
 
-        showButton(viewButton);
+        let loadingIcon = document.getElementById('loading-icon');
+        loadingIcon.style["animation"] = 'disappear 1s both';
+
+        let loadingScreen = document.getElementById('loading-screen');
+        loadingScreen.style.opacity = '0';
+
+        tweenCamera(new THREE.Vector3(-7, 9, -16), 3000);
 
         setTimeout( () => {
-            showButton(downloadButton);
-        }, 100);
 
-        setTimeout( () => {
-            drawer.open = true;
-        }, 200);
+            showButton(viewButton);
 
-    }, 3000);
+            setTimeout( () => {
+
+                showButton(downloadButton);
+
+                setTimeout( () => {
+
+                    drawer.open = true;
+                }, 100);
+
+            }, 100);
+
+        }, 3000);
+
+     }, 1000);
 }
 
 
 function createDrawer() {
     drawer = new MDCDrawer.attachTo(document.getElementsByClassName("mdc-drawer")[0]);
+    drawer.open = false;
 }
 
 

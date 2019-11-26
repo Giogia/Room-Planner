@@ -52,6 +52,17 @@ canvas{
     }
 }
 
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+        transform: perspective(1px) scale(0);
+    }
+    100% {
+        opacity: 1;
+        transform: perspective(1px) scale(1);
+    }
+}
+
 #loading-screen {
     position: absolute;
     display: flex;
@@ -65,10 +76,14 @@ canvas{
     pointer-events: none;
 }
 
-#loading-gif {
+
+#loading-animation {
     position: absolute;
-    zoom: 120%;
+    width: 7.5%;
+    height: 7.5%;
+    bottom: 15%;
     background-color: transparent;
+    animation: fade-in 0.5 both;
 }
 
 #loading-icon {
@@ -195,12 +210,7 @@ model-viewer{
 
 .mdc-fab{
     margin: 25%;
-    transform: translateY(-3%);
     transition: transform 0.1s ease-in-out;
-}
-
-.mdc-fab:hover{
-    transform: translateY(3%);
 }
 
 .mdc-fab__icon{

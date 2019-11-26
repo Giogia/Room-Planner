@@ -13,5 +13,8 @@ module.exports = {
         devtoolModuleFilenameTemplate: 'webpack:///[resource-path]?[loaders]',
     },
     mode: 'development',
-    watch: true
+    watch: true,
+    watchOptions: {
+        ignored: /node_modules/
+    }
 };

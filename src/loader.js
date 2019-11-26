@@ -7,21 +7,20 @@ import {scene, camera} from './app';
 
 import * as THREE from 'three';
 import {draggableObjects} from "./controls";
-import {currentObjects} from "./objects";
 
-let url = 'http://localhost:3000/';
+let jsonUrl = 'http://localhost:3000/';
 
 
 export async function loadJson(name){
 
-    let response = await fetch(url + name.toString());
+    let response = await fetch(jsonUrl + name.toString());
     return (await response).json();
 }
 
 
 export async function saveJson(name, data){
 
-    await fetch(url + name.toString(),
+    await fetch(jsonUrl + name.toString(),
     {
         method: 'put',
         headers: { 'Content-Type': 'application/json' },

@@ -12,6 +12,14 @@ export let currentMode;
 export function createButtons(){
 
     viewButton = document.getElementById('view-button');
+
+    viewButton.onmouseover = () => {
+        viewButton.style.transform = 'translateY(3%)';
+    };
+    viewButton.onmouseout = () => {
+        viewButton.style.transform = 'translateY(-3%)';
+    };
+
     firstIcon = document.getElementById('first-icon');
     secondIcon = document.getElementById('second-icon');
 
