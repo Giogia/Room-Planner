@@ -105,46 +105,33 @@ export function enableMapControls(){
 export function enableDragControls(){
 
     let dragZone = document.getElementById( 'controls');
-    let position = new THREE.Vector3();
+
+    let delta = new THREE.Vector3();
 
     dragControls = new ThreeDragger(draggableObjects, camera, dragZone);
 
-    dragControls.on( 'dragstart', function () {
+    dragControls.on( 'dragstart', function (event) {
         orbitControls.enabled = false;
+
+        let group = getDraggablePosition(event).group;
+        let position = getDraggablePosition(event).position;
+
+        delta.set(position.x - group.position.x, position.y - group.position.y, position.z - group.position.z);
+
     } );
 
     dragControls.on('drag', function (event) {
 
-        let vector = new THREE.Vector3();
+        let group = getDraggablePosition(event).group;
+        let position = getDraggablePosition(event).position;
 
-        vector.set(
-            ( event.event.clientX / canvas.clientWidth ) * 2 - 1,
-            - ( event.event.clientY / canvas.clientHeight ) * 2 + 1,
-            -1,
-        );
-
-        vector.unproject( camera );
-        vector.sub( camera.position ).normalize();
-
-        let distance = - camera.position.y / vector.y;
-
-        position.copy( camera.position ).add( vector.multiplyScalar( distance ) );
-
-        let group = event.target;
-
-        while(group.type !== 'Scene'){
-            group = group.parent
-        }
-
-        group.position.set(position.x, position.y, position.z);
+        group.position.set(position.x - delta.x, position.y - delta.y, position.z - delta.z);
     });
 
     dragControls.on( 'dragend', async function () {
         orbitControls.enabled = true;
 
         for (let object of dragControls.objects){
-
-             console.log(object);
 
             let dragged = _.find(currentObjects.objects, {name: object.name});
             dragged.x = object.position.x;
@@ -154,5 +141,33 @@ export function enableDragControls(){
 
         await saveJson('currentObjects', currentObjects);
     });
+}
+
+
+function getDraggablePosition(event){
+
+    let vector = new THREE.Vector3();
+    let position = new THREE.Vector3();
+
+    vector.set(
+            ( event.event.clientX / canvas.clientWidth ) * 2 - 1,
+            - ( event.event.clientY / canvas.clientHeight ) * 2 + 1,
+            -1,
+    );
+
+    vector.unproject( camera );
+    vector.sub( camera.position ).normalize();
+
+    let distance = - camera.position.y / vector.y;
+
+    position.copy( camera.position ).add( vector.multiplyScalar( distance ) );
+
+    let group = event.target;
+
+    while(group.type !== 'Scene'){
+        group = group.parent
+    }
+
+    return {group: group, position: position};
 }
 
