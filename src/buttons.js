@@ -4,7 +4,7 @@ import {toggleView} from "./view";
 import {deleteDrawing, editDrawing} from "./draw";
 import {canvas} from "./app";
 import {exportScene} from "./loader";
-import {removeObject} from "./objects";
+import {removeDraggableObject} from "./objects";
 
 
 export let drawButtons, modelButtons, viewButton, firstIcon, secondIcon, downloadButton, editButton, deleteButton, removeButton;
@@ -113,7 +113,7 @@ export function deactivateModelButtons(){
 
 
 export function viewMode(){
-    canvas.removeEventListener('click', removeObject, false);
+    canvas.removeEventListener('click', removeDraggableObject, false);
     canvas.removeEventListener( 'click', editDrawing, false);
     canvas.removeEventListener( 'click', deleteDrawing, false);
 }
@@ -122,7 +122,7 @@ export function editMode(){
     currentMode = "edit";
     canvas.addEventListener( 'click', editDrawing, false);
     canvas.removeEventListener( 'click', deleteDrawing, false);
-    canvas.removeEventListener('click', removeObject, false);
+    canvas.removeEventListener('click', removeDraggableObject, false);
 }
 
 
@@ -130,7 +130,7 @@ export function deleteMode(){
     currentMode = "delete";
     canvas.addEventListener( 'click', deleteDrawing, false);
     canvas.removeEventListener( 'click', editDrawing, false);
-    canvas.removeEventListener('click', removeObject, false);
+    canvas.removeEventListener('click', removeDraggableObject, false);
 }
 
 
