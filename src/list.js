@@ -12,7 +12,7 @@ let search = document.getElementById('search-icon');
 function init(){
     createList();
     form.onsubmit = updateList;
-    search.addEventListener('click', updateList, false);
+    search.addEventListener('click', updateList);
 }
 
 

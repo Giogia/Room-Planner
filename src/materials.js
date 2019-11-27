@@ -14,7 +14,7 @@ function setMaps(maps, repeat){
     }
 }
 
-function setTexture(name, material, repeat){
+export function setTexture(name, material, repeat=[1, 1]){
 
     let maps = [];
 
@@ -41,18 +41,6 @@ function setFont(name){
 }
 
 
-// Material for Room Floors
-export let floorMaterial = new THREE.MeshStandardMaterial( {
-    roughness: 0.8,
-    color: 0xffffff,
-    bumpScale: 0.0005,
-    metalness: 0.2,
-    polygonOffset: true,
-    polygonOffsetFactor: -1
-});
-setTexture('wood', floorMaterial, [0.5, 1.2]);
-
-
 // Material for Skirting
 export let skirtingMaterial = new THREE.MeshStandardMaterial({
     roughness: 0.8,
@@ -64,7 +52,7 @@ export let skirtingMaterial = new THREE.MeshStandardMaterial({
     polygonOffset: true,
     polygonOffsetFactor: -1
 });
-setTexture('skirting', skirtingMaterial, [1, 1.3]);
+setTexture('wood1', skirtingMaterial, [1, 1.3]);
 
 
 // Material for Text
@@ -73,10 +61,10 @@ setFont('font');
 
 
 // Material for selected Items
-export let selectedMaterial = new THREE.MeshLambertMaterial({
+export let selectedMaterial = new THREE.MeshPhongMaterial({
     color: 0xffffff,
     transparent: true,
-    opacity: 0.5
+    opacity: 0.3
 });
 
 

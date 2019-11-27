@@ -3,17 +3,11 @@
 import * as THREE from 'three';
 import * as TWEEN from 'tween.js';
 
-import {
-    enableOrbitControls,
-    enableMapControls,
-    enableDragControls,
-    enableTransformControls,
-    draggableObjects
-} from "./controls"
-import {orbitControls, mapControls, dragControls} from "./controls";
+import { enableOrbitControls, enableMapControls, enableDragControls, enableTransformControls } from "./controls"
+import {orbitControls, mapControls, dragControls, draggableObjects} from "./controls";
 
 import { addLights } from "./lights";
-import {initObjects, addObject, selectObject, removeObject, selectedObject} from "./objects";
+import {initObjects, addObject, selectDraggableObject, selectedObject, selectFloor} from "./objects";
 import {createModel} from "./walls";
 import {hideCloseWalls, showRoomCenters, tweenCamera} from "./view";
 import {createButtons, downloadButton, showButton, viewButton} from "./buttons";
@@ -47,8 +41,9 @@ async function init(){
     addLights();
     addGround();
 
-    list.addEventListener('click', addObject, false);
-    canvas.addEventListener('click', selectObject, false);
+    list.addEventListener('click', addObject);
+    canvas.addEventListener('click', selectDraggableObject);
+    canvas.addEventListener('dblclick', selectFloor);
 
     await createModel();
     await initObjects();
@@ -84,6 +79,7 @@ function loadingAnimation(){
                 setTimeout( () => {
 
                     drawer.open = true;
+
                 }, 100);
 
             }, 100);

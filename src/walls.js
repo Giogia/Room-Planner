@@ -8,7 +8,7 @@ import { Line2 } from "three/examples/jsm/lines/Line2";
 import Graph from "graph.js/dist/graph.es6";
 
 let inside = require("point-in-polygon");
-import {floorMaterial, skirtingMaterial} from "./materials";
+import {setTexture, skirtingMaterial} from "./materials";
 import {hide} from "./view";
 import {scene} from "./app";
 import {loadJson, saveJson} from "./loader";
@@ -28,10 +28,8 @@ export async function createModel (){
     scene.add(drawModel);
     hide(drawModel.children);
 
-    floorModel = createFloorModel()[0];
+    [floorModel, roomCenters] = createFloorModel();
     scene.add(floorModel);
-
-    roomCenters = createFloorModel()[1];
     scene.add(roomCenters);
 
     skirtingModel = createWallsModel(true);
@@ -39,6 +37,8 @@ export async function createModel (){
 
     wallsModel = createWallsModel();
     scene.add(wallsModel);
+
+    await saveJson('floorPlan', floorPlan);
 }
 
 
@@ -72,7 +72,7 @@ export function createDrawModel () {
           z = z + Math.sign(distanceX) * move;
       }
 
-      let message = (Math.floor(Math.hypot(distanceX, distanceZ)*10)/10).toString() + 'm'
+      let message = (Math.floor(Math.hypot(distanceX, distanceZ)*10)/10).toString() + 'm';
 
       let text = addText(message, x, 0, z);
       group.add(text);
@@ -242,7 +242,27 @@ export function createFloorModel() {
 
         if(!overlapped){
 
-            let mesh = new THREE.Mesh( geometry, floorMaterial );
+            let material = new THREE.MeshStandardMaterial( {
+                roughness: 0.8,
+                color: 0xffffff,
+                bumpScale: 0.0005,
+                metalness: 0.2,
+                polygonOffset: true,
+                polygonOffsetFactor: -1
+            });
+
+            let mesh = new THREE.Mesh( geometry, material );
+
+            let existingRoom = _.find(floorPlan.rooms, {room: room});
+
+            if(existingRoom){
+                setTexture( existingRoom.texture, material);
+                existingRoom.mesh = mesh.uuid;
+            }
+            if(!existingRoom){
+                setTexture( 'wood2', material);
+                floorPlan.rooms.push({room:room, mesh:mesh.uuid, texture:'wood2'});
+            }
 
             mesh.rotateX(Math.PI/2);
             mesh.translateZ(-0.03);
@@ -250,6 +270,7 @@ export function createFloorModel() {
             centers.push(new THREE.Vector3(center.x, center.z, center.y));
         }
     }
+
 
     let centersGroup = new THREE.Group();
     _.each(getPointModels(centers), (wall) => centersGroup.add(wall));
@@ -271,12 +292,12 @@ export async function updateScene(){
 export function updateModel(){
 
     scene.remove(floorModel);
-    floorModel = createFloorModel()[0];
+    scene.remove(roomCenters);
+    [floorModel,roomCenters] = createFloorModel();
+
     scene.add(floorModel);
     hide(floorModel.children);
 
-    scene.remove(roomCenters);
-    roomCenters = createFloorModel()[1];
     scene.add(roomCenters);
     hide(roomCenters.children);
 

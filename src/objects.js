@@ -1,17 +1,16 @@
 import {loadJson, importModel, saveJson} from "./loader";
 import * as THREE from "three";
-import {animate, camera, canvas, raycaster, renderer, scene} from "./app";
-import {dragControls, draggableObjects, mapControls, orbitControls} from "./controls";
-import {
-    hideButton,
-    removeButton,
-    showButton
-} from "./buttons";
-import {selectedMaterial} from "./materials";
+import {camera, canvas, raycaster, scene} from "./app";
+import {draggableObjects} from "./controls";
+import {hideButton, showButton, removeButton} from "./buttons";
+import {selectedMaterial, setTexture} from "./materials";
+import {floorModel, floorPlan} from "./walls";
+import {floorMaterials} from "./materialsList";
+import randomInt from "random-int";
 
 export let currentObjects;
 export let selectedObject = null;
-
+let lastTexture;
 
 export async function initObjects(){
 
@@ -33,7 +32,7 @@ export async function addObject(event){
 }
 
 
-export function selectObject(event){
+export function select(event, objects, onSelect, onAlternativeSelect, onDeselect, recursive=false){
 
     let mouse = new THREE.Vector2();
 
@@ -43,46 +42,67 @@ export function selectObject(event){
 
     raycaster.setFromCamera( mouse, camera );
 
-    let intersects = raycaster.intersectObjects( draggableObjects, true);
+    let intersects = raycaster.intersectObjects( objects, true);
 
     let object = null;
 
-    if(intersects.length > 0){
+    if(intersects.length > 0) {
 
         object = intersects[0].object;
 
-        while(object.type !== 'Scene'){
-            object = object.parent;
+        if(recursive){
+            while (object.type !== 'Scene') {
+                object = object.parent;
+            }
         }
 
-        if(selectedObject !== object){
+        if(selectedObject !== object && selectedObject !== null){
 
+            onAlternativeSelect();
             object.overrideMaterial = null;
             selectedObject = null;
-            removeButton.removeEventListener('click', removeObject);
         }
 
         if(selectedObject === null){
 
             selectedObject = object;
-
             object.overrideMaterial = selectedMaterial;
-            showButton(removeButton);
-            removeButton.addEventListener('click', removeObject);
+            onSelect();
         }
 
         else if(selectedObject === object){
 
-            hideButton(removeButton);
+            onDeselect();
             object.overrideMaterial = null;
             selectedObject = null;
-            removeButton.removeEventListener('click', removeObject);
+
         }
     }
 }
 
 
-export async function removeObject(){
+export function selectDraggableObject(event){
+
+    select(event, draggableObjects,
+
+        function(){
+        showButton(removeButton);
+        removeButton.addEventListener('click', removeDraggableObject);
+    },
+
+        function(){
+        removeButton.removeEventListener('click', removeDraggableObject);
+    },
+        function(){
+
+        hideButton(removeButton);
+        removeButton.removeEventListener('click', removeDraggableObject);
+    },
+        true);
+}
+
+
+export async function removeDraggableObject(){
 
     scene.remove(selectedObject);
 
@@ -94,9 +114,34 @@ export async function removeObject(){
      await saveJson('currentObjects', currentObjects);
 
      hideButton(removeButton);
-     console.log(removeButton);
-     removeButton.removeEventListener('click', removeObject);
+     removeButton.removeEventListener('click', removeDraggableObject);
      selectedObject = null;
+}
+
+
+export function selectFloor(event){
+
+    select(event, floorModel.children,
+
+        async function(){
+
+            let name = floorMaterials[randomInt(0,floorMaterials.length-1)];
+
+            while(name === lastTexture){
+                name = floorMaterials[randomInt(0,floorMaterials.length-1)];
+            }
+            lastTexture = name;
+            setTexture(name, selectedObject.material);
+            let room = _.find(floorPlan.rooms, {mesh: selectedObject.uuid});
+            room.texture = name;
+            await saveJson('floorPlan', floorPlan);
+        },
+        function(){
+
+        },
+        function(){
+
+        });
 }
 
 
