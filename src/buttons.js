@@ -4,9 +4,10 @@ import {toggleView} from "./view";
 import {deleteDrawing, editDrawing} from "./draw";
 import {canvas} from "./app";
 import {exportScene} from "./loader";
+import {removeObject} from "./objects";
 
 
-export let drawButtons, modelButtons, viewButton, firstIcon, secondIcon, downloadButton, editButton, deleteButton;
+export let drawButtons, modelButtons, viewButton, firstIcon, secondIcon, downloadButton, editButton, deleteButton, removeButton;
 export let currentMode;
 
 export function createButtons(){
@@ -26,15 +27,19 @@ export function createButtons(){
     drawButtons = document.getElementById('draw-buttons');
     drawButtons.style.display = 'none';
 
-    deleteButton = createIconButton('delete', drawButtons);
-    editButton = createIconButton( 'edit', drawButtons);
+    deleteButton = createIconButton('clear', drawButtons);
+    editButton = createIconButton( 'create', drawButtons);
 
     hideButton(deleteButton);
     hideButton(editButton);
 
     modelButtons = document.getElementById('model-buttons');
+
+    removeButton = createIconButton('delete_forever', modelButtons);
+    removeButton.style.color = 'red';
     downloadButton = createIconButton( 'save', modelButtons);
 
+    hideButton(removeButton);
     hideButton(downloadButton);
 
     activateModelButtons();
@@ -47,13 +52,6 @@ function createIconButton(name, buttons){
     let button = document.createElement('button');
     button.className = 'mdc-fab mdc-fab--mini';
     button.id = name;
-
-    button.onmouseover = () => {
-        button.style.transform = 'translateY(3%)';
-    };
-    button.onmouseout = () => {
-        button.style.transform = 'translateY(-3%)';
-    };
 
     buttons.appendChild(button);
 
@@ -113,7 +111,9 @@ export function deactivateModelButtons(){
     downloadButton.removeEventListener('click', exportScene, false);
 }
 
+
 export function viewMode(){
+    canvas.removeEventListener('click', removeObject, false);
     canvas.removeEventListener( 'click', editDrawing, false);
     canvas.removeEventListener( 'click', deleteDrawing, false);
 }
@@ -122,6 +122,7 @@ export function editMode(){
     currentMode = "edit";
     canvas.addEventListener( 'click', editDrawing, false);
     canvas.removeEventListener( 'click', deleteDrawing, false);
+    canvas.removeEventListener('click', removeObject, false);
 }
 
 
@@ -129,8 +130,8 @@ export function deleteMode(){
     currentMode = "delete";
     canvas.addEventListener( 'click', deleteDrawing, false);
     canvas.removeEventListener( 'click', editDrawing, false);
+    canvas.removeEventListener('click', removeObject, false);
 }
-
 
 
 export function showDrawButtons(){
@@ -203,11 +204,20 @@ export function showModelIcon(){
 
 export function hideButton(element){
     element.style.transform = 'scale(0)';
+    element.onmouseover = null;
+    element.onmouseout = null;
 }
 
 
 export function showButton(element){
     element.style.transform = 'scale(1)';
+
+    element.onmouseover = () => {
+        element.style.transform = 'translateY(3%)';
+    };
+    element.onmouseout = () => {
+            element.style.transform = 'translateY(-3%)';
+    };
 }
 
 

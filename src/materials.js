@@ -62,3 +62,9 @@ fontLoader.load( 'assets/font.typeface.json', res => {
     font = res;
 });
 
+// Material for selected Items
+export let selectedMaterial = new THREE.MeshLambertMaterial({
+    color: 0xffffff,
+    transparent: true,
+    opacity: 0.5});
+

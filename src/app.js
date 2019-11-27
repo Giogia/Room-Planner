@@ -13,7 +13,7 @@ import {
 import {orbitControls, mapControls, dragControls} from "./controls";
 
 import { addLights } from "./lights";
-import {initObjects, addObject, selectObject} from "./objects";
+import {initObjects, addObject, selectObject, removeObject, selectedObject} from "./objects";
 import {createModel} from "./walls";
 import {hideCloseWalls, showRoomCenters, tweenCamera} from "./view";
 import {createButtons, downloadButton, showButton, viewButton} from "./buttons";
@@ -48,7 +48,7 @@ async function init(){
     addGround();
 
     list.addEventListener('click', addObject, false);
-    canvas.addEventListener('dblclick', selectObject, false);
+    canvas.addEventListener('click', selectObject, false);
 
     await createModel();
     await initObjects();
@@ -175,7 +175,15 @@ export function animate() {
     hideCloseWalls();
     showRoomCenters();
 
+    renderer.autoClear = true;
     renderer.render( scene, camera );
+
+    if(selectedObject !== null){
+
+        //prevent canvas from being erased with next .render call
+        renderer.autoClear = false;
+        renderer.render(selectedObject, camera);
+    }
 }
 
 init();
