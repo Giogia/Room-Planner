@@ -16,9 +16,9 @@ canvas{
 }
 
 :root{
-    --mdc-theme-primary: rgb(255, 255, 255);
-    --mdc-theme-on-primary: rgb(185, 117, 32);
-    --mdc-theme-secondary: rgb(255, 255, 255);
+    --mdc-theme-primary: white;
+    --mdc-theme-on-primary: sienna;
+    --mdc-theme-secondary: white;
     --mdc-theme-on-secondary: #ce7b6e;
  }
 
@@ -216,6 +216,7 @@ model-viewer{
 .mdc-fab__icon{
     transition: transform 0.1s ease-in-out;
 }
+
 
 #canvas{
     min-height: 100%;
