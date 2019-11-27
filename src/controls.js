@@ -9,7 +9,7 @@ import TransformControls from "three-controls/src/js/TransformControls";
 import {camera, renderer, canvas, animate, scene} from "./app";
 import ThreeDragger from 'three-dragger';
 import {currentMode, deleteMode, editMode, viewMode} from "./buttons";
-import {currentObjects} from "./objects";
+import {currentObjects, selectObject} from "./objects";
 import {saveJson} from "./loader";
 
 export var dragControls, mapControls, transformControls, orbitControls, pointerLockControls;
@@ -112,6 +112,7 @@ export function enableDragControls(){
 
     dragControls.on( 'dragstart', function (event) {
         orbitControls.enabled = false;
+        canvas.removeEventListener('click', selectObject);
 
         let group = getDraggablePosition(event).group;
         let position = getDraggablePosition(event).position;
@@ -130,6 +131,7 @@ export function enableDragControls(){
 
     dragControls.on( 'dragend', async function () {
         orbitControls.enabled = true;
+        setTimeout(() => {canvas.addEventListener('click', selectObject)}, 100);
 
         for (let object of dragControls.objects){
 
