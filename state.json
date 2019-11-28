@@ -129,12 +129,333 @@
         "to": 10
       },
       {
-        "from": 3,
-        "to": 12
+        "from": 12,
+        "to": 7
       },
       {
         "from": 12,
-        "to": 7
+        "to": 3
+      }
+    ],
+    "rooms": [
+      {
+        "room": {
+          "x": 2.5,
+          "y": 1,
+          "z": 0.014999999664723873
+        },
+        "mesh": "0D5A579F-140C-49B8-81CF-12A6C84593FA",
+        "texture": "tiles2"
+      },
+      {
+        "room": {
+          "x": -2.5,
+          "y": -2.5,
+          "z": 0.014999999664723873
+        },
+        "mesh": "7E108EED-8B96-4AF8-B439-4749BBA0C9C4",
+        "texture": "wood1"
+      },
+      {
+        "room": {
+          "x": -2.5,
+          "y": 1.5,
+          "z": 0.014999999664723873
+        },
+        "mesh": "F075C009-FC4B-4BC5-A8A1-1918189D1D51",
+        "texture": "tiles5"
+      },
+      {
+        "room": {
+          "x": -2,
+          "y": 3.5,
+          "z": 0.014999999664723873
+        },
+        "mesh": "7E05CE59-0328-4E0C-ADF7-32A3D2EE70C6",
+        "texture": "wood2"
+      },
+      {
+        "room": {
+          "x": 3,
+          "y": 3.5,
+          "z": 0.014999999664723873
+        },
+        "mesh": "124B82BE-57FD-495F-8779-4E424427A2BF",
+        "texture": "tiles4"
+      }
+    ],
+    "walls": [
+      {
+        "wall": [
+          {
+            "x": -5,
+            "z": -5,
+            "selected": false
+          },
+          {
+            "x": 0,
+            "z": -5,
+            "selected": false
+          }
+        ],
+        "mesh": "4DE72369-E8F0-45A0-BE9D-0C16B3BE1DEC",
+        "texture": "plaster"
+      },
+      {
+        "wall": [
+          {
+            "x": -5,
+            "z": -5,
+            "selected": false
+          },
+          {
+            "x": -5,
+            "z": 0,
+            "selected": false
+          }
+        ],
+        "mesh": "BC537FD1-B346-4EC3-ACAE-E40436D0CEDC",
+        "texture": "plaster"
+      },
+      {
+        "wall": [
+          {
+            "x": 0,
+            "z": -5,
+            "selected": false
+          },
+          {
+            "x": 0,
+            "z": 0,
+            "selected": false
+          }
+        ],
+        "mesh": "D2A99510-F9CC-4D36-9348-8E6C4F388672",
+        "texture": "plaster"
+      },
+      {
+        "wall": [
+          {
+            "x": -5,
+            "z": 0,
+            "selected": false
+          },
+          {
+            "x": 0,
+            "z": 0,
+            "selected": false
+          }
+        ],
+        "mesh": "684CD7A1-45F9-4F62-A4BB-6D716985F5A6",
+        "texture": "plaster"
+      },
+      {
+        "wall": [
+          {
+            "x": -5,
+            "z": 0,
+            "selected": false
+          },
+          {
+            "x": -5,
+            "z": 3,
+            "selected": false
+          }
+        ],
+        "mesh": "8758CD77-BCE9-4917-AE31-CCF72E61C977",
+        "texture": "plaster"
+      },
+      {
+        "wall": [
+          {
+            "x": 0,
+            "z": 0,
+            "selected": false
+          },
+          {
+            "x": 0,
+            "z": 2,
+            "selected": false
+          }
+        ],
+        "mesh": "3F552683-7D02-49B8-8D08-965C16D8C1EF",
+        "texture": "plaster"
+      },
+      {
+        "wall": [
+          {
+            "x": -5,
+            "z": 3,
+            "selected": false
+          },
+          {
+            "x": 0,
+            "z": 3,
+            "selected": false
+          }
+        ],
+        "mesh": "B6FF528E-9A05-4146-B31A-339143A9AC75",
+        "texture": "plaster"
+      },
+      {
+        "wall": [
+          {
+            "x": -5,
+            "z": 3,
+            "selected": false
+          },
+          {
+            "x": -5,
+            "z": 5,
+            "selected": false
+          }
+        ],
+        "mesh": "550683F5-BA7B-4CEF-ABAE-F94CE4E438D1",
+        "texture": "plaster"
+      },
+      {
+        "wall": [
+          {
+            "x": 0,
+            "z": 2,
+            "selected": false
+          },
+          {
+            "x": 1,
+            "z": 2,
+            "selected": false
+          }
+        ],
+        "mesh": "D48B978B-0DA3-47DD-9AB8-F41BA8C3DA12",
+        "texture": "plaster"
+      },
+      {
+        "wall": [
+          {
+            "x": 0,
+            "z": 2,
+            "selected": false
+          },
+          {
+            "x": 0,
+            "z": 3,
+            "selected": false
+          }
+        ],
+        "mesh": "271B69E4-4845-425F-9BB4-E796328029D0",
+        "texture": "plaster"
+      },
+      {
+        "wall": [
+          {
+            "x": 1,
+            "z": 2,
+            "selected": false
+          },
+          {
+            "x": 5,
+            "z": 2,
+            "selected": false
+          }
+        ],
+        "mesh": "9FDE8190-1E05-4ABC-A23F-F6D8D3975D18",
+        "texture": "plaster"
+      },
+      {
+        "wall": [
+          {
+            "x": 1,
+            "z": 2,
+            "selected": false
+          },
+          {
+            "x": 1,
+            "z": 5,
+            "selected": false
+          }
+        ],
+        "mesh": "21F8D36E-BE63-4ADE-B08E-C2886F73D5EE",
+        "texture": "plaster"
+      },
+      {
+        "wall": [
+          {
+            "x": 5,
+            "z": 2,
+            "selected": false
+          },
+          {
+            "x": 5,
+            "z": 5,
+            "selected": false
+          }
+        ],
+        "mesh": "8350CCFB-818A-4237-9A2E-A4C1BC053328",
+        "texture": "plaster"
+      },
+      {
+        "wall": [
+          {
+            "x": -5,
+            "z": 5,
+            "selected": false
+          },
+          {
+            "x": 1,
+            "z": 5,
+            "selected": false
+          }
+        ],
+        "mesh": "FCAFD39E-7A68-4895-9DB3-D9A43AA4892C",
+        "texture": "plaster"
+      },
+      {
+        "wall": [
+          {
+            "x": 1,
+            "z": 5,
+            "selected": false
+          },
+          {
+            "x": 5,
+            "z": 5,
+            "selected": false
+          }
+        ],
+        "mesh": "10D8EAD1-FF74-43D5-89AA-64405B2029BB",
+        "texture": "plaster"
+      },
+      {
+        "wall": [
+          {
+            "x": 5,
+            "z": 0,
+            "selected": false
+          },
+          {
+            "x": 5,
+            "z": 2,
+            "selected": false
+          }
+        ],
+        "mesh": "9E90DB8F-4CDB-4342-A8BA-32F96A0E408E",
+        "texture": "plaster"
+      },
+      {
+        "wall": [
+          {
+            "x": 5,
+            "z": 0,
+            "selected": false
+          },
+          {
+            "x": 0,
+            "z": 0,
+            "selected": false
+          }
+        ],
+        "mesh": "F16B0A77-33A7-4F04-A4D8-B1019E5E284A",
+        "texture": "plaster"
       }
     ]
   },

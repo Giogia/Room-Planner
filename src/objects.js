@@ -4,8 +4,8 @@ import {camera, canvas, raycaster, scene} from "./app";
 import {draggableObjects} from "./controls";
 import {hideButton, showButton, removeButton} from "./buttons";
 import {selectedMaterial, setTexture} from "./materials";
-import {floorModel, floorPlan} from "./walls";
-import {floorMaterials} from "./materialsList";
+import {floorModel, floorPlan, wallsModel} from "./walls";
+import {floorMaterials, wallMaterials} from "./materialsList";
 import randomInt from "random-int";
 
 export let currentObjects;
@@ -32,7 +32,15 @@ export async function addObject(event){
 }
 
 
-export function select(event, objects, onSelect, onAlternativeSelect, onDeselect, recursive=false){
+export function selectObject(event){
+
+    let intersects = intersect(event, scene.children);
+    let object = intersects[0].object;
+
+    console.log(object.type);
+}
+
+export function intersect(event, objects){
 
     let mouse = new THREE.Vector2();
 
@@ -42,7 +50,15 @@ export function select(event, objects, onSelect, onAlternativeSelect, onDeselect
 
     raycaster.setFromCamera( mouse, camera );
 
-    let intersects = raycaster.intersectObjects( objects, true);
+    return raycaster.intersectObjects( objects, true);
+}
+
+
+export function select(event, objects, onSelect, onAlternativeSelect, onDeselect, recursive=false){
+
+    selectObject(event);
+
+    let intersects = intersect(event, objects);
 
     let object = null;
 
@@ -130,10 +146,13 @@ export function selectFloor(event){
             while(name === lastTexture){
                 name = floorMaterials[randomInt(0,floorMaterials.length-1)];
             }
+
             lastTexture = name;
             setTexture(name, selectedObject.material);
+
             let room = _.find(floorPlan.rooms, {mesh: selectedObject.uuid});
             room.texture = name;
+
             await saveJson('floorPlan', floorPlan);
         },
         function(){
@@ -143,5 +162,36 @@ export function selectFloor(event){
 
         });
 }
+
+export function selectWall(event){
+
+    console.log(wallsModel);
+
+    select(event, wallsModel.children,
+
+        async function(){
+
+            let name = wallMaterials[randomInt(0,wallMaterials.length-1)];
+
+            while(name === lastTexture){
+                name = wallMaterials[randomInt(0,wallMaterials.length-1)];
+            }
+
+            lastTexture = name;
+            setTexture(name, selectedObject.material);
+
+            let wall = _.find(floorPlan.walls, {mesh: selectedObject.uuid});
+            wall.texture = name;
+
+            await saveJson('floorPlan', floorPlan);
+        },
+        function(){
+
+        },
+        function(){
+
+    });
+}
+
 
 

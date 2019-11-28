@@ -44,7 +44,9 @@ export async function importModel(name, x=camera.position.x/4, y=0.03, z=camera.
     model.castShadow = true;
     model.receiveShadow = true;
 
+    // Move the object origin on its center of volume
     new THREE.Box3().setFromObject( model ).getCenter( model.position ).multiplyScalar( - 1 );
+
     model.position.set(x, y, z);
 
     scene.add(model);

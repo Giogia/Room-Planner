@@ -86,6 +86,21 @@ export function createWallsModel (skirting=false) {
   let columns = getColumnsModels(floorPlan.points, skirting);
   let walls = getWallsModels(floorPlan, skirting);
 
+  let points = floorPlan.points;
+
+  if(!skirting){
+      // Remove non existing rooms from floorPlan model
+      for(let wall of floorPlan.walls){
+
+          let startPoint = points.indexOf(_.find(points, point => {return point === wall.wall[0]}));
+          let endPoint = points.indexOf(_.find(points, point => {return point === wall.wall[1]}));
+
+          if(!_.find(floorPlan.lines, {from: startPoint, to: endPoint})){
+              _.remove(floorPlan.walls, discard =>{ return discard === wall })
+          }
+      }
+  }
+
   let group = new THREE.Group();
 
   _.each(walls, (wall) => group.add(wall));
@@ -117,7 +132,7 @@ function getLineModels ({lines, points}) {
   return _.map(lines, ({from, to}) => {
 
       let geometry = new LineGeometry();
-      let material = new LineMaterial({color: 0xffffff, linewidth: 0.008, transparent: true, opacity: 0.9});
+      let material = new LineMaterial({color: 0xffffff, linewidth: 0.0075, transparent: true, opacity: 0.9});
 
       geometry.setPositions([points[from].x, 0, points[from].z, points[to].x, 0, points[to].z]);
 
@@ -155,9 +170,31 @@ function getWallsModels ({lines, points}, skirting=false) {
     let depth = skirting? 1.2 * DEPTH : DEPTH;
 
     let geometry = new THREE.BoxGeometry(width, height, depth);
-    let material = skirting? skirtingMaterial : new THREE.MeshPhongMaterial({color: 0xffffff, transparent: true, opacity: 1});
+    let material = skirting? skirtingMaterial : new THREE.MeshStandardMaterial({
+        roughness: 0.8,
+        color: 0xffffff,
+        bumpScale: 0.0005,
+        metalness: 0.2,
+        polygonOffset: true,
+        polygonOffsetFactor: -1,
+        transparent: true,
+        opacity: 1,
+    });
 
     let mesh = new THREE.Mesh(geometry, material);
+
+    if(!skirting){
+        let existingWall = _.find(floorPlan.walls, {wall: [startPoint,endPoint]});
+
+            if(existingWall){
+                setTexture( existingWall.texture, material);
+                existingWall.mesh = mesh.uuid;
+            }
+            if(!existingWall){
+                setTexture( 'plaster', material);
+                floorPlan.walls.push({wall:[startPoint,endPoint], mesh:mesh.uuid, texture:'plaster'});
+            }
+    }
 
     let offsetX = startPoint.x - endPoint.x;
     let offsetZ = startPoint.z - endPoint.z;
@@ -211,6 +248,7 @@ export function createFloorModel() {
     let centers = [];
     let extrudeSettings = { depth: 0.03, bevelEnabled: false };
 
+    // Filter rooms containing other rooms
     for( let room of rooms){
 
         let shape = new THREE.Shape();
@@ -253,7 +291,7 @@ export function createFloorModel() {
 
             let mesh = new THREE.Mesh( geometry, material );
 
-            let existingRoom = _.find(floorPlan.rooms, {room: room});
+            let existingRoom = _.find(floorPlan.rooms, {room: center});
 
             if(existingRoom){
                 setTexture( existingRoom.texture, material);
@@ -261,7 +299,7 @@ export function createFloorModel() {
             }
             if(!existingRoom){
                 setTexture( 'wood2', material);
-                floorPlan.rooms.push({room:room, mesh:mesh.uuid, texture:'wood2'});
+                floorPlan.rooms.push({room:center, mesh:mesh.uuid, texture:'wood2'});
             }
 
             mesh.rotateX(Math.PI/2);
@@ -271,6 +309,12 @@ export function createFloorModel() {
         }
     }
 
+    // Remove non existing rooms from floorPlan model
+    for(let room of floorPlan.rooms){
+        if(!_.find(centers, {x: room.room.x, y: room.room.z, z: room.room.y,})){
+            _.remove(floorPlan.rooms, discard =>{ return discard === room })
+        }
+    }
 
     let centersGroup = new THREE.Group();
     _.each(getPointModels(centers), (wall) => centersGroup.add(wall));

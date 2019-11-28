@@ -4,6 +4,7 @@ export let textureLoader = new THREE.TextureLoader();
 export let fontLoader = new THREE.FontLoader();
 export let font;
 
+
 function setMaps(maps, repeat){
 
    for(let map of maps){
@@ -13,6 +14,7 @@ function setMaps(maps, repeat){
     map.repeat.set(repeat[0], repeat[1]);
     }
 }
+
 
 export function setTexture(name, material, repeat=[1, 1]){
 
@@ -34,12 +36,15 @@ export function setTexture(name, material, repeat=[1, 1]){
     material.needsUpdate = true;
 }
 
+
 function setFont(name){
     fontLoader.load( 'assets/'+name+'.typeface.json', res => {
         font = res;
     });
 }
 
+
+// MATERIALS COMPUTED ONLY ONCE TO SPEED PERFORMANCE
 
 // Material for Skirting
 export let skirtingMaterial = new THREE.MeshStandardMaterial({

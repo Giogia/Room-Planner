@@ -92,7 +92,7 @@ function showLine(event){
         color: 0xe2a149,
         transparent: true,
         opacity: 0.3,
-        linewidth: 0.008,
+        linewidth: 0.007,
     });
 
     let geometry = new LineGeometry();

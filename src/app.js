@@ -7,7 +7,7 @@ import { enableOrbitControls, enableMapControls, enableDragControls, enableTrans
 import {orbitControls, mapControls, dragControls, draggableObjects} from "./controls";
 
 import { addLights } from "./lights";
-import {initObjects, addObject, selectDraggableObject, selectedObject, selectFloor} from "./objects";
+import {initObjects, addObject, selectDraggableObject, selectedObject, selectFloor, selectWall} from "./objects";
 import {createModel} from "./walls";
 import {hideCloseWalls, showRoomCenters, tweenCamera} from "./view";
 import {createButtons, downloadButton, showButton, viewButton} from "./buttons";
@@ -44,6 +44,7 @@ async function init(){
     list.addEventListener('click', addObject);
     canvas.addEventListener('click', selectDraggableObject);
     canvas.addEventListener('dblclick', selectFloor);
+    canvas.addEventListener('dblclick', selectWall);
 
     await createModel();
     await initObjects();
@@ -132,10 +133,8 @@ function addGround() {
 
     ground = new THREE.Mesh(
         new THREE.PlaneBufferGeometry(100, 100),
-        new THREE.MeshLambertMaterial( {
-						color: 0x030405,
-						depthWrite: false
-					}));
+        new THREE.MeshLambertMaterial( {color: 0x030405, depthWrite: false})
+    );
 
     ground.rotation.x = -Math.PI / 2;
     ground.position.y = -0.05;
@@ -176,7 +175,6 @@ export function animate() {
 
     if(selectedObject !== null){
 
-        //prevent canvas from being erased with next .render call
         renderer.autoClear = false;
         renderer.render(selectedObject, camera);
     }
