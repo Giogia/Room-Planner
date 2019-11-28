@@ -37,7 +37,7 @@ export function selectObject(event){
     let intersects = intersect(event, scene.children);
     let object = intersects[0].object;
 
-    console.log(object.type);
+    console.log(intersects);
 }
 
 export function intersect(event, objects){

@@ -45,24 +45,22 @@ export async function createModel (){
 export function createDrawModel () {
 
   let points = getPointModels(floorPlan.points);
-  let lines = getLineModels(floorPlan);
+  let walls = getLineModels(floorPlan);
 
   let group = new THREE.Group();
 
   _.each(points, point => group.add(point));
-  _.each(lines, line => group.add(line));
+  _.each(walls, wall => group.add(wall));
 
-  _.each(floorPlan.lines, line => {
+  _.each(floorPlan.walls, wall => {
 
-      let points = floorPlan.points;
+      let distanceX = wall.to.x - wall.from.x;
+      let distanceZ = wall.to.z - wall.from.z;
 
-      let distanceX = points[line.to].x - points[line.from].x;
-      let distanceZ = points[line.to].z - points[line.from].z;
+      let x = (wall.from.x + wall.to.x)/2;
+      let z = (wall.from.z + wall.to.z)/2;
 
-      let x = (points[line.from].x + points[line.to].x)/2;
-      let z = (points[line.from].z + points[line.to].z)/2;
-
-      // Move text from line positino a little bit
+      // Move text from line position a little bit
       const move = 0.2;
 
       if(distanceX === 0){ x = x + move}
@@ -85,21 +83,6 @@ export function createWallsModel (skirting=false) {
 
   let columns = getColumnsModels(floorPlan.points, skirting);
   let walls = getWallsModels(floorPlan, skirting);
-
-  let points = floorPlan.points;
-
-  if(!skirting){
-      // Remove non existing rooms from floorPlan model
-      for(let wall of floorPlan.walls){
-
-          let startPoint = points.indexOf(_.find(points, point => {return point === wall.from}));
-          let endPoint = points.indexOf(_.find(points, point => {return point === wall.to}));
-
-          if(!_.find(floorPlan.lines, {from: startPoint, to: endPoint})){
-              _.remove(floorPlan.walls, { from: wall.from, to: wall.to })
-          }
-      }
-  }
 
   let group = new THREE.Group();
 
@@ -128,13 +111,13 @@ function getPointModels (points) {
   });
 }
 
-function getLineModels ({lines, points}) {
-  return _.map(lines, ({from, to}) => {
+function getLineModels ({walls, points}) {
+  return _.map(walls, ({from, to}) => {
 
       let geometry = new LineGeometry();
       let material = new LineMaterial({color: 0xffffff, linewidth: 0.0075, transparent: true, opacity: 0.9});
 
-      geometry.setPositions([points[from].x, 0, points[from].z, points[to].x, 0, points[to].z]);
+      geometry.setPositions([from.x, 0, from.z, to.x, 0, to.z]);
 
       return new Line2(geometry, material);
   });
@@ -159,12 +142,12 @@ function getColumnsModels (points, skirting=false){
   });
 }
 
-function getWallsModels ({lines, points}, skirting=false) {
-  return _.map(lines, ({from, to}) => {
+function getWallsModels ({walls, points}, skirting=false) {
+  return _.map(walls, ({from, to}) => {
 
-    let startPoint = points[from];
-    let endPoint = points[to];
-    let width = Math.hypot(startPoint.x - endPoint.x, startPoint.z - endPoint.z);
+    let startPoint = _.find(points, {x:from.x, z:from.z});
+    let endPoint = _.find(points, {x:to.x, z:to.z});
+    let width = Math.hypot(from.x - to.x, from.z - to.z);
 
     let height = skirting? HEIGHT/20 : HEIGHT;
     let depth = skirting? 1.2 * DEPTH : DEPTH;
@@ -184,16 +167,17 @@ function getWallsModels ({lines, points}, skirting=false) {
     let mesh = new THREE.Mesh(geometry, material);
 
     if(!skirting){
-        let existingWall = _.find(floorPlan.walls, {wall: [startPoint,endPoint]});
+        let wall = _.find(floorPlan.walls, {from: {x:from.x, z:from.z}, to: {x:to.x, z:to.z}});
 
-            if(existingWall){
-                setTexture( existingWall.texture, material);
-                existingWall.mesh = mesh.uuid;
-            }
-            if(!existingWall){
-                setTexture( 'plaster', material);
-                floorPlan.walls.push({from:[startPoint.x, startPoint.z], to:[endPoint.x, endPoint.z], mesh:mesh.uuid, texture:'plaster'});
-            }
+        if(wall.texture !== undefined){
+            setTexture( wall.texture, material);
+            wall.mesh = mesh.uuid;
+        }
+        if(wall.texture === undefined){
+            setTexture( 'plaster', material);
+            wall.mesh = mesh.uuid;
+            wall.texture = 'plaster';
+        }
     }
 
     let offsetX = startPoint.x - endPoint.x;
@@ -213,11 +197,17 @@ export function createFloorModel() {
 
     let graph = new Graph();
     let points = floorPlan.points;
-    let lines = floorPlan.lines;
+    let walls = floorPlan.walls;
 
-    _.each(points, (point) => graph.addVertex(points.indexOf(point), {value: 1}));
-    _.each(lines, (line) => graph.addEdge(line.from, line.to, { value:1}));
-    _.each(lines, (line) => graph.addEdge(line.to, line.from, { value:1}));
+    _.each(points, point => graph.addVertex(points.indexOf(point), {value: 1}));
+    _.each(walls, wall => graph.addEdge(
+        points.indexOf(_.find(points, {x:wall.from.x, z:wall.from.z})),
+        points.indexOf(_.find(points, {x:wall.to.x, z:wall.to.z})),
+        { value:1}));
+    _.each(walls, wall => graph.addEdge(
+        points.indexOf(_.find(points, {x:wall.to.x, z:wall.to.z})),
+        points.indexOf(_.find(points, {x:wall.from.x, z:wall.from.z})),
+        { value:1}));
 
     let cycles = [];
     let rooms = [];
@@ -299,7 +289,7 @@ export function createFloorModel() {
             }
             if(!existingRoom){
                 setTexture( 'wood2', material);
-                floorPlan.rooms.push({room:center, mesh:mesh.uuid, texture:'wood2'});
+                floorPlan.rooms.push({center:center, mesh:mesh.uuid, texture:'wood2'});
             }
 
             mesh.rotateX(Math.PI/2);
@@ -311,7 +301,7 @@ export function createFloorModel() {
 
     // Remove non existing rooms from floorPlan model
     for(let room of floorPlan.rooms){
-        if(!_.find(centers, {x: room.room.x, y: room.room.z, z: room.room.y,})){
+        if(!_.find(centers, {x: room.center.x, y: room.center.z, z: room.center.y,})){
             _.remove(floorPlan.rooms, discard =>{ return discard === room })
         }
     }

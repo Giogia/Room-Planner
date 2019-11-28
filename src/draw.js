@@ -32,6 +32,8 @@ function selectPoint(point){
     let points = floorPlan.points;
     let selected = _.find(points,{ selected: true });
 
+    // TODO use _.find
+    //let point _.find(points,{ x: position.x, z: position.z });
     points[points.indexOf(point)].selected = !points[points.indexOf(point)].selected;
     updateScene();
 
@@ -54,13 +56,13 @@ function drawPoint(position){
     floorPlan.points.push(position);
 
     let points = floorPlan.points;
-    let lines = floorPlan.lines;
+    let walls = floorPlan.walls;
 
     // if it is drawn on one or more line those get split in two lines
-    for(let intersecting of lines) {
+    for(let intersecting of walls) {
 
-        let start = points[intersecting.from];
-        let end = points[intersecting.to];
+        let start = intersecting.from;
+        let end = intersecting.to;
 
         let id = points.indexOf(position);
 
@@ -70,9 +72,9 @@ function drawPoint(position){
             if ((end.z - start.z) * (position.x - start.x) === (end.x - start.x) * (position.z - start.z)) {
                 if(colinearPointWithinSegment(position.x, position.z, start.x, start.z, end.x, end.z)){
 
-                    lines.push({from: points.indexOf(position), to: intersecting.from});
-                    lines.push({from: points.indexOf(position), to: intersecting.to});
-                    _.remove(lines, line => { return line === intersecting });
+                    walls.push({from: {x:position.x, z:position.z}, to: {x:start.x, z:start.z}});
+                    walls.push({from: {x:position.x, z:position.z}, to: {x:end.x, z:end.z}});
+                    _.remove(walls, wall => { return wall === intersecting });
                 }
             }
         }
@@ -107,7 +109,7 @@ function showLine(event){
 function drawLine(event){
 
     let points = floorPlan.points;
-    let lines = floorPlan.lines;
+    let walls = floorPlan.walls;
 
     let position = worldCoordinates(event);
     let start = _.find(points, {selected: true});
@@ -119,15 +121,15 @@ function drawLine(event){
     }
 
     scene.remove(currentLine);
-    let newLine = {from: points.indexOf(start), to: points.indexOf(end)};
-    lines.push(newLine);
+    let newLine = {from: {x:start.x, z:start.z}, to: {x:end.x, z:end.z}};
+    walls.push(newLine);
     for( let point of points){ point.selected = false}
 
     // create intersection point if two lines intersect
-    for(let intersecting of lines){
+    for(let intersecting of walls){
 
-        let start2 = points[intersecting.from];
-        let end2 = points[intersecting.to];
+        let start2 = intersecting.from;
+        let end2 = intersecting.to;
 
         let intersection = checkIntersection(start.x, start.z, end.x, end.z, start2.x, start2.z, end2.x, end2.z);
 
@@ -151,24 +153,25 @@ function drawLine(event){
 export function deleteDrawing(event){
 
     let points = floorPlan.points;
-    let lines = floorPlan.lines;
+    let walls = floorPlan.walls;
 
     let position = worldCoordinates(event);
     let selected = _.find(points,{ x: position.x, z: position.z });
 
     if(selected){
 
-        _.remove(lines, line => { return line.from === points.indexOf(selected)});
-        _.remove(lines, line => { return line.to === points.indexOf(selected)});
+        _.remove(walls, { from: {x:selected.x, z:selected.z} });
+        _.remove(walls, { to: {x:selected.x, z:selected.z } });
 
-        _.map(lines, line =>{
-            if(line.to > points.indexOf(selected)){
-                line.to--;
+        // TODO check this condition
+        _.map(walls, wall =>{
+            if(wall.to > selected){
+                wall.to--;
             }
-            if(line.from > points.indexOf(selected)){
-                line.from--;
+            if(wall.from > selected){
+                wall.from--;
             }
-            return line
+            return wall
         });
 
         _.remove(points, point => { return point === selected });

@@ -7,7 +7,7 @@ import { enableOrbitControls, enableMapControls, enableDragControls, enableTrans
 import {orbitControls, mapControls, dragControls, draggableObjects} from "./controls";
 
 import { addLights } from "./lights";
-import {initObjects, addObject, selectDraggableObject, selectedObject, selectFloor, selectWall} from "./objects";
+import { initObjects, addObject, selectObject, selectedObject } from "./objects";
 import {createModel} from "./walls";
 import {hideCloseWalls, showRoomCenters, tweenCamera} from "./view";
 import {createButtons, downloadButton, showButton, viewButton} from "./buttons";
@@ -42,9 +42,7 @@ async function init(){
     addGround();
 
     list.addEventListener('click', addObject);
-    canvas.addEventListener('click', selectDraggableObject);
-    canvas.addEventListener('dblclick', selectFloor);
-    canvas.addEventListener('dblclick', selectWall);
+    canvas.addEventListener('click', selectObject);
 
     await createModel();
     await initObjects();
