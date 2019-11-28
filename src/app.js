@@ -3,11 +3,10 @@
 import * as THREE from 'three';
 import * as TWEEN from 'tween.js';
 
-import { enableOrbitControls, enableMapControls, enableDragControls, enableTransformControls } from "./controls"
-import {orbitControls, mapControls, dragControls, draggableObjects} from "./controls";
-
-import { addLights } from "./lights";
-import { initObjects, addObject, selectObject, selectedObject } from "./objects";
+import { dragControls, mapControls, orbitControls, draggableObjects } from "./controls"
+import { enableDragControls, enableMapControls, enableOrbitControls, enableTransformControls } from "./controls"
+import {addLights} from "./lights";
+import {addObject, initObjects, selectedObject, selectObject} from "./objects";
 import {createModel} from "./walls";
 import {hideCloseWalls, showRoomCenters, tweenCamera} from "./view";
 import {createButtons, downloadButton, showButton, viewButton} from "./buttons";

@@ -4,13 +4,12 @@ import * as THREE from 'three';
 import OrbitControls from 'three-controls/src/js/OrbitControls';
 import MapControls from 'three-controls/src/js/MapControls';
 import TransformControls from "three-controls/src/js/TransformControls";
-//import { PointerLockControls } from './jsm/controls/PointerLockControls.js';
-
-import {camera, renderer, canvas, animate, scene} from "./app";
+import {camera, canvas, renderer} from "./app";
 import ThreeDragger from 'three-dragger';
 import {currentMode, deleteMode, editMode, viewMode} from "./buttons";
-import {currentObjects, selectDraggableObject} from "./objects";
+import {currentObjects, selectDraggableObject, selectObject} from "./objects";
 import {saveJson} from "./loader";
+//import { PointerLockControls } from './jsm/controls/PointerLockControls.js';
 
 export var dragControls, mapControls, transformControls, orbitControls, pointerLockControls;
 export var draggableObjects = [];
@@ -112,7 +111,7 @@ export function enableDragControls(){
 
     dragControls.on( 'dragstart', function (event) {
         orbitControls.enabled = false;
-        canvas.removeEventListener('click', selectDraggableObject);
+        canvas.removeEventListener('click', selectObject);
 
         let group = getDraggablePosition(event).group;
         let position = getDraggablePosition(event).position;
@@ -131,7 +130,7 @@ export function enableDragControls(){
 
     dragControls.on( 'dragend', async function () {
         orbitControls.enabled = true;
-        setTimeout(() => {canvas.addEventListener('click', selectDraggableObject)}, 100);
+        setTimeout(() => {canvas.addEventListener('click', selectObject)}, 100);
 
         for (let object of dragControls.objects){
 

@@ -3,19 +3,24 @@ import * as TWEEN from "tween.js";
 
 import {dragControls, draggableObjects, mapControls, orbitControls} from "./controls";
 
-import {drawer, camera, list, canvas, scene} from "./app";
-import {addObject, selectDraggableObject} from "./objects";
-import {wallsModel, drawModel, roomCenters, skirtingModel, floorModel, updateModel} from "./walls";
+import {camera, canvas, drawer, list, scene} from "./app";
+import {addObject, selectObject} from "./objects";
+import {drawModel, floorModel, roomCenters, skirtingModel, updateModel, wallsModel} from "./walls";
 
 import {
-    modelButtons,
-    drawButtons,
-    showDrawButtons,
+    activateButtons,
+    activateDrawButtons,
+    activateModelButtons,
+    deactivateButtons,
+    deactivateDrawButtons,
     deactivateModelButtons,
+    hideDrawButtons,
     hideModelButtons,
-    hideDrawButtons, activateModelButtons, showModelButtons, firstIcon, secondIcon, showDrawIcon, showModelIcon
+    showDrawButtons,
+    showDrawIcon,
+    showModelButtons,
+    showModelIcon
 } from "./buttons";
-import {activateDrawButtons, deactivateButtons, activateButtons, deactivateDrawButtons} from "./buttons";
 import {directional} from "./lights";
 
 
@@ -25,8 +30,6 @@ let floorPlanView = false;
 export function toggleView(event) {
 
     event.preventDefault();
-
-    drawer.open = !drawer.open;
     floorPlanView = !floorPlanView;
 
     (floorPlanView) ? drawView() : modelView();
@@ -35,6 +38,7 @@ export function toggleView(event) {
 
 function drawView(){
 
+    drawer.open = false;
     deactivateModelButtons();
     hideModelButtons();
     setTimeout( () => {
@@ -43,8 +47,8 @@ function drawView(){
         showDrawIcon();
     }, 500);
 
-    list.removeEventListener('click', addObject, false);
-    canvas.removeEventListener('dblclick', selectDraggableObject, false);
+    list.removeEventListener('click', addObject);
+    canvas.removeEventListener('click', selectObject);
 
     scene.remove( directional );
 
@@ -63,6 +67,7 @@ function modelView(){
 
     mapControls.reset();
 
+    drawer.open = true;
     deactivateDrawButtons();
     hideDrawButtons();
     setTimeout( () => {
