@@ -2,17 +2,17 @@
 
 import _ from 'lodash';
 import * as THREE from 'three';
-import { LineGeometry } from "three/examples/jsm/lines/LineGeometry";
-import { LineMaterial } from "three/examples/jsm/lines/LineMaterial";
-import { Line2 } from "three/examples/jsm/lines/Line2";
+import {LineGeometry} from "three/examples/jsm/lines/LineGeometry";
+import {LineMaterial} from "three/examples/jsm/lines/LineMaterial";
+import {Line2} from "three/examples/jsm/lines/Line2";
 import Graph from "graph.js/dist/graph.es6";
-
-let inside = require("point-in-polygon");
 import {setTexture, skirtingMaterial} from "./materials";
 import {hide} from "./view";
 import {scene} from "./app";
 import {loadJson, saveJson} from "./loader";
 import {addText} from "./draw";
+
+let inside = require("point-in-polygon");
 
 export const DEPTH = 0.05;
 export const HEIGHT = 1.3;
@@ -152,7 +152,7 @@ function getWallsModels ({walls, points}, skirting=false) {
     let height = skirting? HEIGHT/20 : HEIGHT;
     let depth = skirting? 1.2 * DEPTH : DEPTH;
 
-    let geometry = new THREE.BoxGeometry(width, height, depth);
+    let geometry = new THREE.BoxBufferGeometry(width, height, depth);
     let material = skirting? skirtingMaterial : new THREE.MeshStandardMaterial({
         roughness: 0.8,
         color: 0xffffff,
@@ -183,6 +183,8 @@ function getWallsModels ({walls, points}, skirting=false) {
     let offsetX = startPoint.x - endPoint.x;
     let offsetZ = startPoint.z - endPoint.z;
     let angle = -Math.atan(offsetZ / offsetX);
+
+    mesh.name = 'wall';
 
     mesh.position.set(endPoint.x + offsetX / 2, height / 2, endPoint.z + offsetZ / 2);
     mesh.castShadow = true;
@@ -291,6 +293,8 @@ export function createFloorModel() {
                 setTexture( 'wood2', material);
                 floorPlan.rooms.push({center:center, mesh:mesh.uuid, texture:'wood2'});
             }
+
+            mesh.name = 'floor';
 
             mesh.rotateX(Math.PI/2);
             mesh.translateZ(-0.03);

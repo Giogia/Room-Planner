@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 import _ from 'lodash';
 
-import {canvas, camera, scene} from "./app";
-import {floorPlan,  updateScene} from "./walls";
+import {camera, canvas, scene} from "./app";
+import {floorPlan, updateScene} from "./walls";
 import {LineMaterial} from "three/examples/jsm/lines/LineMaterial";
 import {LineGeometry} from "three/examples/jsm/lines/LineGeometry";
 import {Line2} from "three/examples/jsm/lines/Line2";

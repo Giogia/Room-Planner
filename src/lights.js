@@ -1,7 +1,7 @@
 'use strict';
 
 import * as THREE from 'three';
-import { scene } from './app';
+import {scene} from './app';
 
 export let hemisphere, directional;
 

@@ -36,7 +36,8 @@ export function createButtons(){
     modelButtons = document.getElementById('model-buttons');
 
     removeButton = createIconButton('delete_forever', modelButtons);
-    removeButton.style.color = 'red';
+    removeButton.style.color = 'white';
+    removeButton.style.backgroundColor = 'lightcoral';
     downloadButton = createIconButton( 'save', modelButtons);
 
     hideButton(removeButton);
