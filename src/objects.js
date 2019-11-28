@@ -42,13 +42,10 @@ export function selectObject(event){
         i++
     }
     if(intersects[i].object.name === "floor"){
-        selectFloor(event);
+        updateTexture(event, floorModel.children, floorPlan.rooms, floorMaterials);
     }
     else if(intersects[i].object.name === "wall"){
-        selectWall(event);
-    }
-    else{
-        selectDraggableObject(event);
+        updateTexture(event, wallsModel.children, floorPlan.walls, wallMaterials);
     }
 }
 
@@ -67,9 +64,9 @@ function intersect(event, objects){
 }
 
 
-function select(event, objects, onSelect, onAlternativeSelect, onDeselect, recursive=false){
+async function updateTexture(event, models, objects, materials){
 
-    let intersects = intersect(event, objects);
+    let intersects = intersect(event, models);
 
     let object = null;
 
@@ -77,15 +74,41 @@ function select(event, objects, onSelect, onAlternativeSelect, onDeselect, recur
 
         object = intersects[0].object;
 
-        if(recursive){
-            while (object.type !== 'Scene') {
-                object = object.parent;
-            }
+        let name = materials[randomInt(0, materials.length-1)];
+
+        while(name === lastTexture){
+            name = materials[randomInt(0, materials.length-1)];
+        }
+
+        lastTexture = name;
+        setTexture(name, object.material);
+
+        let room = _.find(objects, {mesh: object.uuid});
+        room.texture = name;
+
+        await saveJson('floorPlan', floorPlan);
+
+    }
+}
+
+
+export function selectDraggableObject(event){
+
+    let intersects = intersect(event, draggableObjects);
+
+    let object = null;
+
+    if(intersects.length > 0) {
+
+        object = intersects[0].object;
+
+        while (object.type !== 'Scene') {
+            object = object.parent;
         }
 
         if(selectedObject !== object && selectedObject !== null){
 
-            onAlternativeSelect();
+            removeButton.removeEventListener('click', removeDraggableObject);
             object.overrideMaterial = null;
             selectedObject = null;
         }
@@ -94,95 +117,19 @@ function select(event, objects, onSelect, onAlternativeSelect, onDeselect, recur
 
             selectedObject = object;
             object.overrideMaterial = selectedMaterial;
-            onSelect();
+            showButton(removeButton);
+            removeButton.addEventListener('click', removeDraggableObject);
         }
 
         else if(selectedObject === object){
 
-            onDeselect();
+            hideButton(removeButton);
+            removeButton.removeEventListener('click', removeDraggableObject);
             object.overrideMaterial = null;
             selectedObject = null;
 
         }
     }
-}
-
-
-function selectFloor(event){
-
-    select(event, floorModel.children,
-
-        async function(){
-
-            let name = floorMaterials[randomInt(0,floorMaterials.length-1)];
-
-            while(name === lastTexture){
-                name = floorMaterials[randomInt(0,floorMaterials.length-1)];
-            }
-
-            lastTexture = name;
-            setTexture(name, selectedObject.material);
-
-            let room = _.find(floorPlan.rooms, {mesh: selectedObject.uuid});
-            room.texture = name;
-
-            await saveJson('floorPlan', floorPlan);
-        },
-        function(){
-
-        },
-        function(){
-
-        });
-}
-
-function selectWall(event){
-
-    select(event, wallsModel.children,
-
-        async function(){
-
-            let name = wallMaterials[randomInt(0,wallMaterials.length-1)];
-
-            while(name === lastTexture){
-                name = wallMaterials[randomInt(0,wallMaterials.length-1)];
-            }
-
-            lastTexture = name;
-            setTexture(name, selectedObject.material);
-
-            let wall = _.find(floorPlan.walls, {mesh: selectedObject.uuid});
-            wall.texture = name;
-
-            await saveJson('floorPlan', floorPlan);
-        },
-        function(){
-
-        },
-        function(){
-
-    });
-}
-
-
-function selectDraggableObject(event){
-
-    select(event, draggableObjects,
-
-        function(){
-        showButton(removeButton);
-        removeButton.addEventListener('click', removeDraggableObject);
-    },
-
-        function(){
-        removeButton.removeEventListener('click', removeDraggableObject);
-    },
-        function(){
-
-        hideButton(removeButton);
-        removeButton.removeEventListener('click', removeDraggableObject);
-    },
-        true);
 }
 
 

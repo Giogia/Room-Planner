@@ -72,8 +72,8 @@ export function activateButtons(){
     activateDrawButtons();
     activateModelButtons();
 
-    viewButton.addEventListener('click', viewMode, false);
-    viewButton.addEventListener('click', toggleView, false);
+    viewButton.addEventListener('click', viewMode);
+    viewButton.addEventListener('click', toggleView);
 }
 
 
@@ -82,56 +82,56 @@ export function deactivateButtons(){
     deactivateDrawButtons();
     deactivateModelButtons();
 
-    viewButton.removeEventListener('click', viewMode, false);
-    viewButton.removeEventListener('click', toggleView, false);
+    viewButton.removeEventListener('click', viewMode);
+    viewButton.removeEventListener('click', toggleView);
 }
 
 
 export function activateDrawButtons(){
-    editButton.addEventListener('click', editMode, false);
-    deleteButton.addEventListener('click', deleteMode, false);
+    editButton.addEventListener('click', editMode);
+    deleteButton.addEventListener('click', deleteMode);
 }
 
 
 export function activateModelButtons(){
-    downloadButton.addEventListener('click', viewMode, false);
-    downloadButton.addEventListener('click', exportScene, false);
+    downloadButton.addEventListener('click', viewMode);
+    downloadButton.addEventListener('click', exportScene);
 }
 
 
 export function deactivateDrawButtons(){
 
-    editButton.removeEventListener('click', editMode, false);
-    deleteButton.removeEventListener('click', deleteMode, false);
+    editButton.removeEventListener('click', editMode);
+    deleteButton.removeEventListener('click', deleteMode);
 }
 
 
 export function deactivateModelButtons(){
 
-    downloadButton.removeEventListener('click', viewMode, false);
-    downloadButton.removeEventListener('click', exportScene, false);
+    downloadButton.removeEventListener('click', viewMode);
+    downloadButton.removeEventListener('click', exportScene);
 }
 
 
 export function viewMode(){
-    canvas.removeEventListener('click', removeDraggableObject, false);
-    canvas.removeEventListener( 'click', editDrawing, false);
-    canvas.removeEventListener( 'click', deleteDrawing, false);
+    canvas.removeEventListener('click', removeDraggableObject);
+    canvas.removeEventListener( 'click', editDrawing);
+    canvas.removeEventListener( 'click', deleteDrawing);
 }
 
 export function editMode(){
     currentMode = "edit";
-    canvas.addEventListener( 'click', editDrawing, false);
-    canvas.removeEventListener( 'click', deleteDrawing, false);
-    canvas.removeEventListener('click', removeDraggableObject, false);
+    canvas.addEventListener( 'click', editDrawing);
+    canvas.removeEventListener( 'click', deleteDrawing);
+    canvas.removeEventListener('click', removeDraggableObject);
 }
 
 
 export function deleteMode(){
     currentMode = "delete";
-    canvas.addEventListener( 'click', deleteDrawing, false);
-    canvas.removeEventListener( 'click', editDrawing, false);
-    canvas.removeEventListener('click', removeDraggableObject, false);
+    canvas.addEventListener( 'click', deleteDrawing);
+    canvas.removeEventListener( 'click', editDrawing);
+    canvas.removeEventListener('click', removeDraggableObject);
 }
 
 

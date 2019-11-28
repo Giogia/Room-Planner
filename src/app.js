@@ -6,7 +6,7 @@ import * as TWEEN from 'tween.js';
 import { dragControls, mapControls, orbitControls, draggableObjects } from "./controls"
 import { enableDragControls, enableMapControls, enableOrbitControls, enableTransformControls } from "./controls"
 import {addLights} from "./lights";
-import {addObject, initObjects, selectedObject, selectObject} from "./objects";
+import {addObject, initObjects, selectDraggableObject, selectedObject, selectObject} from "./objects";
 import {createModel} from "./walls";
 import {hideCloseWalls, showRoomCenters, tweenCamera} from "./view";
 import {createButtons, downloadButton, showButton, viewButton} from "./buttons";
@@ -41,7 +41,8 @@ async function init(){
     addGround();
 
     list.addEventListener('click', addObject);
-    canvas.addEventListener('click', selectObject);
+    canvas.addEventListener('click', selectDraggableObject);
+    canvas.addEventListener('dblclick', selectObject);
 
     await createModel();
     await initObjects();

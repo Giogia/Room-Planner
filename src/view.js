@@ -4,7 +4,7 @@ import * as TWEEN from "tween.js";
 import {dragControls, draggableObjects, mapControls, orbitControls} from "./controls";
 
 import {camera, canvas, drawer, list, scene} from "./app";
-import {addObject, selectObject} from "./objects";
+import {addObject, selectDraggableObject, selectObject} from "./objects";
 import {drawModel, floorModel, roomCenters, skirtingModel, updateModel, wallsModel} from "./walls";
 
 import {
@@ -48,7 +48,8 @@ function drawView(){
     }, 500);
 
     list.removeEventListener('click', addObject);
-    canvas.removeEventListener('click', selectObject);
+    canvas.removeEventListener('click', selectDraggableObject);
+    canvas.removeEventListener('dblclick', selectObject);
 
     scene.remove( directional );
 
@@ -79,8 +80,9 @@ function modelView(){
 
     deactivateDrawButtons();
 
-    list.addEventListener('click', addObject, false);
-    canvas.addEventListener('dblclick', selectDraggableObject, false);
+    list.addEventListener('click', addObject);
+    canvas.addEventListener('click', selectDraggableObject);
+    canvas.addEventListener('dblclick', selectObject);
 
     updateModel();
 
