@@ -92,11 +92,11 @@ export function createWallsModel (skirting=false) {
       // Remove non existing rooms from floorPlan model
       for(let wall of floorPlan.walls){
 
-          let startPoint = points.indexOf(_.find(points, point => {return point === wall.wall[0]}));
-          let endPoint = points.indexOf(_.find(points, point => {return point === wall.wall[1]}));
+          let startPoint = points.indexOf(_.find(points, point => {return point === wall.from}));
+          let endPoint = points.indexOf(_.find(points, point => {return point === wall.to}));
 
           if(!_.find(floorPlan.lines, {from: startPoint, to: endPoint})){
-              _.remove(floorPlan.walls, discard =>{ return discard === wall })
+              _.remove(floorPlan.walls, { from: wall.from, to: wall.to })
           }
       }
   }
@@ -192,7 +192,7 @@ function getWallsModels ({lines, points}, skirting=false) {
             }
             if(!existingWall){
                 setTexture( 'plaster', material);
-                floorPlan.walls.push({wall:[startPoint,endPoint], mesh:mesh.uuid, texture:'plaster'});
+                floorPlan.walls.push({from:[startPoint.x, startPoint.z], to:[endPoint.x, endPoint.z], mesh:mesh.uuid, texture:'plaster'});
             }
     }
 
