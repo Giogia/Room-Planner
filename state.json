@@ -77,7 +77,7 @@
           "x": -5,
           "z": 0
         },
-        "mesh": "D70308E5-41FD-4D48-950C-6FE739B4C6B2",
+        "mesh": "DC604560-2F5C-486E-8A3A-1A0B62B1C9D4",
         "texture": "plaster"
       },
       {
@@ -89,7 +89,7 @@
           "x": -5,
           "z": 3
         },
-        "mesh": "441A4A20-EE11-44AB-BCEB-CF35CC938578",
+        "mesh": "5D06ABF1-AD66-4587-B864-BE2AF5A38D56",
         "texture": "plaster"
       },
       {
@@ -101,7 +101,7 @@
           "x": -5,
           "z": 5
         },
-        "mesh": "EF15F06F-FAEF-4A88-9A88-32CA0D897BC4",
+        "mesh": "86E273D2-ED2E-4671-8AAF-9E26EC5573A1",
         "texture": "plaster"
       },
       {
@@ -113,7 +113,7 @@
           "x": 1,
           "z": 5
         },
-        "mesh": "31909567-C6D0-46D9-9C27-977030B26BB1",
+        "mesh": "3C6C06AE-9E5F-4874-851A-F1F9103A0085",
         "texture": "plaster"
       },
       {
@@ -125,7 +125,7 @@
           "x": 5,
           "z": 5
         },
-        "mesh": "A7D1A413-280D-4F17-B2CC-393D0E42D62D",
+        "mesh": "19361420-9248-4AE2-B911-ECF439D987B8",
         "texture": "plaster"
       },
       {
@@ -137,7 +137,7 @@
           "x": 5,
           "z": 2
         },
-        "mesh": "681B8AD0-203C-4B2C-A9A6-1C88958E7CEF",
+        "mesh": "91011846-CC7B-4293-9AAC-27F8FDF57895",
         "texture": "plaster"
       },
       {
@@ -149,7 +149,7 @@
           "x": -5,
           "z": -5
         },
-        "mesh": "A0A31763-75A2-40B1-868D-875191BDE828",
+        "mesh": "29CC263C-BE9D-46DF-88F7-07275C98C3D6",
         "texture": "plaster"
       },
       {
@@ -161,7 +161,7 @@
           "x": -5,
           "z": 0
         },
-        "mesh": "9C1245E1-6E30-443A-8C63-361D9DFF1AE8",
+        "mesh": "45D540FD-BB89-4C8C-9EA1-D79E81C9ADD3",
         "texture": "plaster"
       },
       {
@@ -173,7 +173,7 @@
           "x": 0,
           "z": 2
         },
-        "mesh": "9A1B6E0E-7CC8-4FFB-BCA6-14CB28ED4BA4",
+        "mesh": "91917A55-E240-43E6-93FB-741A9178D3B5",
         "texture": "plaster"
       },
       {
@@ -185,7 +185,7 @@
           "x": 0,
           "z": 3
         },
-        "mesh": "B481632B-E609-4EC5-A061-DE3E757BBC41",
+        "mesh": "EA68E4F0-B853-4F53-8366-09A10FFB7875",
         "texture": "plaster"
       },
       {
@@ -197,7 +197,7 @@
           "x": -5,
           "z": 3
         },
-        "mesh": "141F938F-D8EA-41D6-8A7A-455C0277B10B",
+        "mesh": "C7CAA0CF-7E53-45F6-83F3-419BDEB11582",
         "texture": "plaster"
       },
       {
@@ -209,7 +209,7 @@
           "x": 0,
           "z": 2
         },
-        "mesh": "3A985989-7079-4604-B673-ED56AB286507",
+        "mesh": "B1C53B8C-CFCC-45F7-B764-FA0002F74C76",
         "texture": "plaster"
       },
       {
@@ -221,7 +221,7 @@
           "x": 1,
           "z": 2
         },
-        "mesh": "272AD815-8EDA-4CC3-8227-F73714BB567E",
+        "mesh": "BA4001F2-E66A-4C88-B0E9-51E3591A480D",
         "texture": "plaster"
       },
       {
@@ -233,7 +233,7 @@
           "x": 1,
           "z": 5
         },
-        "mesh": "B0F2B5C0-B3E7-4496-905B-38FE9E57DBA7",
+        "mesh": "C6A0FF96-DFEE-435F-A40A-D7FBE5C617D7",
         "texture": "plaster"
       },
       {
@@ -245,7 +245,7 @@
           "x": 0,
           "z": 0
         },
-        "mesh": "3D12E166-B57A-41B1-87B4-B2B42F70C312",
+        "mesh": "054D8E7F-F1E3-4F5F-BB67-D6DDAD3441D5",
         "texture": "plaster"
       },
       {
@@ -257,7 +257,7 @@
           "x": 5,
           "z": 2
         },
-        "mesh": "3B42E812-7395-4B78-AE35-C6DDA073CB75",
+        "mesh": "128AF801-0A19-4478-BF92-B80635923A65",
         "texture": "plaster"
       },
       {
@@ -269,7 +269,7 @@
           "x": 0,
           "z": 0
         },
-        "mesh": "1AB56F66-2A21-4964-BA90-A93F91292C92",
+        "mesh": "9194B610-1B48-46DE-87FE-31EA8ABE3271",
         "texture": "plaster"
       }
     ],
@@ -280,8 +280,8 @@
           "y": -2.5,
           "z": 0.014999999664723873
         },
-        "mesh": "D72E3F25-0500-450E-95B3-79C01AEAE8C3",
-        "texture": "wood1"
+        "mesh": "1AAD3024-5A2C-4ADF-86F8-8D04C0A956E4",
+        "texture": "wood2"
       },
       {
         "center": {
@@ -289,7 +289,7 @@
           "y": 1.5,
           "z": 0.014999999664723873
         },
-        "mesh": "C30B4752-9D2E-4556-913D-65AC42F3EF5B",
+        "mesh": "5C3AA802-B1F4-465E-B5BA-C326D0E92090",
         "texture": "wood2"
       },
       {
@@ -298,7 +298,7 @@
           "y": 1,
           "z": 0.014999999664723873
         },
-        "mesh": "4B3D846B-C0B2-4ADF-A564-BBC73238F301",
+        "mesh": "C51D6325-B38C-4246-BE49-3AFCA9DF256E",
         "texture": "wood2"
       },
       {
@@ -307,7 +307,7 @@
           "y": 3.5,
           "z": 0.014999999664723873
         },
-        "mesh": "CE646CE3-920D-463A-A174-C5A8D16BAE7A",
+        "mesh": "7FD7D32B-0D61-4EE0-AF51-7E53E0EF5143",
         "texture": "wood2"
       },
       {
@@ -316,43 +316,7 @@
           "y": 3.5,
           "z": 0.014999999664723873
         },
-        "mesh": "13A66E38-A471-42B4-BA76-FAF1B13C431D",
-        "texture": "wood2"
-      },
-      {
-        "center": {
-          "x": 5,
-          "y": -3.5,
-          "z": 0.014999999664723873
-        },
-        "mesh": "5B6406B8-DC8A-4D62-BD89-7F2489964E02",
-        "texture": "wood2"
-      },
-      {
-        "center": {
-          "x": 5,
-          "y": -2.5,
-          "z": 0.014999999664723873
-        },
-        "mesh": "4C90D959-35A0-4E24-B8EE-FB6186C86006",
-        "texture": "wood2"
-      },
-      {
-        "center": {
-          "x": 3,
-          "y": -2.5,
-          "z": 0.014999999664723873
-        },
-        "mesh": "A4FBED6C-19BF-41F8-B41E-52EE0BB93590",
-        "texture": "wood2"
-      },
-      {
-        "center": {
-          "x": 3,
-          "y": -3.5,
-          "z": 0.014999999664723873
-        },
-        "mesh": "869B7002-9888-4CD5-AD14-B6E1E7D68B40",
+        "mesh": "9E778051-E7C5-45A8-8CEF-EA3F45735135",
         "texture": "wood2"
       }
     ]

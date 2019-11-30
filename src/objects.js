@@ -6,11 +6,11 @@ import {hideButton, removeButton, showButton} from "./buttons";
 import {selectedMaterial, setTexture} from "./materials";
 import {floorModel, floorPlan, wallsModel} from "./walls";
 import {floorMaterials, wallMaterials} from "./materialsList";
-import randomInt from "random-int";
 
 export let currentObjects;
 export let selectedObject = null;
-let lastTexture;
+let lastFloorTexture = 'wood2';
+let lastWallTexture = 'plaster';
 
 
 export async function initObjects(){
@@ -33,7 +33,7 @@ export async function addObject(event){
 }
 
 
-export function selectObject(event){
+export async function selectObject(event){
 
     let intersects = intersect(event, scene.children);
 
@@ -42,10 +42,10 @@ export function selectObject(event){
         i++
     }
     if(intersects[i].object.name === "floor"){
-        updateTexture(event, floorModel.children, floorPlan.rooms, floorMaterials);
+        lastFloorTexture = await updateTexture(event, floorModel.children, floorPlan.rooms, floorMaterials, lastFloorTexture);
     }
     else if(intersects[i].object.name === "wall"){
-        updateTexture(event, wallsModel.children, floorPlan.walls, wallMaterials);
+        lastWallTexture = await updateTexture(event, wallsModel.children, floorPlan.walls, wallMaterials, lastWallTexture);
     }
 }
 
@@ -64,7 +64,7 @@ function intersect(event, objects){
 }
 
 
-async function updateTexture(event, models, objects, materials){
+async function updateTexture(event, models, objects, materials, lastTexture){
 
     let intersects = intersect(event, models);
 
@@ -74,20 +74,25 @@ async function updateTexture(event, models, objects, materials){
 
         object = intersects[0].object;
 
-        let name = materials[randomInt(0, materials.length-1)];
+        let mesh = _.find(objects, {mesh: object.uuid});
 
-        while(name === lastTexture){
-            name = materials[randomInt(0, materials.length-1)];
+        let texture = mesh.texture;
+
+        if(texture === lastTexture){
+           texture = materials[(materials.indexOf(lastTexture) + 1) % materials.length];
+        }
+        else if(texture !== lastTexture){
+            texture = lastTexture;
         }
 
-        lastTexture = name;
-        setTexture(name, object.material);
+        let repeat = object.geometry.parameters.width? [object.geometry.parameters.width, 1] : [1,1];
 
-        let room = _.find(objects, {mesh: object.uuid});
-        room.texture = name;
+        setTexture(texture, object.material, repeat);
+        mesh.texture = texture;
 
         await saveJson('floorPlan', floorPlan);
 
+        return texture;
     }
 }
 

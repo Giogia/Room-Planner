@@ -55,7 +55,6 @@ function drawPoint(position){
 
     floorPlan.points.push(position);
 
-    let points = floorPlan.points;
     let walls = floorPlan.walls;
 
     // if it is drawn on one or more line those get split in two lines

@@ -170,11 +170,11 @@ function getWallsModels ({walls, points}, skirting=false) {
         let wall = _.find(floorPlan.walls, {from: {x:from.x, z:from.z}, to: {x:to.x, z:to.z}});
 
         if(wall.texture !== undefined){
-            setTexture( wall.texture, material, [1, 0.5]);
+            setTexture( wall.texture, material, [width,1]);
             wall.mesh = mesh.uuid;
         }
         if(wall.texture === undefined){
-            setTexture( 'plaster', material, [1, 0.5]);
+            setTexture( 'plaster', material, [width,1]);
             wall.mesh = mesh.uuid;
             wall.texture = 'plaster';
         }
