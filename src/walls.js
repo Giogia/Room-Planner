@@ -283,7 +283,7 @@ export function createFloorModel() {
 
             let mesh = new THREE.Mesh( geometry, material );
 
-            let existingRoom = _.find(floorPlan.rooms, {room: center});
+            let existingRoom = _.find(floorPlan.rooms, {center: center});
 
             if(existingRoom){
                 setTexture( existingRoom.texture, material);

@@ -121,7 +121,7 @@ export function enableDragControls(){
 
     dragControls.on( 'dragstart', function (event) {
         orbitControls.enabled = false;
-        canvas.removeEventListener('click', selectObject);
+        canvas.removeEventListener('dblclick', selectObject);
 
         let group = getDraggablePosition(event).group;
         let position = getDraggablePosition(event).position;
@@ -140,7 +140,7 @@ export function enableDragControls(){
 
     dragControls.on( 'dragend', async function () {
         orbitControls.enabled = true;
-        setTimeout(() => {canvas.addEventListener('click', selectObject)}, 10);
+        setTimeout(() => {canvas.addEventListener('dblclick', selectObject)}, 10);
 
         for (let object of dragControls.objects){
 

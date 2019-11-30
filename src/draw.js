@@ -64,9 +64,8 @@ function drawPoint(position){
         let start = intersecting.from;
         let end = intersecting.to;
 
-        let id = points.indexOf(position);
-
-        if (intersecting.from !== id && intersecting.to !== id) {
+        if (!(intersecting.from.x === position.x && intersecting.from.z === position.z) &&
+            !(intersecting.to.x === position.x && intersecting.to.z === position.z)) {
 
             // check if points are collinear
             if ((end.z - start.z) * (position.x - start.x) === (end.x - start.x) * (position.z - start.z)) {
@@ -78,7 +77,6 @@ function drawPoint(position){
                 }
             }
         }
-
     }
 
     updateScene();
