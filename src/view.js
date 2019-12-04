@@ -88,14 +88,17 @@ function modelView(){
 
     scene.add( directional );
 
-    tweenCamera(new THREE.Vector3(-7, 9, -16));
-
-    show(draggableObjects);
-    show(floorModel.children);
-    show(roomCenters.children);
-    show(wallsModel.children);
-    show(skirtingModel.children);
     hide(drawModel.children);
+    show(floorModel.children);
+    show(skirtingModel.children);
+    show(wallsModel.children);
+    show(draggableObjects);
+    show(roomCenters.children);
+
+    setTimeout( () => {
+        tweenCamera(new THREE.Vector3(-7, 9, -16));
+    }, 20);
+
 }
 
 
@@ -143,8 +146,8 @@ export function hideCloseWalls(){
     if(!floorPlanView){
         for( let mesh of wallsModel.children){
             let distance = camera.position.distanceTo(mesh.position);
-            mesh.visible = distance >= 1;
-            mesh.material.opacity = Math.log(distance-8);
+            mesh.visible = distance >= 3;
+            mesh.material.opacity = 5 * Math.log(distance - 8) - 5;
         }
     }
 }

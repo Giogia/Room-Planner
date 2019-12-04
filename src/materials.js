@@ -16,7 +16,7 @@ function setMaps(maps, repeat){
 }
 
 
-export function setTexture(name, material, repeat=[1, 1]){
+export function setTexture(name, material, repeat=[2, 2]){
 
     let maps = [];
 
