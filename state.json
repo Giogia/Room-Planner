@@ -7,28 +7,68 @@
         "selected": false
       },
       {
+        "x": -5,
+        "z": 0,
+        "selected": false
+      },
+      {
+        "x": 0,
+        "z": 0,
+        "selected": false
+      },
+      {
+        "x": -5,
+        "z": 3,
+        "selected": false
+      },
+      {
+        "x": 5,
+        "z": 2,
+        "selected": false
+      },
+      {
+        "x": 1,
+        "z": 5,
+        "selected": false
+      },
+      {
+        "x": 0,
+        "z": 3,
+        "selected": false
+      },
+      {
+        "x": 5,
+        "z": 0,
+        "selected": false
+      },
+      {
+        "x": -5,
+        "z": -2.5,
+        "selected": false
+      },
+      {
+        "x": -4,
+        "z": -5,
+        "selected": false
+      },
+      {
+        "x": -4,
+        "z": -2.5,
+        "selected": false
+      },
+      {
+        "x": -2,
+        "z": -2.5,
+        "selected": false
+      },
+      {
         "x": 0,
         "z": -5,
         "selected": false
       },
       {
-        "x": -5,
+        "x": -2,
         "z": 0,
-        "selected": false
-      },
-      {
-        "x": 0,
-        "z": 0,
-        "selected": false
-      },
-      {
-        "x": -5,
-        "z": 3,
-        "selected": false
-      },
-      {
-        "x": 0,
-        "z": 2,
         "selected": false
       },
       {
@@ -37,33 +77,48 @@
         "selected": false
       },
       {
-        "x": 5,
-        "z": 2,
-        "selected": false
-      },
-      {
-        "x": -5,
-        "z": 5,
-        "selected": false
-      },
-      {
         "x": 1,
-        "z": 5,
-        "selected": false
-      },
-      {
-        "x": 5,
-        "z": 5,
+        "z": 2.5,
         "selected": false
       },
       {
         "x": 0,
+        "z": 2.5,
+        "selected": false
+      },
+      {
+        "x": -2.5,
+        "z": 0,
+        "selected": false
+      },
+      {
+        "x": -2.5,
         "z": 3,
         "selected": false
       },
       {
+        "x": 1,
+        "z": 6.75,
+        "selected": false
+      },
+      {
+        "x": 3,
+        "z": 6.75,
+        "selected": false
+      },
+      {
+        "x": 3,
+        "z": 4,
+        "selected": false
+      },
+      {
         "x": 5,
-        "z": 0,
+        "z": 4,
+        "selected": false
+      },
+      {
+        "x": -2.5,
+        "z": 6.75,
         "selected": false
       }
     ],
@@ -71,169 +126,109 @@
       {
         "from": {
           "x": -5,
-          "z": -5
-        },
-        "to": {
-          "x": -5,
-          "z": 0
-        },
-        "mesh": "DC604560-2F5C-486E-8A3A-1A0B62B1C9D4",
-        "texture": "plaster"
-      },
-      {
-        "from": {
-          "x": -5,
           "z": 0
         },
         "to": {
           "x": -5,
           "z": 3
         },
-        "mesh": "5D06ABF1-AD66-4587-B864-BE2AF5A38D56",
-        "texture": "plaster"
-      },
-      {
-        "from": {
-          "x": -5,
-          "z": 3
-        },
-        "to": {
-          "x": -5,
-          "z": 5
-        },
-        "mesh": "86E273D2-ED2E-4671-8AAF-9E26EC5573A1",
-        "texture": "plaster"
-      },
-      {
-        "from": {
-          "x": -5,
-          "z": 5
-        },
-        "to": {
-          "x": 1,
-          "z": 5
-        },
-        "mesh": "3C6C06AE-9E5F-4874-851A-F1F9103A0085",
-        "texture": "plaster"
-      },
-      {
-        "from": {
-          "x": 1,
-          "z": 5
-        },
-        "to": {
-          "x": 5,
-          "z": 5
-        },
-        "mesh": "19361420-9248-4AE2-B911-ECF439D987B8",
+        "mesh": "2B32BE0A-C7D2-4540-AECB-70FDD20050D4",
         "texture": "plaster"
       },
       {
         "from": {
           "x": 5,
-          "z": 5
+          "z": 0
         },
         "to": {
           "x": 5,
           "z": 2
         },
-        "mesh": "91011846-CC7B-4293-9AAC-27F8FDF57895",
+        "mesh": "89769163-2C79-4FF7-86DF-2177EC2FBB76",
         "texture": "plaster"
       },
       {
         "from": {
+          "x": 5,
+          "z": 0
+        },
+        "to": {
           "x": 0,
+          "z": 0
+        },
+        "mesh": "942C6DDE-1B1C-4CB1-8DD7-128874CDDB83",
+        "texture": "plaster"
+      },
+      {
+        "from": {
+          "x": -5,
+          "z": -2.5
+        },
+        "to": {
+          "x": -5,
+          "z": -5
+        },
+        "mesh": "B55529C1-AC52-4294-813F-D9F4F8A3DD9C",
+        "texture": "plaster"
+      },
+      {
+        "from": {
+          "x": -5,
+          "z": -2.5
+        },
+        "to": {
+          "x": -5,
+          "z": 0
+        },
+        "mesh": "24B870E7-FDE2-44A8-869F-258CD5D5C3CF",
+        "texture": "plaster"
+      },
+      {
+        "from": {
+          "x": -4,
           "z": -5
         },
         "to": {
           "x": -5,
           "z": -5
         },
-        "mesh": "29CC263C-BE9D-46DF-88F7-07275C98C3D6",
+        "mesh": "8871DF93-9A78-4D92-9CFE-006F78658C41",
         "texture": "plaster"
       },
       {
         "from": {
-          "x": 0,
-          "z": 0
-        },
-        "to": {
           "x": -5,
-          "z": 0
+          "z": -2.5
         },
-        "mesh": "45D540FD-BB89-4C8C-9EA1-D79E81C9ADD3",
+        "to": {
+          "x": -4,
+          "z": -2.5
+        },
+        "mesh": "C47F0592-55F3-4A86-BE37-108BD681CDE6",
         "texture": "plaster"
       },
       {
         "from": {
-          "x": 0,
-          "z": 0
+          "x": -4,
+          "z": -2.5
         },
         "to": {
-          "x": 0,
-          "z": 2
+          "x": -4,
+          "z": -5
         },
-        "mesh": "91917A55-E240-43E6-93FB-741A9178D3B5",
+        "mesh": "46071550-C325-4E05-B42E-C00FCDB2566D",
         "texture": "plaster"
       },
       {
         "from": {
-          "x": 0,
-          "z": 2
+          "x": -4,
+          "z": -2.5
         },
         "to": {
-          "x": 0,
-          "z": 3
+          "x": -2,
+          "z": -2.5
         },
-        "mesh": "EA68E4F0-B853-4F53-8366-09A10FFB7875",
-        "texture": "plaster"
-      },
-      {
-        "from": {
-          "x": 0,
-          "z": 3
-        },
-        "to": {
-          "x": -5,
-          "z": 3
-        },
-        "mesh": "C7CAA0CF-7E53-45F6-83F3-419BDEB11582",
-        "texture": "plaster"
-      },
-      {
-        "from": {
-          "x": 1,
-          "z": 2
-        },
-        "to": {
-          "x": 0,
-          "z": 2
-        },
-        "mesh": "B1C53B8C-CFCC-45F7-B764-FA0002F74C76",
-        "texture": "plaster"
-      },
-      {
-        "from": {
-          "x": 5,
-          "z": 2
-        },
-        "to": {
-          "x": 1,
-          "z": 2
-        },
-        "mesh": "BA4001F2-E66A-4C88-B0E9-51E3591A480D",
-        "texture": "plaster"
-      },
-      {
-        "from": {
-          "x": 1,
-          "z": 2
-        },
-        "to": {
-          "x": 1,
-          "z": 5
-        },
-        "mesh": "C6A0FF96-DFEE-435F-A40A-D7FBE5C617D7",
+        "mesh": "CE946DCD-D1DA-4FA8-8E92-C8024960CC8E",
         "texture": "plaster"
       },
       {
@@ -245,83 +240,584 @@
           "x": 0,
           "z": 0
         },
-        "mesh": "054D8E7F-F1E3-4F5F-BB67-D6DDAD3441D5",
+        "mesh": "6DCDA108-2190-48C2-B5DF-A9308ED2C8B5",
         "texture": "plaster"
       },
       {
         "from": {
-          "x": 5,
+          "x": -2,
           "z": 0
+        },
+        "to": {
+          "x": -2,
+          "z": -2.5
+        },
+        "mesh": "6265D5BD-3022-4987-AADF-C8EF9EC60627",
+        "texture": "plaster"
+      },
+      {
+        "from": {
+          "x": 0,
+          "z": -5
+        },
+        "to": {
+          "x": -4,
+          "z": -5
+        },
+        "mesh": "D4F3A90D-3EE4-4542-B7E2-A434DC4E5D18",
+        "texture": "plaster"
+      },
+      {
+        "from": {
+          "x": 0,
+          "z": 0
+        },
+        "to": {
+          "x": -2,
+          "z": 0
+        },
+        "mesh": "4C0AB290-3638-401B-B77D-8577E6331C9F",
+        "texture": "plaster"
+      },
+      {
+        "from": {
+          "x": 1,
+          "z": 2
         },
         "to": {
           "x": 5,
           "z": 2
         },
-        "mesh": "128AF801-0A19-4478-BF92-B80635923A65",
+        "mesh": "728D62E1-F104-411F-AAF8-34ABAC997362",
         "texture": "plaster"
       },
       {
         "from": {
-          "x": 5,
-          "z": 0
+          "x": 1,
+          "z": 2.5
+        },
+        "to": {
+          "x": 1,
+          "z": 2
+        },
+        "mesh": "E0F7BC15-3850-4268-AD8D-15CADDECA4CD",
+        "texture": "plaster"
+      },
+      {
+        "from": {
+          "x": 1,
+          "z": 2.5
+        },
+        "to": {
+          "x": 1,
+          "z": 5
+        },
+        "mesh": "8065E111-228E-49F7-8EDE-7981DDAD7699",
+        "texture": "plaster"
+      },
+      {
+        "from": {
+          "x": 0,
+          "z": 2.5
         },
         "to": {
           "x": 0,
           "z": 0
         },
-        "mesh": "9194B610-1B48-46DE-87FE-31EA8ABE3271",
+        "mesh": "FD5D4E0E-5F18-4B51-B288-3526A3F8F726",
+        "texture": "wall_stone"
+      },
+      {
+        "from": {
+          "x": 0,
+          "z": 2.5
+        },
+        "to": {
+          "x": 0,
+          "z": 3
+        },
+        "mesh": "E236E8B2-56BB-437A-A19C-CAF9E4459271",
+        "texture": "wall_stone"
+      },
+      {
+        "from": {
+          "x": 1,
+          "z": 2.5
+        },
+        "to": {
+          "x": 0,
+          "z": 2.5
+        },
+        "mesh": "59456214-57E1-4652-9BC8-272BF9A5AF84",
+        "texture": "concrete"
+      },
+      {
+        "from": {
+          "x": -2.5,
+          "z": 0
+        },
+        "to": {
+          "x": -5,
+          "z": 0
+        },
+        "mesh": "2FE217F7-173B-4E3F-A9DC-37DD6BD827D4",
+        "texture": "plaster"
+      },
+      {
+        "from": {
+          "x": -2.5,
+          "z": 0
+        },
+        "to": {
+          "x": -2,
+          "z": 0
+        },
+        "mesh": "42A96DAF-BBFE-473D-9501-B51810832EAD",
+        "texture": "plaster"
+      },
+      {
+        "from": {
+          "x": -2.5,
+          "z": 3
+        },
+        "to": {
+          "x": 0,
+          "z": 3
+        },
+        "mesh": "57F1394E-56B6-43D2-96F2-AAF74B441500",
+        "texture": "plaster"
+      },
+      {
+        "from": {
+          "x": -2.5,
+          "z": 3
+        },
+        "to": {
+          "x": -5,
+          "z": 3
+        },
+        "mesh": "E56742FD-B109-4EE7-AE85-9D8D6937F8DF",
+        "texture": "plaster"
+      },
+      {
+        "from": {
+          "x": -2.5,
+          "z": 0
+        },
+        "to": {
+          "x": -2.5,
+          "z": 3
+        },
+        "mesh": "F4DE710E-0F42-4D0C-8553-D7817D56A0B3",
+        "texture": "plaster"
+      },
+      {
+        "from": {
+          "x": 1,
+          "z": 6.75
+        },
+        "to": {
+          "x": 1,
+          "z": 5
+        },
+        "mesh": "72455310-F998-4549-875E-1E3D08E925F0",
+        "texture": "plaster"
+      },
+      {
+        "from": {
+          "x": 1,
+          "z": 6.75
+        },
+        "to": {
+          "x": 3,
+          "z": 6.75
+        },
+        "mesh": "A5B26092-3FE0-4E79-89DD-F82F714EF46F",
+        "texture": "plaster"
+      },
+      {
+        "from": {
+          "x": 3,
+          "z": 6.75
+        },
+        "to": {
+          "x": 3,
+          "z": 4
+        },
+        "mesh": "C36EBD35-EBCD-41DF-9228-8DC30294001D",
+        "texture": "plaster"
+      },
+      {
+        "from": {
+          "x": 3,
+          "z": 4
+        },
+        "to": {
+          "x": 5,
+          "z": 4
+        },
+        "mesh": "F52F036B-3B5C-45AD-B907-531A00A4C3B7",
+        "texture": "plaster"
+      },
+      {
+        "from": {
+          "x": 5,
+          "z": 4
+        },
+        "to": {
+          "x": 5,
+          "z": 2
+        },
+        "mesh": "C2822659-872E-4817-998D-FD8358F55038",
+        "texture": "plaster"
+      },
+      {
+        "from": {
+          "x": -2.5,
+          "z": 3
+        },
+        "to": {
+          "x": -2.5,
+          "z": 6.75
+        },
+        "mesh": "71DB250D-43B4-48D7-969A-90B1C3379A87",
+        "texture": "plaster"
+      },
+      {
+        "from": {
+          "x": -2.5,
+          "z": 6.75
+        },
+        "to": {
+          "x": 1,
+          "z": 6.75
+        },
+        "mesh": "4892768E-38A3-46CD-927D-E0AA0FBD49EF",
         "texture": "plaster"
       }
     ],
     "rooms": [
       {
         "center": {
-          "x": -2.5,
-          "y": -2.5,
+          "x": -4.5,
+          "y": -3.75,
           "z": 0.014999999664723873
         },
-        "mesh": "1AAD3024-5A2C-4ADF-86F8-8D04C0A956E4",
-        "texture": "wood2"
+        "mesh": "D6F8C633-B530-4A4A-AB58-406C110E922E",
+        "texture": "rubber"
       },
       {
         "center": {
-          "x": -2.5,
-          "y": 1.5,
+          "x": -3.5,
+          "y": -1.25,
           "z": 0.014999999664723873
         },
-        "mesh": "5C3AA802-B1F4-465E-B5BA-C326D0E92090",
+        "mesh": "B787798F-FA86-4E88-81DD-77A6CB8D09C8",
+        "texture": "tiles2"
+      },
+      {
+        "center": {
+          "x": -2,
+          "y": -2.5,
+          "z": 0.014999999664723873
+        },
+        "mesh": "DD03B243-FB60-4A1F-8005-95DCAF186E9B",
         "texture": "wood2"
       },
       {
         "center": {
           "x": 2.5,
-          "y": 1,
+          "y": 1.25,
           "z": 0.014999999664723873
         },
-        "mesh": "C51D6325-B38C-4246-BE49-3AFCA9DF256E",
+        "mesh": "3C1E775A-AC49-4C21-BC75-C485FCAC3ADA",
         "texture": "wood2"
       },
       {
         "center": {
-          "x": -2,
-          "y": 3.5,
+          "x": -3.75,
+          "y": 1.5,
           "z": 0.014999999664723873
         },
-        "mesh": "7FD7D32B-0D61-4EE0-AF51-7E53E0EF5143",
+        "mesh": "4395F006-74B0-4082-BB91-4979942B7F31",
+        "texture": "wood3"
+      },
+      {
+        "center": {
+          "x": -1.25,
+          "y": 1.5,
+          "z": 0.014999999664723873
+        },
+        "mesh": "1CBA889E-B9A1-480F-811F-6A31EE3192C9",
         "texture": "wood2"
       },
       {
         "center": {
           "x": 3,
-          "y": 3.5,
+          "y": 4.375,
           "z": 0.014999999664723873
         },
-        "mesh": "9E778051-E7C5-45A8-8CEF-EA3F45735135",
+        "mesh": "59E3D632-9C86-4994-BD0F-543964A49E9F",
+        "texture": "tiles3"
+      },
+      {
+        "center": {
+          "x": -0.75,
+          "y": 4.625,
+          "z": 0.014999999664723873
+        },
+        "mesh": "5D478595-9BDB-411D-94DD-9E62579DD2D3",
         "texture": "wood2"
       }
     ]
   },
   "currentObjects": {
-    "objects": []
+    "objects": [
+      {
+        "name": "bathroomSinkSquare",
+        "x": -2.5906611532483534,
+        "y": 0.030000000000000887,
+        "z": -1.7069221995965542,
+        "angle": 270
+      },
+      {
+        "name": "bathtub",
+        "x": -4.549093388624713,
+        "y": 0.030000000000000887,
+        "z": -0.2080072471116483,
+        "angle": 0
+      },
+      {
+        "name": "washerDryerStacked",
+        "x": -2.4778491739945565,
+        "y": 0.03,
+        "z": -2.347455954680954,
+        "angle": 270
+      },
+      {
+        "name": "showerRound",
+        "x": -4.35577484160077,
+        "y": 0.030000000000003108,
+        "z": -1.8863836327325454,
+        "angle": 90
+      },
+      {
+        "name": "bedBunk",
+        "x": -4.746913310643808,
+        "y": 0.029999999999996446,
+        "z": 2.856467876297678,
+        "angle": 0
+      },
+      {
+        "name": "cabinetTelevisionDoors",
+        "x": -2.3806812115193363,
+        "y": 0.02999999999999911,
+        "z": -0.9604168164530711,
+        "angle": 270
+      },
+      {
+        "name": "cardboardBoxClosed",
+        "x": -4.56874699302769,
+        "y": 0.030000000000001997,
+        "z": -3.063517125809228,
+        "angle": 0
+      },
+      {
+        "name": "cardboardBoxOpen",
+        "x": -4.795100022465737,
+        "y": 0.03,
+        "z": -3.5656816895739922,
+        "angle": 0
+      },
+      {
+        "name": "lampRoundFloor",
+        "x": -4.318840263634056,
+        "y": 0.03,
+        "z": -3.8868674297585093,
+        "angle": 0
+      },
+      {
+        "name": "bathroomMirror",
+        "x": -2.1818815470368276,
+        "y": 0.73,
+        "z": -1.6352551564024722,
+        "angle": 270
+      },
+      {
+        "name": "bookcaseOpen",
+        "x": -4.854660589945028,
+        "y": 0.03000000000000133,
+        "z": -2.7971836420469973,
+        "angle": 0
+      },
+      {
+        "name": "pottedPlant",
+        "x": -1.8337764996572623,
+        "y": 0.03,
+        "z": 1.1240854592079401,
+        "angle": 0
+      },
+      {
+        "name": "rugRectangle",
+        "x": -0.4695537251690012,
+        "y": 0.030000000000001775,
+        "z": -2.3235583312942008,
+        "angle": 90
+      },
+      {
+        "name": "coatRackStanding",
+        "x": -1.394543986155445,
+        "y": 0.03,
+        "z": -4.5836156009935,
+        "angle": 0
+      },
+      {
+        "name": "speaker",
+        "x": -2.6826023045747065,
+        "y": 0.03,
+        "z": -0.45592442605843486,
+        "angle": 0
+      },
+      {
+        "name": "stairsCorner",
+        "x": -1.0578493692637618,
+        "y": 0.03,
+        "z": 3.972805129859287,
+        "angle": 0
+      },
+      {
+        "name": "televisionModern",
+        "x": 0.5074013526644792,
+        "y": 0.5299999999999983,
+        "z": 5.353996298368187,
+        "angle": 270
+      },
+      {
+        "name": "tableGlass",
+        "x": 0.7469223438302222,
+        "y": 0.029999999999996446,
+        "z": 5.956113504176417,
+        "angle": 90
+      },
+      {
+        "name": "speaker",
+        "x": -2.6826023045747065,
+        "y": 0.03,
+        "z": -0.45592442605843486,
+        "angle": 0
+      },
+      {
+        "name": "doorway",
+        "x": 2.904711564506864,
+        "y": 0.03,
+        "z": -0.0284511896841372,
+        "angle": 0
+      },
+      {
+        "name": "doorwayFront",
+        "x": -2.7417887212001264,
+        "y": 0.03,
+        "z": -0.13039142743119614,
+        "angle": 180
+      },
+      {
+        "name": "loungeDesignChair",
+        "x": -3.474910225893751,
+        "y": 0.03,
+        "z": 0.6781202775689426,
+        "angle": 0
+      },
+      {
+        "name": "pottedPlant",
+        "x": -1.8337764996572623,
+        "y": 0.03,
+        "z": 1.1240854592079401,
+        "angle": 0
+      },
+      {
+        "name": "rugRounded",
+        "x": -3.088770379728917,
+        "y": 0.03,
+        "z": 2.0995728133934706,
+        "angle": 90
+      },
+      {
+        "name": "bedDouble",
+        "x": 3.5709271134824916,
+        "y": 0.03,
+        "z": 0.370383263180325,
+        "angle": 270
+      },
+      {
+        "name": "bookcaseClosedWide",
+        "x": -1.6161869481227797,
+        "y": 0.030000000000001775,
+        "z": -0.508268849007182,
+        "angle": 90
+      },
+      {
+        "name": "loungeDesignSofaCorner",
+        "x": -0.7681309815296866,
+        "y": 0.03,
+        "z": 5.199179259949938,
+        "angle": 0
+      },
+      {
+        "name": "toilet",
+        "x": -3.313354691517882,
+        "y": 0.03,
+        "z": -2.4060654946142392,
+        "angle": 0
+      },
+      {
+        "name": "trashcan",
+        "x": -3.50214406276943,
+        "y": 0.03,
+        "z": -2.280428989115874,
+        "angle": 0
+      },
+      {
+        "name": "radio",
+        "x": -3.2369618798132387,
+        "y": 0.03,
+        "z": 0.8364394913362674,
+        "angle": 180
+      },
+      {
+        "name": "laptop",
+        "x": -3.538656924245265,
+        "y": 0.03,
+        "z": 1.4943701867094759,
+        "angle": 0
+      },
+      {
+        "name": "loungeDesignChair",
+        "x": -3.474910225893751,
+        "y": 0.03,
+        "z": 0.6781202775689426,
+        "angle": 0
+      },
+      {
+        "name": "lampSquareFloor",
+        "x": -0.5487958639225954,
+        "y": 0.03,
+        "z": 6.502232696244335,
+        "angle": 0
+      },
+      {
+        "name": "doorway",
+        "x": 2.904711564506864,
+        "y": 0.03,
+        "z": -0.0284511896841372,
+        "angle": 0
+      },
+      {
+        "name": "stairsOpen",
+        "x": -2.005747746911807,
+        "y": 0.03,
+        "z": -2.66399536082244,
+        "angle": 0
+      }
+    ]
   }
 }

@@ -22,12 +22,13 @@ export function  enableOrbitControls(){
     // smooth control settings
     orbitControls.enablePan = false;
     orbitControls.enableZoom = true;
+    orbitControls.zoomSpeed = 0.5;
     orbitControls.enableDamping = true;
     orbitControls.screenSpacePanning = false;
     orbitControls.minPolarAngle = 0;
     orbitControls.maxPolarAngle = Math.PI/2-Math.PI/32;
     orbitControls.dampingFactor = 0.05;
-    orbitControls.rotateSpeed = 0.1;
+    orbitControls.rotateSpeed = 0.09;
     orbitControls.minDistance = 5;
     orbitControls.maxDistance = 100;
 
@@ -138,17 +139,16 @@ export function enableDragControls(){
         group.position.set(position.x - delta.x, position.y - delta.y, position.z - delta.z);
     });
 
-    dragControls.on( 'dragend', async function () {
+    dragControls.on( 'dragend', async function (event) {
+
         orbitControls.enabled = true;
         setTimeout(() => {canvas.addEventListener('dblclick', selectObject)}, 10);
 
-        for (let object of dragControls.objects){
-
-            let dragged = _.find(currentObjects.objects, {name: object.name});
-            dragged.x = object.position.x;
-            dragged.y = object.position.y;
-            dragged.z = object.position.z;
-        }
+        let object = getDraggablePosition(event).group;
+        let dragged = _.find(currentObjects.objects, {name: object.name});
+        dragged.x = object.position.x;
+        dragged.y = object.position.y;
+        dragged.z = object.position.z;
 
         await saveJson('currentObjects', currentObjects);
     });

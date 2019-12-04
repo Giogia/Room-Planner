@@ -29,7 +29,7 @@ export async function saveJson(name, data){
 }
 
 
-export async function importModel(name, x=camera.position.x/4, y=0.03, z=camera.position.z/4) {
+export async function importModel(name, x=camera.position.x/5, y=0.03, z=camera.position.z/5, angle=0) {
 
     let path  = './models/furniture/' + name + '.glb';
 
@@ -44,10 +44,8 @@ export async function importModel(name, x=camera.position.x/4, y=0.03, z=camera.
     model.castShadow = true;
     model.receiveShadow = true;
 
-    // Move the object origin on its center of volume
-    new THREE.Box3().setFromObject( model ).getCenter( model.position ).multiplyScalar( - 1 );
-
     model.position.set(x, y, z);
+    model.rotation.y = THREE.Math.degToRad(angle);
 
     scene.add(model);
     draggableObjects.push(model);
