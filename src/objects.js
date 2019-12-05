@@ -1,12 +1,11 @@
 import {importModel, loadJson, saveJson} from "./loader";
 import * as THREE from "three";
 import {camera, canvas, raycaster, scene} from "./app";
-import {dragControls, draggableObjects} from "./controls";
+import {draggableObjects} from "./controls";
 import {hideButton, removeButton, showButton} from "./buttons";
 import {selectedMaterial, setTexture} from "./materials";
-import {floorModel, floorPlan, wallsModel} from "./walls";
+import {floorPlan} from "./walls";
 import {floorMaterials, wallMaterials} from "./materialsList";
-import {radiansToDegrees} from "@google/model-viewer/lib/styles/conversions";
 
 export let currentObjects;
 export let selectedObject = null;
@@ -17,8 +16,17 @@ let lastWallTexture = 'plaster';
 export async function initObjects(){
 
     currentObjects = await loadJson('currentObjects');
-    currentObjects.objects.forEach( object => {
-        importModel(object.name, object.x, object.y, object.z, object.angle)
+    _.forEach(currentObjects.objects, async function(object){
+        let model = await importModel(object.name, object.x, object.y, object.z, object.angle);
+
+        let added = _.find(currentObjects.objects, {
+            name: object.name,
+            x: object.x,
+            y: object.y,
+            z: object.z,
+            angle: object.angle });
+
+        added.mesh = model.uuid;
     });
 }
 
@@ -28,7 +36,7 @@ export async function addObject(event){
     let name = event.target.id;
     let model = await importModel(name);
 
-    let object = { name: model.name, x: model.position.x, y: model.position.y, z: model.position.z, angle: model.rotation.y };
+    let object = { name: model.name, mesh: model.uuid, x: model.position.x, y: model.position.y, z: model.position.z, angle: model.rotation.y };
     currentObjects.objects.push(object);
     await saveJson('currentObjects', currentObjects);
 }
@@ -139,11 +147,8 @@ export async function removeDraggableObject(){
 
     scene.remove(selectedObject);
 
-    _.remove(draggableObjects, draggable => { return draggable.uuid === selectedObject.uuid});
-    _.remove(currentObjects.objects, current => { return (current.name === selectedObject.name
-        && current.x === selectedObject.position.x
-        && current.y === selectedObject.position.y
-        && current.z === selectedObject.position.z)});
+    _.remove(draggableObjects, draggable => { return draggable.uuid === selectedObject.uuid });
+    _.remove(currentObjects.objects, current => { return current.mesh === selectedObject.uuid });
      await saveJson('currentObjects', currentObjects);
 
      hideButton(removeButton);
@@ -160,7 +165,7 @@ export async function rotateDraggableObject(object){
 
     object.rotation.y = (object.rotation.y + Math.PI/2) % (2 * Math.PI);
 
-    let dragged = _.find(currentObjects.objects, {name: object.name});
+    let dragged = _.find(currentObjects.objects, { mesh: object.uuid });
     dragged.angle = THREE.Math.radToDeg(object.rotation.y);
 
     await saveJson('currentObjects', currentObjects);
