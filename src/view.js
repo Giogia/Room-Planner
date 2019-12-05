@@ -69,22 +69,21 @@ function modelView(){
     mapControls.reset();
 
     drawer.open = true;
+
     deactivateDrawButtons();
     hideDrawButtons();
+
     setTimeout( () => {
         activateModelButtons();
         showModelButtons();
         showModelIcon();
     }, 500);
 
-
     deactivateDrawButtons();
 
     list.addEventListener('click', addObject);
     canvas.addEventListener('click', selectDraggableObject);
     canvas.addEventListener('dblclick', selectObject);
-
-    updateModel();
 
     scene.add( directional );
 
@@ -97,12 +96,12 @@ function modelView(){
 
     setTimeout( () => {
         tweenCamera(new THREE.Vector3(-7, 9, -16));
-    }, 20);
+    }, 100);
 
 }
 
 
-export function tweenCamera(targetPosition, duration=2000){
+export function tweenCamera(targetPosition, duration=2500){
 
     deactivateButtons();
 
@@ -147,7 +146,7 @@ export function hideCloseWalls(){
         for( let mesh of wallsModel.children){
             let distance = camera.position.distanceTo(mesh.position);
             mesh.visible = distance >= 3;
-            mesh.material.opacity = 5 * Math.log(distance - 8) - 5;
+            mesh.material.opacity = 5 * Math.log(distance - 10) - 5;
         }
     }
 }

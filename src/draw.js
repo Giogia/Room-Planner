@@ -2,7 +2,16 @@ import * as THREE from 'three';
 import _ from 'lodash';
 
 import {camera, canvas, scene} from "./app";
-import {floorPlan, updateScene} from "./walls";
+import {
+    createFloorModel,
+    createWallsModel,
+    floorModel,
+    floorPlan,
+    roomCenters,
+    skirtingModel, updateModel,
+    updateScene,
+    wallsModel
+} from "./walls";
 import {LineMaterial} from "three/examples/jsm/lines/LineMaterial";
 import {LineGeometry} from "three/examples/jsm/lines/LineGeometry";
 import {Line2} from "three/examples/jsm/lines/Line2";
@@ -141,6 +150,7 @@ function drawLine(event){
     }
 
     updateScene();
+    updateModel();
 
     canvas.removeEventListener( 'mousemove', showLine, false);
     canvas.removeEventListener('click', drawLine, false);
@@ -174,7 +184,11 @@ export function deleteDrawing(event){
         _.remove(points, point => { return point === selected });
 
         updateScene();
+        updateModel();
+
     }
+
+
 }
 
 
