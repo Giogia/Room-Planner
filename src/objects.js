@@ -1,7 +1,7 @@
 import {importModel, loadJson, saveJson} from "./loader";
 import * as THREE from "three";
 import {camera, canvas, raycaster, scene} from "./app";
-import {draggableObjects} from "./controls";
+import {draggableObjects, transformControls} from "./controls";
 import {hideButton, removeButton, showButton} from "./buttons";
 import {selectedMaterial, setTexture} from "./materials";
 import {floorPlan} from "./walls";
@@ -58,8 +58,6 @@ export async function selectObject(event){
         lastFloorTexture = await updateTexture(intersects[i].object, floorPlan.rooms, floorMaterials, lastFloorTexture);
     } else if (intersects[i].object.name === "wall") {
         lastWallTexture = await updateTexture(intersects[i].object, floorPlan.walls, wallMaterials, lastWallTexture);
-    } else{
-        rotateDraggableObject(intersects[i].object);
     }
 }
 
@@ -119,6 +117,7 @@ export function selectDraggableObject(event){
         if(selectedObject !== object && selectedObject !== null){
 
             removeButton.removeEventListener('click', removeDraggableObject);
+            document.removeEventListener('keydown', transformDraggableObject);
             object.overrideMaterial = null;
             selectedObject = null;
         }
@@ -129,12 +128,14 @@ export function selectDraggableObject(event){
             object.overrideMaterial = selectedMaterial;
             showButton(removeButton);
             removeButton.addEventListener('click', removeDraggableObject);
+            document.addEventListener('keydown', transformDraggableObject);
         }
 
         else if(selectedObject === object){
 
             hideButton(removeButton);
             removeButton.removeEventListener('click', removeDraggableObject);
+            document.removeEventListener('keydown', transformDraggableObject);
             object.overrideMaterial = null;
             selectedObject = null;
 
@@ -157,16 +158,33 @@ export async function removeDraggableObject(){
 }
 
 
-export async function rotateDraggableObject(object){
+export async function transformDraggableObject(event){
 
-    while (object.type !== 'Scene') {
-        object = object.parent;
+    let moved = _.find(currentObjects.objects, { mesh: selectedObject.uuid });
+
+    if(event.key === 'ArrowUp'){
+        event.preventDefault();
+        selectedObject.position.y += 0.1;
+        moved.y = selectedObject.position.y;
     }
 
-    object.rotation.y = (object.rotation.y + Math.PI/2) % (2 * Math.PI);
+    if(event.key === 'ArrowDown'){
+        event.preventDefault();
+        selectedObject.position.y -= 0.1;
+        moved.y = selectedObject.position.y;
+    }
 
-    let dragged = _.find(currentObjects.objects, { mesh: object.uuid });
-    dragged.angle = THREE.Math.radToDeg(object.rotation.y);
+    if(event.key === 'ArrowLeft'){
+        event.preventDefault();
+        selectedObject.rotation.y += Math.PI/8 ;
+        moved.angle = THREE.Math.radToDeg(selectedObject.rotation.y);
+    }
+
+    if(event.key === 'ArrowRight'){
+        event.preventDefault();
+        selectedObject.rotation.y -= Math.PI/8 ;
+        moved.angle = THREE.Math.radToDeg(selectedObject.rotation.y);
+    }
 
     await saveJson('currentObjects', currentObjects);
 }

@@ -4,7 +4,7 @@ import * as THREE from 'three';
 import * as TWEEN from 'tween.js';
 
 import { dragControls, mapControls, orbitControls, draggableObjects } from "./controls"
-import { enableDragControls, enableMapControls, enableOrbitControls, enableTransformControls } from "./controls"
+import { enableDragControls, enableMapControls, enableOrbitControls } from "./controls"
 import {addLights} from "./lights";
 import {addObject, initObjects, selectDraggableObject, selectedObject, selectObject} from "./objects";
 import {createModel} from "./walls";
@@ -35,7 +35,6 @@ async function init(){
     enableOrbitControls();
     enableMapControls();
     enableDragControls();
-    enableTransformControls();
 
     addLights();
     addGround();
@@ -51,7 +50,6 @@ async function init(){
     animate();
 
     loadingAnimation();
-
 }
 
 

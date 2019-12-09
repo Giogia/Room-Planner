@@ -3,18 +3,17 @@
 import * as THREE from 'three';
 import OrbitControls from 'three-controls/src/js/OrbitControls';
 import MapControls from 'three-controls/src/js/MapControls';
-import TransformControls from "three-controls/src/js/TransformControls";
 import {camera, canvas, renderer} from "./app";
 import ThreeDragger from 'three-dragger';
 import {currentMode, deleteMode, editMode, viewMode} from "./buttons";
 import {currentObjects, selectDraggableObject, selectObject} from "./objects";
 import {saveJson} from "./loader";
-//import { PointerLockControls } from './jsm/controls/PointerLockControls.js';
+
 
 export var dragControls, mapControls, transformControls, orbitControls, pointerLockControls;
 export var draggableObjects = [];
 
-export function  enableOrbitControls(){
+export function enableOrbitControls(){
 
     orbitControls = new OrbitControls(camera, renderer.domElement);
     orbitControls.target.set(0, 0, 0);
@@ -33,45 +32,6 @@ export function  enableOrbitControls(){
     orbitControls.maxDistance = 100;
 
     orbitControls.update();
-
-    /*orbitControls.addEventListener('change', () => {
-        console.log('change');
-        setTimeout(() => { canvas.removeEventListener('click', selectObject)}, 10);
-    });
-    orbitControls.addEventListener('end', () => {
-        console.log('end');
-        setTimeout(() => { canvas.removeEventListener('click', selectObject)}, 10);
-    });
-     */
-}
-
-/*export function pointerLockControls(){
-
-    pointerLockControls = new PointerLockControls(camera, renderer.domElement);
-
-}
-
-
- */
-export function enableTransformControls(){
-
-    transformControls = new TransformControls(camera, renderer.domElement);
-    transformControls.enabled = true;
-    transformControls.visible = true;
-    transformControls.showX = true;
-    transformControls.showY = true;
-    transformControls.showZ = true;
-
-    /*let geometry = new THREE.BoxBufferGeometry(2,2,2);
-    let material = new THREE.MeshLambertMaterial({color: 0xffffff});
-
-    let mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
-
-    transformControls.attach(mesh);
-
-     */
-    //scene.add(transformControls);
 }
 
 
@@ -153,7 +113,6 @@ export function enableDragControls(){
         let dragged = _.find(currentObjects.objects, { mesh: object.uuid });
 
         dragged.x = object.position.x;
-        dragged.y = object.position.y;
         dragged.z = object.position.z;
 
         await saveJson('currentObjects', currentObjects);
