@@ -30,7 +30,7 @@
     "http-server": "^0.11.1",
     "json-server": "^0.15.1",
     "line-intersect": "^2.2.3",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "material-components-web": "^4.0.0",
     "material-design-icons": "^3.0.1",
     "math": "0.0.3",
