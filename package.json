@@ -26,7 +26,7 @@
     "@material/ripple": "^4.0.0",
     "@windfish-studio/three-map-controls": "^1.1.6",
     "graph.js": "^1.21.1",
-    "handlebars": "^4.5.3",
+    "handlebars": "^4.7.7",
     "http-server": "^0.11.1",
     "json-server": "^0.15.1",
     "line-intersect": "^2.2.3",
