@@ -27,7 +27,7 @@
     "@windfish-studio/three-map-controls": "^1.1.6",
     "graph.js": "^1.21.1",
     "handlebars": "^4.5.3",
-    "http-server": "^0.11.1",
+    "http-server": "^0.11.2",
     "json-server": "^0.15.1",
     "line-intersect": "^2.2.3",
     "lodash": "^4.17.15",
